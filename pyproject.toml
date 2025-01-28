@@ -1,0 +1,20 @@
+[project]
+name = "saludtech"
+version = "1.0.0"
+authors = [
+  { name="Esneider Velandia", email="e.velandia2164@uniandes.edu.co" },
+  { name="Leonardo Bustamante", email="dl.bustamante@uniandes.edu.co" },
+  { name="Fabián Payan", email="f.payan@uniandes.edu.co" },
+  { name="Féliz Ordux", email="f.orduz@uniandes.edu.co" },
+]
+description = "Proyecto Entregable SaludTech De Los Alpes"
+readme = "README.md"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]
+pythonpath = [
+  ".", "src",
+]
