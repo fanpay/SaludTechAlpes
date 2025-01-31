@@ -1,0 +1,99 @@
+ContextMap SaludTechDeLosAlpesContext {
+    state = AS_IS
+
+    contains ContextoExtraccion
+    contains ContextoTransformacion
+    contains ContextoClientes
+    contains ContextoLegalYFinanciero
+    contains ContextoSeguridadYPlataforma
+    contains ContextoAtencionAlCliente
+
+    ContextoTransformacion [D] <- [U,OHS] ContextoExtraccion
+    ContextoAtencionAlCliente [D,ACL] <- [U] ContextoLegalYFinanciero
+    ContextoSeguridadYPlataforma [D] <- [U,OHS] ContextoTransformacion
+    ContextoClientes [D] <- [U,OHS] ContextoSeguridadYPlataforma
+    ContextoAtencionAlCliente [D,ACL]<-[U,OHS] ContextoClientes
+}
+
+Domain SaludTechDomain {
+
+    Subdomain AdquisionProcesamientoImagenesMedicas {
+        type = CORE_DOMAIN
+        //domainVisionStatement = "Implementación de procesos avanzados para garantizar que los datos médicos cumplan con normativas como HIPAA, eliminando información sensible."
+    }
+
+    Subdomain ConsolidacionYTrazabilidadDatosAnonimizados {
+        type = CORE_DOMAIN
+        //domainVisionStatement = "Servicios avanzados que permiten a los clientes acceder a entornos de datos personalizados con mayor control y asistencia especializada."
+    }
+
+    Subdomain DistribucionYAccesoDeDatosAnonimizadosParaIA {
+        type = CORE_DOMAIN
+        //domainVisionStatement = "Servicios avanzados que permiten a los clientes acceder a entornos de datos personalizados con mayor control y asistencia especializada."
+    }
+
+    Subdomain APIDeDatosAnonimizados {
+        type = CORE_DOMAIN
+        //domainVisionStatement = "Procesos y herramientas para importar datos desde hospitales, clínicas y laboratorios."
+    }
+
+    Subdomain AutenticacionYControlAcceso {
+        type = GENERIC_SUBDOMAIN
+        //domainVisionStatement = "Conversión y mejora de imágenes médicas para su correcta ingestión y análisis posterior."
+    }
+
+    Subdomain AlmacenamientoYProcesamientoEnNube   {
+        type = GENERIC_SUBDOMAIN
+        //domainVisionStatement = "Resolución de problemas técnicos, atención a clientes y manejo de consultas sobre el uso de los datos."
+    }
+
+    Subdomain SeguridadYCumplimientoNormativo {
+        type = GENERIC_SUBDOMAIN
+        //domainVisionStatement = "Conversión y mejora de imágenes médicas para su correcta ingestión y análisis posterior."
+    }
+
+    Subdomain AutomatizacionYCreacionDeAmbientesNube   {
+        type = GENERIC_SUBDOMAIN
+        //domainVisionStatement = "Resolución de problemas técnicos, atención a clientes y manejo de consultas sobre el uso de los datos."
+    }
+
+    Subdomain GestionDeContratosYPagosPartners {
+        type = SUPPORTING_DOMAIN
+        //domainVisionStatement = "Creación de identificadores anonimizados que permitan mantener un historial clínico longitudinal sin comprometer la privacidad."
+    }
+
+    Subdomain AtencionClienteYSoporteTecnico  {
+        type = SUPPORTING_DOMAIN
+        //domainVisionStatement = "Interfaz para que los clientes busquen, filtren y descarguen datos médicos."
+    }
+
+    Subdomain GestionMarketingYVentas {
+        type = SUPPORTING_DOMAIN
+        //domainVisionStatement = "Administración de usuarios, facturación y gestión de licencias de acceso a los datos."
+    }
+
+}
+
+BoundedContext ContextoExtraccion implements AdquisionProcesamientoImagenesMedicas  {
+
+}
+
+BoundedContext ContextoTransformacion implements ConsolidacionYTrazabilidadDatosAnonimizados, DistribucionYAccesoDeDatosAnonimizadosParaIA {
+   
+}
+
+BoundedContext ContextoClientes implements APIDeDatosAnonimizados {
+
+}
+
+BoundedContext ContextoLegalYFinanciero implements SeguridadYCumplimientoNormativo, GestionDeContratosYPagosPartners {
+
+}
+
+BoundedContext ContextoSeguridadYPlataforma implements AutenticacionYControlAcceso, AlmacenamientoYProcesamientoEnNube, AutomatizacionYCreacionDeAmbientesNube {
+    
+}
+
+BoundedContext ContextoAtencionAlCliente implements AtencionClienteYSoporteTecnico, GestionMarketingYVentas {
+    
+}
