@@ -11,8 +11,6 @@ tasks:
   - name: Instalar dependencias
     init: gp sync-await bundle
     command: pip install -r requirements.txt
-  - name: Clean build
-      - init: ./gradlew clean build
 
 image:
   file: .gitpod.Dockerfile
