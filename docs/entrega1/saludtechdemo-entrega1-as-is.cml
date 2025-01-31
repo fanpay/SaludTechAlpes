@@ -1,0 +1,91 @@
+ContextMap SaludTechDeLosAlpesContext {
+    state = AS_IS
+
+    contains ContextoExtraccion
+    contains ContextoTransformacion
+    contains ContextoAtencionCliente
+    contains ContextoFinanciero
+    contains ContextoSeguridadYPlataforma
+    contains ContextoUsuariosIA
+
+    ContextoTransformacion [D] <- [U] ContextoExtraccion
+    ContextoAtencionCliente [D] <- [U] ContextoFinanciero
+    ContextoSeguridadYPlataforma [D] <- [U] ContextoTransformacion
+    ContextoUsuariosIA [D] <- [U] ContextoSeguridadYPlataforma
+
+    //ContextoGestionDeDatosMedicos [D] <- [U] ContextoServiciosDeDatosParaClientes
+    //ContextoGestionDePartnersDeDatos [D] <- [U] ContextoExpansionYCumplimientoNormativo
+}
+
+Domain SaludTechDomain {
+
+    Subdomain AdquisionProcesamientoImagenesMedicas {
+        type = CORE_DOMAIN
+        //domainVisionStatement = "Implementación de procesos avanzados para garantizar que los datos médicos cumplan con normativas como HIPAA, eliminando información sensible."
+    }
+
+    Subdomain ConsolidacionYTrazabilidadDatosAnonimizados {
+        type = CORE_DOMAIN
+        //domainVisionStatement = "Servicios avanzados que permiten a los clientes acceder a entornos de datos personalizados con mayor control y asistencia especializada."
+    }
+
+    
+    Subdomain AutenticacionYControlAcceso {
+        type = GENERIC_SUBDOMAIN
+        //domainVisionStatement = "Conversión y mejora de imágenes médicas para su correcta ingestión y análisis posterior."
+    }
+
+    Subdomain AlmacenamientoYProcesamientoEnNubeManual   {
+        type = GENERIC_SUBDOMAIN
+        //domainVisionStatement = "Resolución de problemas técnicos, atención a clientes y manejo de consultas sobre el uso de los datos."
+    }
+
+
+    Subdomain GestionContratosYPagosPartnersManuales {
+        type = SUPPORTING_DOMAIN
+        //domainVisionStatement = "Creación de identificadores anonimizados que permitan mantener un historial clínico longitudinal sin comprometer la privacidad."
+    }
+
+    Subdomain AtencionClienteSoporteTecnico  {
+        type = SUPPORTING_DOMAIN
+        //domainVisionStatement = "Interfaz para que los clientes busquen, filtren y descarguen datos médicos."
+    }
+
+
+    Subdomain GestionVentas {
+        type = SUPPORTING_DOMAIN
+        //domainVisionStatement = "Administración de usuarios, facturación y gestión de licencias de acceso a los datos."
+    }
+
+
+    Subdomain DistribucionYAccesoDeDatosAnonimizadosPorDescarga {
+        type = SUPPORTING_DOMAIN
+        //domainVisionStatement = "Procesos y herramientas para importar datos desde hospitales, clínicas y laboratorios."
+    }
+
+
+}
+
+BoundedContext ContextoExtraccion implements AdquisionProcesamientoImagenesMedicas  {
+
+}
+
+BoundedContext ContextoTransformacion implements ConsolidacionYTrazabilidadDatosAnonimizados {
+   
+}
+
+BoundedContext ContextoFinanciero implements GestionContratosYPagosPartnersManuales {
+
+}
+
+BoundedContext ContextoSeguridadYPlataforma implements AlmacenamientoYProcesamientoEnNubeManual, AutenticacionYControlAcceso {
+
+}
+
+BoundedContext ContextoAtencionCliente implements AtencionClienteSoporteTecnico, GestionVentas{
+    
+}
+
+BoundedContext ContextoUsuariosIA implements DistribucionYAccesoDeDatosAnonimizadosPorDescarga {
+    
+}
