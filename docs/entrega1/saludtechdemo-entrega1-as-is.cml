@@ -18,12 +18,12 @@ Domain SaludTechDomain {
 
     Subdomain AdquisionProcesamientoImagenesMedicas {
         type = CORE_DOMAIN
-        //domainVisionStatement = "Implementación de procesos avanzados para garantizar que los datos médicos cumplan con normativas como HIPAA, eliminando información sensible."
+        domainVisionStatement = "Implementar y mantener procesos robustos y escalables para la adquisición, procesamiento y anonimización de imágenes médicas, garantizando el cumplimiento normativo y la calidad de los datos para el entrenamiento de modelos de IA."
     }
 
     Subdomain ConsolidacionYTrazabilidadDatosAnonimizados {
         type = CORE_DOMAIN
-        //domainVisionStatement = "Servicios avanzados que permiten a los clientes acceder a entornos de datos personalizados con mayor control y asistencia especializada."
+        domainVisionStatement = "Consolidar y gestionar de forma segura y eficiente los datos anonimizados, estableciendo mecanismos de trazabilidad que permitan mantener la integridad y el contexto de la información a lo largo del ciclo de vida del dato, facilitando su uso para la investigación y el desarrollo."
     }
 
     Subdomain DistribucionYAccesoDeDatosAnonimizadosPorDescarga {
