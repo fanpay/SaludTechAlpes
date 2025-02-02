@@ -18,43 +18,42 @@ Domain SaludTechDomain {
 
     Subdomain AdquisionProcesamientoImagenesMedicas {
         type = CORE_DOMAIN
-        domainVisionStatement = "Implementar y mantener procesos robustos y escalables para la adquisición, procesamiento y anonimización de imágenes médicas, garantizando el cumplimiento normativo y la calidad de los datos para el entrenamiento de modelos de IA."
+        domainVisionStatement = "Implementar y mantener procesos para la adquisición, procesamiento y anonimización de imágenes médicas, garantizando el cumplimiento normativo y la calidad de los datos para el entrenamiento de modelos de IA."
     }
 
     Subdomain ConsolidacionYTrazabilidadDatosAnonimizados {
         type = CORE_DOMAIN
-        domainVisionStatement = "Consolidar y gestionar de forma segura y eficiente los datos anonimizados, estableciendo mecanismos de trazabilidad que permitan mantener la integridad y el contexto de la información a lo largo del ciclo de vida del dato, facilitando su uso para la investigación y el desarrollo."
+        domainVisionStatement = "Consolidar y gestionar de forma segura y eficiente los datos anonimizados, facilitando su uso para la investigación y el desarrollo."
     }
 
     Subdomain DistribucionYAccesoDeDatosAnonimizadosPorDescarga {
         type = CORE_DOMAIN
-        //domainVisionStatement = "Procesos y herramientas para importar datos desde hospitales, clínicas y laboratorios."
+        domainVisionStatement = "Proporcionar a los clientes un acceso fácil, rápido y seguro a los datos anonimizados a través de una plataforma en nube, permitiendo la búsqueda, selección y descarga de los datos necesarios para sus proyectos de IA."
     }
     
     Subdomain AutenticacionYControlAcceso {
         type = GENERIC_SUBDOMAIN
-        //domainVisionStatement = "Conversión y mejora de imágenes médicas para su correcta ingestión y análisis posterior."
+        domainVisionStatement = "Garantizar la seguridad y privacidad de los datos mediante la implementación de un sistema robusto de autenticación y control de acceso, que permita gestionar los permisos de los usuarios y proteger la información de accesos no autorizados, cumpliendo con las normativas vigentes."
     }
 
     Subdomain AlmacenamientoYProcesamientoEnNubeManual   {
         type = GENERIC_SUBDOMAIN
-        //domainVisionStatement = "Resolución de problemas técnicos, atención a clientes y manejo de consultas sobre el uso de los datos."
+        domainVisionStatement = "Implementar y mantener una infraestructura en la nube para el almacenamiento y procesamiento de grandes volúmenes de datos médicos, cumpliendo con los requisitos de los clientes."
     }
 
     Subdomain GestionContratosYPagosPartnersManuales {
         type = SUPPORTING_DOMAIN
-        //domainVisionStatement = "Creación de identificadores anonimizados que permitan mantener un historial clínico longitudinal sin comprometer la privacidad."
+        domainVisionStatement = "Gestionar de manera eficiente y transparente los contratos y pagos a los partners proveedores de datos, estableciendo acuerdos claros y garantizando el cumplimiento de las obligaciones contractuales y los procesos de facturación."
     }
 
     Subdomain AtencionClienteSoporteTecnico  {
         type = SUPPORTING_DOMAIN
-        //domainVisionStatement = "Interfaz para que los clientes busquen, filtren y descarguen datos médicos."
+        domainVisionStatement = "Proporcionar un servicio de atención al cliente y soporte técnico de alta calidad, que resuelva las dudas y problemas de los usuarios de manera rápida y eficiente, y que contribuya a mejorar la experiencia del cliente y la satisfacción con los servicios de STA."
     }
-
 
     Subdomain GestionVentas {
         type = SUPPORTING_DOMAIN
-        //domainVisionStatement = "Administración de usuarios, facturación y gestión de licencias de acceso a los datos."
+        domainVisionStatement = "Gestionar el proceso de ventas de manera efectiva, identificando oportunidades de negocio, estableciendo relaciones con los clientes, y cerrando acuerdos que impulsen el crecimiento de STA, alcanzando los objetivos de ventas y cuota de mercado."
     }
 }
 
