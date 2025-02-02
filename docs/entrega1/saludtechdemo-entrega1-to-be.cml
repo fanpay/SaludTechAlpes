@@ -19,57 +19,57 @@ Domain SaludTechDomain {
 
     Subdomain AdquisionProcesamientoImagenesMedicas {
         type = CORE_DOMAIN
-        //domainVisionStatement = "Implementación de procesos avanzados para garantizar que los datos médicos cumplan con normativas como HIPAA, eliminando información sensible."
+        domainVisionStatement = "Implementar soluciones avanzadas y escalables para adquirir, anonimizar y procesar imágenes médicas, garantizando el cumplimiento de normativas globales como HIPAA y manteniendo la alta calidad para el entrenamiento de modelos de IA."
     }
 
     Subdomain ConsolidacionYTrazabilidadDatosAnonimizados {
         type = CORE_DOMAIN
-        //domainVisionStatement = "Servicios avanzados que permiten a los clientes acceder a entornos de datos personalizados con mayor control y asistencia especializada."
+        domainVisionStatement = "Desarrollar un sistema de consolidación de datos que permita un seguimiento detallado y transparente de los datos anonimizados, asegurando la trazabilidad a lo largo de su ciclo de vida para clientes y autoridades reguladoras."
     }
 
     Subdomain DistribucionYAccesoDeDatosAnonimizadosParaIA {
         type = CORE_DOMAIN
-        //domainVisionStatement = "Servicios avanzados que permiten a los clientes acceder a entornos de datos personalizados con mayor control y asistencia especializada."
+        domainVisionStatement = "Crear una plataforma robusta y escalable que facilite el acceso a datos médicos anonimizados de alta calidad para entrenar modelos de IA, optimizando la experiencia del cliente y acelerando la innovación tecnológica."
     }
 
     Subdomain APIDeDatosAnonimizados {
         type = CORE_DOMAIN
-        //domainVisionStatement = "Procesos y herramientas para importar datos desde hospitales, clínicas y laboratorios."
+        domainVisionStatement = "Ofrecer APIs seguras y eficientes que permitan a los clientes y desarrolladores acceder a datos anonimizados de manera flexible, cumpliendo con las normativas de privacidad y optimizando el uso de datos en aplicaciones de IA y análisis."
     }
 
     Subdomain AutenticacionYControlAcceso {
         type = GENERIC_SUBDOMAIN
-        //domainVisionStatement = "Conversión y mejora de imágenes médicas para su correcta ingestión y análisis posterior."
+        domainVisionStatement = "Desarrollar sistemas de autenticación y control de acceso altamente seguros, que permitan gestionar permisos de usuarios y mantener la integridad y privacidad de los datos médicos en todo momento."
     }
 
     Subdomain AlmacenamientoYProcesamientoEnNube   {
         type = GENERIC_SUBDOMAIN
-        //domainVisionStatement = "Resolución de problemas técnicos, atención a clientes y manejo de consultas sobre el uso de los datos."
+        domainVisionStatement = "Proveer soluciones de almacenamiento y procesamiento en la nube que ofrezcan alta disponibilidad, rendimiento y seguridad, para soportar la gestión eficiente de grandes volúmenes de datos médicos en tiempo real."
     }
 
     Subdomain SeguridadYCumplimientoNormativo {
         type = GENERIC_SUBDOMAIN
-        //domainVisionStatement = "Conversión y mejora de imágenes médicas para su correcta ingestión y análisis posterior."
+        domainVisionStatement = "Garantizar que todos los datos sean procesados y almacenados conforme a los estándares de seguridad y regulaciones globales, asegurando el cumplimiento con leyes como HIPAA y otras normativas locales e internacionales."
     }
 
     Subdomain AutomatizacionYCreacionDeAmbientesNube   {
         type = GENERIC_SUBDOMAIN
-        //domainVisionStatement = "Resolución de problemas técnicos, atención a clientes y manejo de consultas sobre el uso de los datos."
+        domainVisionStatement = "Automatizar la creación y gestión de entornos en la nube, permitiendo un aprovisionamiento rápido, escalable y seguro de recursos para clientes, garantizando eficiencia operativa y flexibilidad."
     }
 
     Subdomain GestionDeContratosYPagosPartners {
         type = SUPPORTING_DOMAIN
-        //domainVisionStatement = "Creación de identificadores anonimizados que permitan mantener un historial clínico longitudinal sin comprometer la privacidad."
+        domainVisionStatement = "Optimizar la gestión de contratos y pagos con los socios, garantizando transparencia, precisión y cumplimiento en los acuerdos comerciales, facilitando la relación con los proveedores de datos."
     }
 
     Subdomain AtencionClienteYSoporteTecnico  {
         type = SUPPORTING_DOMAIN
-        //domainVisionStatement = "Interfaz para que los clientes busquen, filtren y descarguen datos médicos."
+        domainVisionStatement = "Brindar soporte técnico de calidad y atención al cliente proactiva, asegurando que los usuarios puedan acceder a la información y resolver dudas de manera eficiente y rápida."
     }
 
     Subdomain GestionMarketingYVentas {
         type = SUPPORTING_DOMAIN
-        //domainVisionStatement = "Administración de usuarios, facturación y gestión de licencias de acceso a los datos."
+        domainVisionStatement = "Desarrollar estrategias efectivas de marketing y ventas para promocionar los productos de STA, optimizando la gestión de clientes, oportunidades de negocio y licencias de acceso a los datos."
     }
 
 }
