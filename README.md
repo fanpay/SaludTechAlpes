@@ -4,7 +4,7 @@ Este repositorio contiene el código y la documentación del proyecto SaludTech 
 
 ## Estructura del Proyecto
 
-```
+``` bash
 ├── README.md              # Este archivo, con las instrucciones de uso
 ├── docs                   # Documentación del proyecto
 │   └── entrega1           # Artefactos de la entrega 1
