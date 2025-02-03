@@ -3,6 +3,8 @@
 Este repositorio contiene el código y la documentación del proyecto SaludTech de los Alpes 2025, desarrollado para el curso. El proyecto se centra en el diseño de la arquitectura para soportar la expansión global de la compañía, con un enfoque en escalabilidad y seguridad, especialmente en el mercado estadounidense y su cumplimiento con la ley HIPAA.
 
 ## Estructura del Proyecto
+
+```
 ├── README.md              # Este archivo, con las instrucciones de uso
 ├── docs                   # Documentación del proyecto
 │   └── entrega1           # Artefactos de la entrega 1
@@ -15,7 +17,7 @@ Este repositorio contiene el código y la documentación del proyecto SaludTech 
 │   └── saludtechdemo-entrega1-to-be_ContextMap.png   # Diagrama TO-BE
 ├── .gitpod.yml # indica a Gitpod cómo preparar y compilar un proyecto
 ├── .gitpod.Dockerfile
-
+```
 
 Los diagramas AS-IS y TO-BE se encuentran en la carpeta `src-gen`.  Estos diagramas fueron generados utilizando Context Mapper a partir de los archivos `.cml` ubicados en `docs/entrega1/`.
 
