@@ -1,0 +1,9 @@
+from pydispatch import dispatcher
+
+from .handlers import HandlerAnonimizacionIntegracion
+
+from saludtech.transformaciones.modulos.anonimizacion.dominio.eventos import ProcesoAnonimizacionIniciado, ProcesoAnonimizacionFinalizado, ProcesoAnonimizacionFallido
+
+dispatcher.connect(HandlerAnonimizacionIntegracion.handle_proceso_anonimizacion_iniciado, signal=f'{ProcesoAnonimizacionIniciado.__name__}Integracion')
+dispatcher.connect(HandlerAnonimizacionIntegracion.handle_proceso_anonimizacion_finalizado, signal=f'{ProcesoAnonimizacionFinalizado.__name__}Integracion')
+dispatcher.connect(HandlerAnonimizacionIntegracion.handle_proceso_anonimizacion_fallido, signal=f'{ProcesoAnonimizacionFallido.__name__}Integracion')

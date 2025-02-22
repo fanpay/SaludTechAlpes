@@ -11,6 +11,19 @@ tasks:
   - name: Instalar dependencias
     init: gp sync-await bundle
     command: pip install -r requirements.txt
+  - name: Crear imagenes Docker
+    init: > 
+      docker build . -f transformacion.Dockerfile -t saludtech/transformaciones/flask &&
+      gp sync-done images
+  - name: Crear folder para datos y asigna permisos
+    init: > 
+      mkdir -p data/bookkeeper && 
+      mkdir -p data/zookeeper && 
+      sudo chmod -R 777 ./data
+  - name: Pull el Docker compose
+    init: gp sync-await images
+    command: docker-compose pull
+  
 
 image:
   file: .gitpod.Dockerfile
@@ -20,3 +33,15 @@ vscode:
     - contextmapper.context-mapper-vscode-extension
     - vscjava.vscode-java-pack
     - asciidoctor.asciidoctor-vscode
+
+ports:
+  - port: 2181
+    onOpen: ignore
+  - port: 8080
+    onOpen: ignore
+  - port: 6650
+    onOpen: ignore
+  - port: 2181
+    onOpen: ignore
+  - port: 6650
+    onOpen: ignore
