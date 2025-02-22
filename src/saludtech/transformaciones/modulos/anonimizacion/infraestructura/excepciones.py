@@ -1,11 +1,11 @@
-""" Excepciones para la capa de infrastructura del dominio de vuelos
+""" Excepciones para la capa de infrastructura del dominio de anonimizacion
 
 En este archivo usted encontrará los Excepciones relacionadas
-a la capa de infraestructura del dominio de vuelos
+a la capa de infraestructura del dominio de anonimizacion
 
 """
 
-from aeroalpes.seedwork.dominio.excepciones import ExcepcionFabrica
+from saludtech.transformaciones.seedwork.dominio.excepciones import ExcepcionFabrica
 
 class NoExisteImplementacionParaTipoFabricaExcepcion(ExcepcionFabrica):
     def __init__(self, mensaje='No existe una implementación para el repositorio con el tipo dado.'):

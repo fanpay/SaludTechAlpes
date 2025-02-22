@@ -1,16 +1,18 @@
-from saludtech.transformaciones.modulos.anonimizacion.aplicacion.dto import ConfiguracionAnonimizacionDTO, ImagenAnonimizadaDTO, MetadatosImagenDTO, ReferenciaAlmacenamientoDTO
+from datetime import datetime
+from saludtech.transformaciones.modulos.anonimizacion.aplicacion.dto import AjusteContrasteDTO, ConfiguracionAnonimizacionDTO, ImagenAnonimizadaDTO, MetadatosImagenDTO, ProcesarImagenDTO, ReferenciaAlmacenamientoDTO
 from saludtech.transformaciones.modulos.anonimizacion.aplicacion.mapeadores import MapeadorImagenAnonimizada
 from saludtech.transformaciones.modulos.anonimizacion.dominio.entidades import ImagenAnonimizada
+from saludtech.transformaciones.modulos.anonimizacion.dominio.objetos_valor import AlgoritmoAnonimizacion, FormatoSalida, ModalidadImagen
 from saludtech.transformaciones.seedwork.aplicacion.comandos import Comando
-from saludtech.transformaciones.modulos.vuelos.aplicacion.dto import ItinerarioDTO, ReservaDTO
+
 from .base import IniciarAnonimizacionBaseHandler
 from dataclasses import dataclass, field
 from saludtech.transformaciones.seedwork.aplicacion.comandos import ejecutar_commando as comando
 
-from saludtech.transformaciones.modulos.vuelos.dominio.entidades import Reserva
+from saludtech.transformaciones.modulos.anonimizacion.dominio.entidades import ImagenAnonimizada
 from saludtech.transformaciones.seedwork.infraestructura.uow import UnidadTrabajoPuerto
-from saludtech.transformaciones.modulos.vuelos.aplicacion.mapeadores import MapeadorReserva
-from saludtech.transformaciones.modulos.vuelos.infraestructura.repositorios import RepositorioReservas
+from saludtech.transformaciones.modulos.anonimizacion.aplicacion.mapeadores import MapeadorImagenAnonimizada
+from saludtech.transformaciones.modulos.anonimizacion.infraestructura.repositorios import RepositorioImagenesAnonimizadas
 
 @dataclass
 class IniciarAnonimizacion(Comando):
@@ -24,38 +26,42 @@ class IniciarAnonimizacion(Comando):
 class IniciarAnonimizacionHandler(IniciarAnonimizacionBaseHandler):
     
     def handle(self, comando: IniciarAnonimizacion):
-        imagen_dto = ImagenAnonimizadaDTO(
-            id=comando.id,
-            metadatos=comando.metadatos,
-            configuracion=comando.configuracion,
-            referencia_entrada=comando.referencia_entrada,
-            referencia_salida=None,  # Aún no hay salida
-            estado="pendiente",
-            resultado="",
-            fecha_solicitud=str(datetime.now())
+        procesar_dto = ProcesarImagenDTO(
+                metadatos=MetadatosImagenDTO(
+                modalidad=ModalidadImagen.RAYOS_X,
+                region="TORAX",
+                resolucion_ancho=2048,
+                resolucion_alto=1024,
+                fecha_adquisicion=datetime.now()
+            ),
+            configuracion=ConfiguracionAnonimizacionDTO(
+                nivel_anonimizacion=3,
+                formato_salida=FormatoSalida.DICOM,
+                ajustes_contraste=AjusteContrasteDTO(brillo=1.2, contraste=0.8),
+                algoritmo=AlgoritmoAnonimizacion.DICOM_DEID
+            ),
+            referencia_entrada=ReferenciaAlmacenamientoDTO(
+                nombre_bucket="raw-images",
+                llave_objeto="imagen_123.dcm",
+                proveedor_almacenamiento="S3"
+            )
         )
         
         # Convertir el DTO en una entidad de dominio
-        imagen: ImagenAnonimizada = MapeadorImagenAnonimizada().dto_a_entidad(imagen_dto)
+        imagen: ImagenAnonimizada = MapeadorImagenAnonimizada().dto_a_entidad(procesar_dto)
 
         # Ejecutar la lógica de anonimización en la entidad
-        imagen.iniciar_anonimizacion()
+        imagen.iniciar_procesamiento()
 
         # Obtener el repositorio de imágenes
-        repositorio = RepositorioImagenes()
+        repositorio = self.fabrica_repositorio.crear_objeto(RepositorioImagenesAnonimizadas.__class__)
 
-        reserva: Reserva = self.fabrica_vuelos.crear_objeto(reserva_dto, MapeadorReserva())
-        reserva.crear_reserva(reserva)
-
-        repositorio = self.fabrica_repositorio.crear_objeto(RepositorioReservas.__class__)
-
-        UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, reserva)
+        UnidadTrabajoPuerto.registrar_batch(repositorio.agregar , imagen)
         UnidadTrabajoPuerto.savepoint()
         UnidadTrabajoPuerto.commit()
 
 
-@comando.register(CrearReserva)
-def ejecutar_comando_crear_reserva(comando: CrearReserva):
-    handler = CrearReservaHandler()
+@comando.register(IniciarAnonimizacion)
+def ejecutar_comando_procesar_imagen(comando: IniciarAnonimizacion):
+    handler = IniciarAnonimizacionHandler()
     handler.handle(comando)
-    
