@@ -22,10 +22,10 @@ class _FabricaImagenAnonimizada(Fabrica):
             imagen: ImagenAnonimizada = mapeador.dto_a_entidad(obj)
             
             # Validar reglas de negocio críticas
-            self.validar_regla(ImagenDebeTenerReferencia(imagen.referencia))
+            self.validar_regla(ImagenDebeTenerReferencia(imagen.referencia_entrada))
             self.validar_regla(ImagenDebeSerProcesable(imagen))
-            self.validar_regla(NivelAnonimizacionValido(imagen.configuracion_anonimizacion))
-            self.validar_regla(FormatoImagenSoportado(imagen.configuracion_anonimizacion))
+            self.validar_regla(NivelAnonimizacionValido(imagen.configuracion))
+            self.validar_regla(FormatoImagenSoportado(imagen.configuracion))
 
             
             return imagen
