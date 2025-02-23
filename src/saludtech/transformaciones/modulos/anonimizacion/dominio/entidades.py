@@ -10,9 +10,6 @@ import uuid
 
 from saludtech.transformaciones.modulos.anonimizacion.dominio.objetos_valor import ConfiguracionAnonimizacion, MetadatosImagen, ResultadoProcesamiento, ReferenciaAlmacenamiento, EstadoProceso
 from saludtech.transformaciones.modulos.anonimizacion.dominio.eventos import ProcesoAnonimizacionIniciado, ProcesoAnonimizacionFinalizado, ProcesoAnonimizacionFallido
-
-
-from saludtech.transformaciones.modulos.anonimizacion.dominio.reglas import NivelAnonimizacionValido
 from saludtech.transformaciones.seedwork.dominio.entidades import AgregacionRaiz, Entidad
 
 @dataclass
@@ -20,7 +17,7 @@ class ImagenAnonimizada(AgregacionRaiz):
     metadatos: MetadatosImagen = field(default_factory=MetadatosImagen)
     configuracion: ConfiguracionAnonimizacion = field(default_factory=ConfiguracionAnonimizacion)
     referencia_entrada: ReferenciaAlmacenamiento = field(default_factory=ReferenciaAlmacenamiento) # Ubicación de la imagen original
-    referencia_salida: ReferenciaAlmacenamiento = field(default_factory=ReferenciaAlmacenamiento, default=None)
+    referencia_salida: ReferenciaAlmacenamiento = field(default_factory=ReferenciaAlmacenamiento)
     estado: EstadoProceso = field(default=EstadoProceso.PENDIENTE)   # PENDING, PROCESSING, COMPLETED, FAILED
     resultado: ResultadoProcesamiento = field(default_factory=ResultadoProcesamiento)
 
@@ -54,6 +51,6 @@ class ImagenAnonimizada(AgregacionRaiz):
 
 @dataclass
 class SolicitudAnonimizacion(Entidad):
-    id_solicitud: uuid.UUID = field(default_factory=uuid.uuid4)
-    id_imagen: uuid.UUID
-    configuracion: ConfiguracionAnonimizacion = field(default_factory=ConfiguracionAnonimizacion)
+    id_solicitud: uuid.UUID = field(hash=True, default=None)
+    id_imagen: uuid.UUID = field(hash=True, default=None)
+    configuracion: ConfiguracionAnonimizacion = None

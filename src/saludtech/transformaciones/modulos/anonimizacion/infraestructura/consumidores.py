@@ -39,7 +39,7 @@ def suscribirse_a_comandos():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('comandos-anonimizacion', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='saludtech-sub-comandos', schema=AvroSchema(ComandoIniciarAnonimizacion))
+        consumidor = cliente.subscribe('comandos-anonimizacion2', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='saludtech-sub-comandos', schema=AvroSchema(ComandoIniciarAnonimizacion))
 
         while True:
             mensaje = consumidor.receive()
@@ -57,7 +57,7 @@ def suscribirse_a_comandos():
 
             # Usar el despachador para manejar el comando
             despachador = Despachador()
-            despachador.publicar_comando(comando, 'comandos-anonimizacion')
+            despachador.publicar_comando(comando, 'comandos-anonimizacion2')
 
             consumidor.acknowledge(mensaje)
             

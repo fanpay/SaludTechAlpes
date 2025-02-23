@@ -1,8 +1,9 @@
+import uuid
 from saludtech.transformaciones.modulos.anonimizacion.infraestructura.despachadores import Despachador
 import saludtech.transformaciones.seedwork.presentacion.api as api
 import json
 from saludtech.transformaciones.modulos.anonimizacion.aplicacion.servicios import ServicioAnonimizacion
-from saludtech.transformaciones.modulos.anonimizacion.aplicacion.dto import ReservaDTO
+from saludtech.transformaciones.modulos.anonimizacion.aplicacion.dto import *
 from saludtech.transformaciones.seedwork.dominio.excepciones import ExcepcionDominio
 
 from flask import redirect, render_template, request, session, url_for
@@ -39,14 +40,14 @@ def iniciar_anonimizacion_asincrona():
         imagen_dto = map_imagen.externo_a_dto(imagen_dict)
 
         comando = IniciarAnonimizacion(
-            id=imagen_dto.id,
+            id=str(uuid.uuid4()),
             metadatos=imagen_dto.metadatos,
             configuracion=imagen_dto.configuracion,
             referencia_entrada=imagen_dto.referencia_entrada
         )
         
         despachador = Despachador()
-        despachador.publicar_comando(comando, 'comandos-anonimizacion')
+        despachador.publicar_comando(comando, 'comandos-anonimizacion2')
 
         
         return Response('{}', status=202, mimetype='application/json')

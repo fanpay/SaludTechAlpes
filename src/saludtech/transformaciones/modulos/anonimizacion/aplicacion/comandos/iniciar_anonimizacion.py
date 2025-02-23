@@ -1,5 +1,5 @@
 from datetime import datetime
-from saludtech.transformaciones.modulos.anonimizacion.aplicacion.dto import AjusteContrasteDTO, ConfiguracionAnonimizacionDTO, ImagenAnonimizadaDTO, MetadatosImagenDTO, ProcesarImagenDTO, ReferenciaAlmacenamientoDTO
+from saludtech.transformaciones.modulos.anonimizacion.aplicacion.dto import AjusteContrasteDTO, ConfiguracionAnonimizacionDTO, EstadoProcesoDTO, ResultadoProcesamientoDTO, MetadatosImagenDTO, ProcesarImagenDTO, ReferenciaAlmacenamientoDTO
 from saludtech.transformaciones.modulos.anonimizacion.aplicacion.mapeadores import MapeadorImagenAnonimizada
 from saludtech.transformaciones.modulos.anonimizacion.dominio.entidades import ImagenAnonimizada
 from saludtech.transformaciones.modulos.anonimizacion.dominio.objetos_valor import AlgoritmoAnonimizacion, FormatoSalida, ModalidadImagen

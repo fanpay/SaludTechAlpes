@@ -41,8 +41,8 @@ class RepositorioImagenesAnonimizadasSQLite(RepositorioImagenesAnonimizadas):
             imagen_dto = db.session.query(ImagenAnonimizadaDTO).filter_by(id=str(imagen.id)).one_or_none()
             if imagen_dto:
                 for key, value in MapeadorImagenAnonimizada().entidad_a_dto(imagen).__dict__.items():
-                    if key != '_sa_instance_state':
-                        setattr(imagen_dto, key, value)
+                    #if key != '_sa_instance_state':
+                    setattr(imagen_dto, key, value)
             else:
                 db.session.add(MapeadorImagenAnonimizada().entidad_a_dto(imagen))
             db.session.commit()

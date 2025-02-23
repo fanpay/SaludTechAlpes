@@ -2,7 +2,7 @@ import pulsar
 from pulsar.schema import *
 
 from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.eventos import EventoAnonimizacionFallidaPayload, EventoAnonimizacionFinalizadaPayload, EventoAnonimizacionIniciada, EventoAnonimizacionFinalizada, EventoAnonimizacionFallida, EventoAnonimizacionIniciadaPayload
-from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.comandos import ComandoIniciarAnonimizacion, ComandoIniciarAnonimizacionPayload
+from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.comandos import AjusteContrastePayload, ComandoIniciarAnonimizacion, ComandoIniciarAnonimizacionPayload, ConfiguracionAnonimizacionPayload, MetadatosImagenPayload, ReferenciaAlmacenamientoPayload, ResolucionPayload
 from saludtech.transformaciones.seedwork.infraestructura import utils
 from saludtech.transformaciones.seedwork.infraestructura.despachadores import DespachadorBase, publicar_mensaje
 from saludtech.transformaciones.modulos.anonimizacion.aplicacion.comandos.iniciar_anonimizacion import IniciarAnonimizacion
@@ -55,11 +55,36 @@ class Despachador(DespachadorBase):
 
 @publicar_mensaje.register
 def _(comando: IniciarAnonimizacion, topico):
+    print(comando.metadatos)
     payload = ComandoIniciarAnonimizacionPayload(
         id=str(comando.id),
-        metadatos=comando.metadatos,
-        configuracion=comando.configuracion,
-        referencia_entrada=comando.referencia_entrada
+        metadatos=MetadatosImagenPayload(
+            id=str(comando.id),
+            modalidad=comando.metadatos.modalidad,
+            region=comando.metadatos.region,
+            resolucion=ResolucionPayload(
+                ancho = comando.metadatos.resolucion.ancho,
+                alto = comando.metadatos.resolucion.alto,
+                dpi = comando.metadatos.resolucion.dpi
+            ),
+            fecha_adquisicion=datetime.datetime.now()
+        ),
+        configuracion=ConfiguracionAnonimizacionPayload(
+            id=str(comando.id),
+            nivel_anonimizacion = comando.configuracion.nivel_anonimizacion,
+            formato_salida = comando.configuracion.formato_salida,
+            ajustes_contraste = AjusteContrastePayload(
+                brillo = comando.configuracion.ajustes_contraste.brillo,
+                contraste = comando.configuracion.ajustes_contraste.contraste
+            ),
+            algoritmo = comando.configuracion.algoritmo_usado,
+        ),
+        referencia_entrada=ReferenciaAlmacenamientoPayload(
+            id=str(comando.id),
+            nombre_bucket = comando.referencia_entrada.nombre_bucket,
+            llave_objeto = comando.referencia_entrada.llave_objeto,
+            proveedor_almacenamiento = comando.referencia_entrada.proveedor_almacenamiento
+        )
     )
     comando_integracion = ComandoIniciarAnonimizacion(data=payload)
     despachador = Despachador()

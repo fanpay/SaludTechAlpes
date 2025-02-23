@@ -28,7 +28,7 @@ class ProcesoAnonimizacionFinalizado(EventoDominio):
 class ProcesoAnonimizacionFallido(EventoDominio):
     """Evento que indica que el proceso de anonimización falló."""
     proceso_id: uuid.UUID = None
-    motivo_fallo: str
+    motivo_fallo: str = ""
     metadatos: MetadatosImagen = None
     referencia_entrada: ReferenciaAlmacenamiento = None
     fecha_fallo: datetime = datetime.now(timezone.utc)

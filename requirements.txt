@@ -29,7 +29,7 @@ graphene-sqlalchemy==2.3.0
 graphql-core==2.2
 graphql-relay==2
 graphql-server-core==1.1.1
-psycopg2
+psycopg2-binary==2.9.5
 python-dotenv
 aiohttp
 asyncio 

@@ -7,6 +7,11 @@ from datetime import datetime
 from saludtech.transformaciones.seedwork.dominio.objetos_valor import Resolucion
 
 @dataclass(frozen=True)
+class ResolucionDTO(DTO):
+    ancho: int
+    alto: int
+    dpi: int   
+@dataclass(frozen=True)
 class AjusteContrasteDTO(DTO):
     brillo: float
     contraste: float    
@@ -29,7 +34,6 @@ class ConfiguracionAnonimizacionDTO(DTO):
 class ResultadoProcesamientoDTO(DTO):
     checksum: str
     tamano_archivo: int
-    algoritmo_usado: AlgoritmoAnonimizacion
     timestamp: datetime = field(default_factory=datetime.now)
     
 

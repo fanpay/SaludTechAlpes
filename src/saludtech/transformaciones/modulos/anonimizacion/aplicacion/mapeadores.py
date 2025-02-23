@@ -1,17 +1,23 @@
 import uuid
+from saludtech.transformaciones.modulos.anonimizacion.infraestructura.dto import ImagenAnonimizadaDTO
 from saludtech.transformaciones.seedwork.aplicacion.dto import Mapeador as AppMap
 from saludtech.transformaciones.seedwork.dominio.objetos_valor import Resolucion
 from saludtech.transformaciones.seedwork.dominio.repositorios import Mapeador as RepMap
 from saludtech.transformaciones.modulos.anonimizacion.dominio.entidades import ImagenAnonimizada
 from saludtech.transformaciones.modulos.anonimizacion.dominio.objetos_valor import AlgoritmoAnonimizacion, EstadoProceso, FormatoSalida, MetadatosImagen, ConfiguracionAnonimizacion, ModalidadImagen, RegionAnatomica, ResultadoProcesamiento, ReferenciaAlmacenamiento
-from .dto import ImagenAnonimizadaDTO, MetadatosImagenDTO, ConfiguracionAnonimizacionDTO, ResultadoProcesamientoDTO, ReferenciaAlmacenamientoDTO
+from .dto import AjusteContrasteDTO, MetadatosImagenDTO, ConfiguracionAnonimizacionDTO, ProcesarImagenDTO, ResolucionDTO, ResultadoProcesamientoDTO, ReferenciaAlmacenamientoDTO
 
 class MapeadorImagenAnonimizadaDTOJson(AppMap):
     def _procesar_metadatos(self, metadatos: dict) -> MetadatosImagenDTO:
+        
         return MetadatosImagenDTO(
             modalidad=metadatos.get('modalidad'),
             region=metadatos.get('region'),
-            resolucion=metadatos.get('resolucion'),
+            resolucion=ResolucionDTO(
+                ancho = metadatos.get('resolucion')['ancho'],
+                alto = metadatos.get('resolucion')['alto'],
+                dpi = metadatos.get('resolucion')['dpi']
+            ),
             fecha_adquisicion=metadatos.get('fecha_adquisicion')
         )
 
@@ -19,8 +25,11 @@ class MapeadorImagenAnonimizadaDTOJson(AppMap):
         return ConfiguracionAnonimizacionDTO(
             nivel_anonimizacion=configuracion.get('nivel_anonimizacion'),
             formato_salida=configuracion.get('formato_salida'),
-            ajustes_contraste=configuracion.get('ajustes_contraste'),
-            algoritmo=configuracion.get('algoritmo')
+            ajustes_contraste=AjusteContrasteDTO(
+                brillo = configuracion.get('ajustes_contraste')['brillo'],
+                contraste = configuracion.get('ajustes_contraste')['contraste']
+            ),
+            algoritmo_usado=configuracion.get('algoritmo')
         )
 
     def _procesar_resultado(self, resultado: dict) -> ResultadoProcesamientoDTO:
@@ -37,19 +46,14 @@ class MapeadorImagenAnonimizadaDTOJson(AppMap):
             proveedor_almacenamiento=referencia.get('proveedor_almacenamiento')
         )
 
-    def externo_a_dto(self, externo: dict) -> ImagenAnonimizadaDTO:
-        return ImagenAnonimizadaDTO(
-            id=externo.get('id'),
+    def externo_a_dto(self, externo: dict) -> ProcesarImagenDTO:
+        return ProcesarImagenDTO(
             metadatos=self._procesar_metadatos(externo.get('metadatos')),
             configuracion=self._procesar_configuracion(externo.get('configuracion')),
-            referencia_entrada=self._procesar_referencia(externo.get('referencia_entrada')),
-            referencia_salida=self._procesar_referencia(externo.get('referencia_salida')),
-            estado=externo.get('estado'),
-            resultado=self._procesar_resultado(externo.get('resultado')),
-            fecha_solicitud=externo.get('fecha_solicitud')
+            referencia_entrada=self._procesar_referencia(externo.get('referencia_entrada'))
         )
 
-    def dto_a_externo(self, dto: ImagenAnonimizadaDTO) -> dict:
+    def dto_a_externo(self, dto: ProcesarImagenDTO) -> dict:
         return dto.__dict__
 
 class MapeadorImagenAnonimizada(RepMap):

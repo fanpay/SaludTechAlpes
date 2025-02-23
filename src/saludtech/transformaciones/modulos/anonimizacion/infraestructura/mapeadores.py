@@ -8,7 +8,7 @@ encargados de la transformación entre formatos de dominio y DTOs
 from saludtech.transformaciones.seedwork.dominio.repositorios import Mapeador
 from saludtech.transformaciones.modulos.anonimizacion.dominio.entidades import ImagenAnonimizada
 from saludtech.transformaciones.modulos.anonimizacion.dominio.objetos_valor import AlgoritmoAnonimizacion, EstadoProceso, FormatoSalida, MetadatosImagen, ConfiguracionAnonimizacion, ModalidadImagen, RegionAnatomica, ResultadoProcesamiento, ReferenciaAlmacenamiento
-from saludtech.transformaciones.modulos.anonimizacion.infraestructura.dto import ImagenAnonimizadaDTO, MetadatosImagenDTO, ConfiguracionAnonimizacionDTO, ReferenciaAlmacenamientoDTO, ResultadoProcesamientoDTO
+from saludtech.transformaciones.modulos.anonimizacion.infraestructura.dto import ImagenAnonimizadaDTO, MetadatosImagenDTO, ConfiguracionAnonimizacionDTO, ReferenciaAlmacenamientoDTO
 
 class MapeadorImagenAnonimizada(Mapeador):
 
