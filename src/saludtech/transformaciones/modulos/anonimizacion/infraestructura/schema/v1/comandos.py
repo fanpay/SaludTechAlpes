@@ -3,13 +3,13 @@ from pulsar.schema import *
 from saludtech.transformaciones.seedwork.infraestructura.schema.v1.comandos import ComandoIntegracion
 
 class AjusteContrastePayload(Record):
-    brillo: float
-    contraste: float    
+    brillo = Integer()
+    contraste = Integer()   
     
 class ResolucionPayload(Record):
-    ancho: int
-    alto: int
-    dpi: int
+    ancho = Integer()
+    alto = Integer()
+    dpi = Integer()
 
 class MetadatosImagenPayload(Record):
     id = String()
@@ -20,7 +20,7 @@ class MetadatosImagenPayload(Record):
 
 class ConfiguracionAnonimizacionPayload(Record):
     id = String()
-    nivel_anonimizacion = String()
+    nivel_anonimizacion = Integer()
     formato_salida = String()
     ajustes_contraste = AjusteContrastePayload()
     algoritmo = String()

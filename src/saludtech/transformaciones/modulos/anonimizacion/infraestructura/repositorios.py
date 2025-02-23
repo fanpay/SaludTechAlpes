@@ -13,7 +13,7 @@ from saludtech.transformaciones.modulos.anonimizacion.infraestructura.mapeadores
 from sqlalchemy.exc import NoResultFound
 from uuid import UUID
 
-class RepositorioImagenesAnonimizadasSQLite(RepositorioImagenesAnonimizadas):
+class RepositorioImagenesAnonimizadasDB(RepositorioImagenesAnonimizadas):
 
     def obtener_por_id(self, id: UUID) -> ImagenAnonimizada:
         try:
@@ -33,7 +33,7 @@ class RepositorioImagenesAnonimizadasSQLite(RepositorioImagenesAnonimizadas):
             db.session.add(imagen_dto)
             db.session.commit()
         except Exception as e:
-            db.session.rollback()
+            #db.session.rollback()
             raise e
 
     def actualizar(self, imagen: ImagenAnonimizada):
@@ -61,6 +61,6 @@ class RepositorioImagenesAnonimizadasSQLite(RepositorioImagenesAnonimizadas):
             db.session.rollback()
             raise e
 
-class RepositorioProcesosAnonimizacionSQLite(RepositorioProcesosAnonimizacion):
-    # Implementación similar a RepositorioImagenesAnonimizadasSQLite
+class RepositorioProcesosAnonimizacionDB(RepositorioProcesosAnonimizacion):
+    # Implementación similar a RepositorioImagenesAnonimizadasDB
     ...

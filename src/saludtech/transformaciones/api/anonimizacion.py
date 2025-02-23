@@ -47,7 +47,7 @@ def iniciar_anonimizacion_asincrona():
         )
         
         despachador = Despachador()
-        despachador.publicar_comando(comando, 'comandos-anonimizacion2')
+        despachador.publicar_comando(comando, 'comandos-anonimizacion7')
 
         
         return Response('{}', status=202, mimetype='application/json')

@@ -9,15 +9,15 @@ from dataclasses import dataclass
 from saludtech.transformaciones.seedwork.dominio.fabricas import Fabrica
 from saludtech.transformaciones.seedwork.dominio.repositorios import Repositorio
 from saludtech.transformaciones.modulos.anonimizacion.dominio.repositorios import RepositorioImagenesAnonimizadas, RepositorioProcesosAnonimizacion
-from .repositorios import RepositorioImagenesAnonimizadasSQLite, RepositorioProcesosAnonimizacionSQLite
+from .repositorios import RepositorioImagenesAnonimizadasDB, RepositorioProcesosAnonimizacionDB
 from .excepciones import ExcepcionFabrica
 
 @dataclass
 class FabricaRepositorio(Fabrica):
     def crear_objeto(self, obj: type, mapeador: any = None) -> Repositorio:
-        if obj == RepositorioImagenesAnonimizadas:
-            return RepositorioImagenesAnonimizadasSQLite()
-        elif obj == RepositorioProcesosAnonimizacion:
-            return RepositorioProcesosAnonimizacionSQLite()
+        #if obj == RepositorioImagenesAnonimizadas:
+        return RepositorioImagenesAnonimizadasDB()
+        '''elif obj == RepositorioProcesosAnonimizacion:
+            return RepositorioProcesosAnonimizacionDB()
         else:
-            raise ExcepcionFabrica(f"No existe una implementación para el repositorio con el tipo dado: {obj}")
+            raise ExcepcionFabrica(f"No existe una implementación para el repositorio con el tipo dado: {obj}")'''

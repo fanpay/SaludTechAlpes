@@ -55,7 +55,7 @@ class Despachador(DespachadorBase):
 
 @publicar_mensaje.register
 def _(comando: IniciarAnonimizacion, topico):
-    print(comando.metadatos)
+    
     payload = ComandoIniciarAnonimizacionPayload(
         id=str(comando.id),
         metadatos=MetadatosImagenPayload(

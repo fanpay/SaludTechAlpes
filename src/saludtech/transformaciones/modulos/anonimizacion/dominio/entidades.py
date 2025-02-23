@@ -17,9 +17,9 @@ class ImagenAnonimizada(AgregacionRaiz):
     metadatos: MetadatosImagen = field(default_factory=MetadatosImagen)
     configuracion: ConfiguracionAnonimizacion = field(default_factory=ConfiguracionAnonimizacion)
     referencia_entrada: ReferenciaAlmacenamiento = field(default_factory=ReferenciaAlmacenamiento) # Ubicación de la imagen original
-    referencia_salida: ReferenciaAlmacenamiento = field(default_factory=ReferenciaAlmacenamiento)
+    #referencia_salida: ReferenciaAlmacenamiento = field(default_factory=ReferenciaAlmacenamiento)
     estado: EstadoProceso = field(default=EstadoProceso.PENDIENTE)   # PENDING, PROCESSING, COMPLETED, FAILED
-    resultado: ResultadoProcesamiento = field(default_factory=ResultadoProcesamiento)
+    #resultado: ResultadoProcesamiento = field(default_factory=ResultadoProcesamiento)
 
     def iniciar_procesamiento(self):
         self.estado = EstadoProceso.PROCESANDO

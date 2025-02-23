@@ -11,7 +11,7 @@
             "request": "launch",
             "module": "flask",
             "env": {
-                "FLASK_APP": "src/saludtech/transformaciones/api/anonimizacion.py",
+                "FLASK_APP": "src/saludtech/transformaciones/api",
                 "FLASK_DEBUG": "1"
             },
             "args": [

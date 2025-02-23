@@ -11,17 +11,19 @@ from saludtech.transformaciones.modulos.anonimizacion.dominio.objetos_valor impo
 from saludtech.transformaciones.modulos.anonimizacion.infraestructura.dto import ImagenAnonimizadaDTO, MetadatosImagenDTO, ConfiguracionAnonimizacionDTO, ReferenciaAlmacenamientoDTO
 
 class MapeadorImagenAnonimizada(Mapeador):
+    def obtener_tipo(self) -> type:
+        return ImagenAnonimizada.__class__
 
     def entidad_a_dto(self, entidad: ImagenAnonimizada) -> ImagenAnonimizadaDTO:
         return ImagenAnonimizadaDTO(
             id=str(entidad.id),
-            estado=entidad.estado.value,
-            resultado=entidad.resultado.checksum if entidad.resultado else None,
-            fecha_solicitud=entidad.fecha_solicitud,
-            metadatos_id=str(entidad.metadatos.id),
-            configuracion_id=str(entidad.configuracion.id),
-            referencia_entrada_id=str(entidad.referencia_entrada.id),
-            referencia_salida_id=str(entidad.referencia_salida.id) if entidad.referencia_salida else None
+            estado=entidad.estado.value
+            #resultado=entidad.resultado.checksum if entidad.resultado else None,
+            #fecha_solicitud=entidad.fecha_solicitud,
+            #metadatos_id=str(entidad.metadatos.id),
+            #configuracion_id=str(entidad.configuracion.id),
+            #referencia_entrada_id=str(entidad.referencia_entrada.id),
+            #referencia_salida_id=str(entidad.referencia_salida.id) if entidad.referencia_salida else None
         )
 
     def dto_a_entidad(self, dto: ImagenAnonimizadaDTO) -> ImagenAnonimizada:

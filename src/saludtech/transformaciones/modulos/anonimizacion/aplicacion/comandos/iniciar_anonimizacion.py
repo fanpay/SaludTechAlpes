@@ -27,24 +27,9 @@ class IniciarAnonimizacionHandler(IniciarAnonimizacionBaseHandler):
     
     def handle(self, comando: IniciarAnonimizacion):
         procesar_dto = ProcesarImagenDTO(
-                metadatos=MetadatosImagenDTO(
-                modalidad=ModalidadImagen.RAYOS_X,
-                region="TORAX",
-                resolucion_ancho=2048,
-                resolucion_alto=1024,
-                fecha_adquisicion=datetime.now()
-            ),
-            configuracion=ConfiguracionAnonimizacionDTO(
-                nivel_anonimizacion=3,
-                formato_salida=FormatoSalida.DICOM,
-                ajustes_contraste=AjusteContrasteDTO(brillo=1.2, contraste=0.8),
-                algoritmo=AlgoritmoAnonimizacion.DICOM_DEID
-            ),
-            referencia_entrada=ReferenciaAlmacenamientoDTO(
-                nombre_bucket="raw-images",
-                llave_objeto="imagen_123.dcm",
-                proveedor_almacenamiento="S3"
-            )
+            metadatos=comando.metadatos,
+            configuracion=comando.configuracion,
+            referencia_entrada=comando.referencia_entrada
         )
         
         # Convertir el DTO en una entidad de dominio

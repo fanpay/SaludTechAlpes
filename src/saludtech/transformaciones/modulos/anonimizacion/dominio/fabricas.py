@@ -33,7 +33,7 @@ class _FabricaImagenAnonimizada(Fabrica):
 @dataclass
 class FabricaAnonimizacion(Fabrica):
     def crear_objeto(self, obj: any, mapeador: Mapeador) -> any:
-        if mapeador.obtener_tipo() == ImagenAnonimizada:
+        if mapeador.obtener_tipo() == ImagenAnonimizada.__class__:
             fabrica_imagen = _FabricaImagenAnonimizada()
             return fabrica_imagen.crear_objeto(obj, mapeador)
         else:

@@ -57,6 +57,9 @@ class MapeadorImagenAnonimizadaDTOJson(AppMap):
         return dto.__dict__
 
 class MapeadorImagenAnonimizada(RepMap):
+    def obtener_tipo(self) -> type:
+        return ImagenAnonimizada.__class__
+    
     def entidad_a_dto(self, entidad: ImagenAnonimizada) -> ImagenAnonimizadaDTO:
         return ImagenAnonimizadaDTO(
             id=str(entidad.id),
@@ -93,11 +96,15 @@ class MapeadorImagenAnonimizada(RepMap):
 
     def dto_a_entidad(self, dto: ImagenAnonimizadaDTO) -> ImagenAnonimizada:
         return ImagenAnonimizada(
-            id=uuid.UUID(dto.id),
+            id=str(uuid.uuid4()),
             metadatos=MetadatosImagen(
                 modalidad=ModalidadImagen(dto.metadatos.modalidad),
                 region=RegionAnatomica(dto.metadatos.region),
-                resolucion=Resolucion(dto.metadatos.resolucion),
+                resolucion=Resolucion(
+                    alto = dto.metadatos.resolucion.alto,
+                    ancho = dto.metadatos.resolucion.ancho,
+                    dpi = dto.metadatos.resolucion.dpi
+                ),
                 fecha_adquisicion=dto.metadatos.fecha_adquisicion
             ),
             configuracion=ConfiguracionAnonimizacion(
@@ -110,17 +117,6 @@ class MapeadorImagenAnonimizada(RepMap):
                 nombre_bucket=dto.referencia_entrada.nombre_bucket,
                 llave_objeto=dto.referencia_entrada.llave_objeto,
                 proveedor_almacenamiento=dto.referencia_entrada.proveedor_almacenamiento
-            ),
-            referencia_salida=ReferenciaAlmacenamiento(
-                nombre_bucket=dto.referencia_salida.nombre_bucket,
-                llave_objeto=dto.referencia_salida.llave_objeto,
-                proveedor_almacenamiento=dto.referencia_salida.proveedor_almacenamiento
-            ),
-            estado=EstadoProceso(dto.estado),
-            resultado=ResultadoProcesamiento(
-                checksum=dto.resultado.checksum,
-                tamano_archivo=dto.resultado.tamano_archivo,
-                timestamp=dto.resultado.timestamp
-            ),
-            fecha_solicitud=dto.fecha_solicitud
+            )
+            
         )

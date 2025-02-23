@@ -10,7 +10,7 @@ class MetadatosImagenPayload(Record):
 
 class ConfiguracionAnonimizacionPayload(Record):
     id = String()
-    nivel_anonimizacion = String()
+    nivel_anonimizacion = Integer()
     formato_salida = String()
     ajustes_contraste = String()
     algoritmo = String()

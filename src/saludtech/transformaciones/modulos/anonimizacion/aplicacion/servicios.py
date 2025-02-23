@@ -31,9 +31,10 @@ class ServicioAnonimizacion(Servicio):
 
         repositorio = self.fabrica_repositorio.crear_objeto(RepositorioImagenesAnonimizadas.__class__)
 
-        UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, imagen)
-        UnidadTrabajoPuerto.savepoint()
-        UnidadTrabajoPuerto.commit()
+        repositorio.agregar(imagen)
+        #UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, imagen)
+        #UnidadTrabajoPuerto.savepoint()
+        #UnidadTrabajoPuerto.commit()
 
         return self.fabrica_anonimizacion.crear_objeto(imagen, MapeadorImagenAnonimizada())
 
