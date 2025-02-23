@@ -57,7 +57,7 @@ def create_app(configuracion={}):
     from . import anonimizacion
 
     # Registro de Blueprints
-    app.register_blueprint(vuelos.bp)
+    app.register_blueprint(anonimizacion.bp)
 
     @app.route("/spec")
     def spec():
