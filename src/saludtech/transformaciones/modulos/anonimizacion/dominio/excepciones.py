@@ -1,4 +1,4 @@
-""" Excepciones del dominio de vuelos
+""" Excepciones del dominio de anonimizacion
 
 En este archivo usted encontrará los Excepciones relacionadas
 al dominio de anonimizacion

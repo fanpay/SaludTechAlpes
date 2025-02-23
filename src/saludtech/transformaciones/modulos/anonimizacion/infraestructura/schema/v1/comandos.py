@@ -1,36 +1,32 @@
 from pulsar.schema import *
 from dataclasses import dataclass, field
-from aeroalpes.seedwork.infraestructura.schema.v1.comandos import (ComandoIntegracion)
+from saludtech.transformaciones.seedwork.infraestructura.schema.v1.comandos import ComandoIntegracion
 
+class MetadatosImagenPayload(Record):
+    id = String()
+    modalidad = String()
+    region = String()
+    resolucion = String()
+    fecha_adquisicion = String()
 
-class AeropuertoPayload(Record):
-    codigo = String()
-    nombre = String()
+class ConfiguracionAnonimizacionPayload(Record):
+    id = String()
+    nivel_anonimizacion = String()
+    formato_salida = String()
+    ajustes_contraste = String()
+    algoritmo = String()
 
-class LegPayload(Record):
-    fecha_salida = String()
-    fecha_llegada = String()
-    origen = AeropuertoPayload()
-    destino = AeropuertoPayload()
+class ReferenciaAlmacenamientoPayload(Record):
+    id = String()
+    nombre_bucket = String()
+    llave_objeto = String()
+    proveedor_almacenamiento = String()
 
-class SegmentoPayload(Record):
-    legs = Array(LegPayload())
+class ComandoIniciarAnonimizacionPayload(ComandoIntegracion):
+    id = String()
+    metadatos = MetadatosImagenPayload()
+    configuracion = ConfiguracionAnonimizacionPayload()
+    referencia_entrada = ReferenciaAlmacenamientoPayload()
 
-class OdoPayload(Record):
-    segmentos = Array(SegmentoPayload())
-
-class ItinerarioPayload(Record):
-    odos = Array(OdoPayload())
-
-class ComandoCrearReservaPayload(ComandoIntegracion):
-    id_usuario = String()
-    fecha_creacion = String()
-    fecha_actualizacion = String()
-    itinerarios = Array(ItinerarioPayload())
-
-'''class ComandoCrearReservaPayload(ComandoIntegracion):
-    id_usuario = String()
-    # TODO Cree los records para itinerarios'''
-
-class ComandoCrearReserva(ComandoIntegracion):
-    data = ComandoCrearReservaPayload()
+class ComandoIniciarAnonimizacion(ComandoIntegracion):
+    data = ComandoIniciarAnonimizacionPayload()

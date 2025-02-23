@@ -5,7 +5,7 @@ from saludtech.transformaciones.modulos.anonimizacion.infraestructura.fabricas i
 from saludtech.transformaciones.modulos.anonimizacion.infraestructura.repositorios import RepositorioImagenesAnonimizadas
 from saludtech.transformaciones.seedwork.infraestructura.uow import UnidadTrabajoPuerto
 from .mapeadores import MapeadorImagenAnonimizada
-from .dto import ImagenAnonimizadaDTO
+from .dto import MetadatosImagenDTO, EstadoProcesoDTO, ProcesarImagenDTO, AjusteContrasteDTO, ResultadoProcesamientoDTO, ReferenciaAlmacenamientoDTO, ConfiguracionAnonimizacionDTO
 
 import asyncio
 
@@ -24,7 +24,7 @@ class ServicioAnonimizacion(Servicio):
     def fabrica_anonimizacion(self):
         return self._fabrica_anonimizacion       
     
-    def iniciar_anonimizacion(self, imagen_dto: ImagenAnonimizadaDTO) -> ImagenAnonimizadaDTO:
+    def iniciar_anonimizacion(self, imagen_dto: ProcesarImagenDTO) -> ProcesarImagenDTO:
         imagen: ImagenAnonimizada = self.fabrica_anonimizacion.crear_objeto(imagen_dto, MapeadorImagenAnonimizada())
         imagen.iniciar_procesamiento()
 
@@ -35,9 +35,9 @@ class ServicioAnonimizacion(Servicio):
         UnidadTrabajoPuerto.savepoint()
         UnidadTrabajoPuerto.commit()
 
-        return self.fabrica_vuelos.crear_objeto(imagen, MapeadorImagenAnonimizada())
+        return self.fabrica_anonimizacion.crear_objeto(imagen, MapeadorImagenAnonimizada())
 
-    def obtener_reserva_por_id(self, id) -> ImagenAnonimizadaDTO:
+    def obtener_reserva_por_id(self, id) -> ImagenAnonimizada:
         repositorio = self.fabrica_repositorio.crear_objeto(RepositorioImagenesAnonimizadas.__class__)
-        return self.fabrica_vuelos.crear_objeto(repositorio.obtener_por_id(id), MapeadorImagenAnonimizada())
+        return self.fabrica_anonimizacion.crear_objeto(repositorio.obtener_por_id(id), MapeadorImagenAnonimizada())
 

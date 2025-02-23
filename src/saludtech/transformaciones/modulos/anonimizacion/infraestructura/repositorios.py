@@ -6,7 +6,7 @@ persistir objetos dominio (agregaciones) en la capa de infraestructura del domin
 """
 
 from saludtech.transformaciones.config.db import db
-from saludtech.transformaciones.modulos.anonimizacion.dominio.repositorios import RepositorioImagenesAnonimizadas
+from saludtech.transformaciones.modulos.anonimizacion.dominio.repositorios import RepositorioImagenesAnonimizadas, RepositorioProcesosAnonimizacion
 from saludtech.transformaciones.modulos.anonimizacion.dominio.entidades import ImagenAnonimizada
 from saludtech.transformaciones.modulos.anonimizacion.infraestructura.dto import ImagenAnonimizadaDTO
 from saludtech.transformaciones.modulos.anonimizacion.infraestructura.mapeadores import MapeadorImagenAnonimizada
@@ -60,3 +60,7 @@ class RepositorioImagenesAnonimizadasSQLite(RepositorioImagenesAnonimizadas):
         except Exception as e:
             db.session.rollback()
             raise e
+
+class RepositorioProcesosAnonimizacionSQLite(RepositorioProcesosAnonimizacion):
+    # Implementación similar a RepositorioImagenesAnonimizadasSQLite
+    ...

@@ -5,17 +5,18 @@ import time
 import logging
 import traceback
 
-from aeroalpes.modulos.vuelos.infraestructura.schema.v1.eventos import EventoReservaCreada
-from aeroalpes.modulos.vuelos.infraestructura.schema.v1.comandos import ComandoCrearReserva
-from aeroalpes.seedwork.infraestructura import utils
-from aeroalpes.modulos.vuelos.aplicacion.comandos.crear_reserva import CrearReserva
-from aeroalpes.modulos.vuelos.infraestructura.despachadores import Despachador
+from saludtech.transformaciones.seedwork.infraestructura import utils
+from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.eventos import EventoAnonimizacionIniciada
+from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.comandos import ComandoIniciarAnonimizacion
+from saludtech.transformaciones.modulos.anonimizacion.aplicacion.comandos.iniciar_anonimizacion import IniciarAnonimizacion
+from saludtech.transformaciones.modulos.anonimizacion.infraestructura.despachadores import Despachador
+
 
 def suscribirse_a_eventos():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('eventos-reserva1', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='aeroalpes-sub-eventos', schema=AvroSchema(EventoReservaCreada))
+        consumidor = cliente.subscribe('eventos-anonimizacion', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='saludtech-sub-eventos', schema=AvroSchema(EventoAnonimizacionIniciada))
 
         while True:
             mensaje = consumidor.receive()
@@ -38,7 +39,7 @@ def suscribirse_a_comandos():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('comandos-reserva5', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='aeroalpes-sub-comandos', schema=AvroSchema(ComandoCrearReserva))
+        consumidor = cliente.subscribe('comandos-anonimizacion', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='saludtech-sub-comandos', schema=AvroSchema(ComandoIniciarAnonimizacion))
 
         while True:
             mensaje = consumidor.receive()
@@ -46,16 +47,17 @@ def suscribirse_a_comandos():
             print(f'Comando recibido v2: {comando_integracion}')
 
             # Transformar el comando de integración en un comando de aplicación
-            comando = CrearReserva(
-                fecha_creacion=comando_integracion.fecha_creacion,
-                fecha_actualizacion=comando_integracion.fecha_actualizacion,
-                id=comando_integracion.id_usuario,
-                itinerarios=comando_integracion.itinerarios
+            comando = IniciarAnonimizacion(
+                id=comando_integracion.id,
+                metadatos=comando_integracion.metadatos,
+                configuracion=comando_integracion.configuracion,
+                referencia_entrada=comando_integracion.referencia_entrada
             )
+
 
             # Usar el despachador para manejar el comando
             despachador = Despachador()
-            despachador.publicar_comando(comando, 'comandos-reservas')
+            despachador.publicar_comando(comando, 'comandos-anonimizacion')
 
             consumidor.acknowledge(mensaje)
             

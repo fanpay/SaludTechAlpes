@@ -5,19 +5,19 @@ objetos complejos en la capa de infraestructura del dominio de anonimizacion
 
 """
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from saludtech.transformaciones.seedwork.dominio.fabricas import Fabrica
 from saludtech.transformaciones.seedwork.dominio.repositorios import Repositorio
 from saludtech.transformaciones.modulos.anonimizacion.dominio.repositorios import RepositorioImagenesAnonimizadas, RepositorioProcesosAnonimizacion
-from .repositorios import RepositorioReservasSQLite, RepositorioProveedoresSQLite
+from .repositorios import RepositorioImagenesAnonimizadasSQLite, RepositorioProcesosAnonimizacionSQLite
 from .excepciones import ExcepcionFabrica
 
 @dataclass
 class FabricaRepositorio(Fabrica):
     def crear_objeto(self, obj: type, mapeador: any = None) -> Repositorio:
-        if obj == RepositorioImagenesAnonimizadas.__class__:
-            return RepositorioReservasSQLite()
-        elif obj == RepositorioProcesosAnonimizacion.__class__:
-            return RepositorioProveedoresSQLite()
+        if obj == RepositorioImagenesAnonimizadas:
+            return RepositorioImagenesAnonimizadasSQLite()
+        elif obj == RepositorioProcesosAnonimizacion:
+            return RepositorioProcesosAnonimizacionSQLite()
         else:
-            raise ExcepcionFabrica()
+            raise ExcepcionFabrica(f"No existe una implementación para el repositorio con el tipo dado: {obj}")
