@@ -7,7 +7,7 @@ services:
    # Bases de datos de Transformaciones
   transformacionesdb:
     image: postgres:latest
-    container_name: companiasdb
+    container_name: transformacionesdb
     ports:
       - "5432:5432"
     networks:
