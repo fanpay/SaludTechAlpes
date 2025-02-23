@@ -1,0 +1,67 @@
+{
+	"info": {
+		"_postman_id": "96fb54fd-aa65-4fdd-b20a-fa30545d3a61",
+		"name": "SALUDTECH",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30660012",
+		"_collection_link": "https://www.postman.com/grey-escape-212638/workspace/saludtech/collection/30660012-96fb54fd-aa65-4fdd-b20a-fa30545d3a61?action=share&source=collection_link&creator=30660012"
+	},
+	"item": [
+		{
+			"name": "Iniciar transformacion comando",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"metadatos\": {\n    \"modalidad\": \"RayosX\",\n    \"region\": \"CabezaYCuello\",\n    \"resolucion\": {\n      \"alto\": 50,\n      \"ancho\": 70,\n      \"dpi\": 100\n    },\n    \"fecha_adquisicion\": \"2025-02-22T10:00:00Z\"\n  },\n  \"configuracion\": {\n    \"nivel_anonimizacion\": \"1\",\n    \"formato_salida\": \"DICOM\",\n    \"ajustes_contraste\": {\n      \"brillo\": 50,\n      \"contraste\": 70\n    },\n    \"algoritmo\": \"DICOM_DEID\"\n  },\n  \"referencia_entrada\": {\n    \"nombre_bucket\": \"bucket-entrada\",\n    \"llave_objeto\": \"imagen_entrada.dcm\",\n    \"proveedor_almacenamiento\": \"AWS\"\n  },\n  \"referencia_salida\": {\n    \"nombre_bucket\": \"bucket-salida\",\n    \"llave_objeto\": \"imagen_salida.dcm\",\n    \"proveedor_almacenamiento\": \"AWS\"\n  },\n  \"estado\": \"procesado\",\n  \"resultado\": {\n    \"checksum\": \"abc123\",\n    \"tamano_archivo\": 2048,\n    \"timestamp\": \"2025-02-22T10:30:00Z\"\n  },\n  \"fecha_solicitud\": \"2025-02-22T09:00:00Z\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/anonimizacion/iniciar-comando",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"anonimizacion",
+						"iniciar-comando"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "HOST",
+			"value": "http://127.0.0.1:5000/",
+			"type": "string"
+		}
+	]
+}
