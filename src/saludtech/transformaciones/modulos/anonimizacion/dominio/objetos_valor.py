@@ -54,7 +54,7 @@ class ConfiguracionAnonimizacion:
     nivel_anonimizacion: int  # 1-5
     formato_salida: FormatoSalida  # DICOM, NIfTI, etc.
     ajustes_contraste: AjusteContraste  # {brillo: 1.2, contraste: 0.8}
-    algorithm: AlgoritmoAnonimizacion
+    algoritmo: AlgoritmoAnonimizacion
 
 @dataclass(frozen=True)
 class ResultadoProcesamiento:

@@ -8,7 +8,7 @@ from saludtech.transformaciones.seedwork.dominio.excepciones import ExcepcionDom
 
 from flask import redirect, render_template, request, session, url_for
 from flask import Response
-from saludtech.transformaciones.modulos.anonimizacion.aplicacion.mapeadores import MetadatosImagenDTO, ResultadoProcesamientoDTO, ReferenciaAlmacenamientoDTO, MapeadorImagenAnonimizadaDTOJson, ConfiguracionAnonimizacionDTO
+from saludtech.transformaciones.modulos.anonimizacion.aplicacion.mapeadores import MapeadorImagenAnonimizadaDTOJson, MapeadorRespuestaImagenAnonimizadaDTOJson, MapeadorImagenAnonimizada
 from saludtech.transformaciones.modulos.anonimizacion.aplicacion.comandos.iniciar_anonimizacion import IniciarAnonimizacion
 from saludtech.transformaciones.modulos.anonimizacion.aplicacion.queries.consultar_estado_proceso import ObtenerEstadoProceso
 from saludtech.transformaciones.seedwork.aplicacion.comandos import ejecutar_commando
@@ -16,7 +16,7 @@ from saludtech.transformaciones.seedwork.aplicacion.queries import ejecutar_quer
 
 bp = api.crear_blueprint('anonimizacion', '/anonimizacion')
 
-@bp.route('/iniciar', methods=('POST',))
+@bp.route('/anonimizacion', methods=('POST',))
 def iniciar_anonimizacion():
     try:
         imagen_dict = request.json
@@ -31,7 +31,7 @@ def iniciar_anonimizacion():
     except ExcepcionDominio as e:
         return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
 
-@bp.route('/iniciar-comando', methods=('POST',))
+@bp.route('/anonimizacion-comando', methods=('POST',))
 def iniciar_anonimizacion_asincrona():
     try:
         imagen_dict = request.json
@@ -47,7 +47,7 @@ def iniciar_anonimizacion_asincrona():
         )
         
         despachador = Despachador()
-        despachador.publicar_comando(comando, 'comandos-anonimizacion7')
+        despachador.publicar_comando(comando, 'comandos-anonimizacion9')
 
         
         return Response('{}', status=202, mimetype='application/json')
@@ -55,14 +55,17 @@ def iniciar_anonimizacion_asincrona():
         return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
 
 
-@bp.route('/estado/<id>', methods=('GET',))
+@bp.route('/estado-query/<id>', methods=('GET',))
 def dar_reserva_usando_query(id=None):
     try:
         if id:
             query_resultado = ejecutar_query(ObtenerEstadoProceso(id))
-            map_reserva = MapeadorImagenAnonimizadaDTOJson()
+            map_reserva = MapeadorRespuestaImagenAnonimizadaDTOJson()
             
-            return map_reserva.dto_a_externo(query_resultado.resultado)
+            resultado_serializable = map_reserva.dto_a_externo(query_resultado.resultado)
+            
+            return resultado_serializable
+            #return Response(json.dumps(resultado_serializable), status=200, mimetype='application/json')
         else:
             return [{'message': 'GET!'}]
     

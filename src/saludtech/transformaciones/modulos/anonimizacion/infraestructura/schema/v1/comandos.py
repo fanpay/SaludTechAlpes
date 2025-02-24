@@ -16,7 +16,7 @@ class MetadatosImagenPayload(Record):
     modalidad = String()
     region = String()
     resolucion = ResolucionPayload()
-    fecha_adquisicion = datetime
+    fecha_adquisicion = String()
 
 class ConfiguracionAnonimizacionPayload(Record):
     id = String()

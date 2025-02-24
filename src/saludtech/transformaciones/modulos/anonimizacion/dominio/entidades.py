@@ -7,6 +7,7 @@ En este archivo usted encontrará las entidades del dominio de anonimizacion
 from __future__ import annotations
 from dataclasses import dataclass, field
 import uuid
+import datetime
 
 from saludtech.transformaciones.modulos.anonimizacion.dominio.objetos_valor import ConfiguracionAnonimizacion, MetadatosImagen, ResultadoProcesamiento, ReferenciaAlmacenamiento, EstadoProceso
 from saludtech.transformaciones.modulos.anonimizacion.dominio.eventos import ProcesoAnonimizacionIniciado, ProcesoAnonimizacionFinalizado, ProcesoAnonimizacionFallido
@@ -20,6 +21,7 @@ class ImagenAnonimizada(AgregacionRaiz):
     #referencia_salida: ReferenciaAlmacenamiento = field(default_factory=ReferenciaAlmacenamiento)
     estado: EstadoProceso = field(default=EstadoProceso.PENDIENTE)   # PENDING, PROCESSING, COMPLETED, FAILED
     #resultado: ResultadoProcesamiento = field(default_factory=ResultadoProcesamiento)
+    fecha_solicitud:  datetime.datetime = field(default_factory=datetime.datetime.now)
 
     def iniciar_procesamiento(self, imagen: ImagenAnonimizada):
         self.estado = EstadoProceso.PROCESANDO

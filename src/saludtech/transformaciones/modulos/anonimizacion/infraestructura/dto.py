@@ -40,7 +40,7 @@ class MetadatosImagenDTO(db.Model):
     modalidad = Column(String, nullable=True)
     region = Column(String, nullable=True)
     resolucion = Column(String, nullable=True)
-    fecha_adquisicion = Column(DateTime, nullable=True)
+    fecha_adquisicion = Column(String, nullable=True)
 
 class ConfiguracionAnonimizacionDTO(db.Model):
     """Modelo de tabla para almacenar configuraciones de anonimización."""

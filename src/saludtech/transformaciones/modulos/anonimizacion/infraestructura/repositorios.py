@@ -9,7 +9,7 @@ from saludtech.transformaciones.config.db import db
 from saludtech.transformaciones.modulos.anonimizacion.dominio.repositorios import RepositorioImagenesAnonimizadas, RepositorioProcesosAnonimizacion
 from saludtech.transformaciones.modulos.anonimizacion.dominio.entidades import ImagenAnonimizada
 from saludtech.transformaciones.modulos.anonimizacion.infraestructura.dto import ImagenAnonimizadaDTO
-from saludtech.transformaciones.modulos.anonimizacion.infraestructura.mapeadores import MapeadorImagenAnonimizada
+from saludtech.transformaciones.modulos.anonimizacion.infraestructura.mapeadores import MapeadorImagenAnonimizada, MapeadorRespuestaImagenAnonimizada
 from saludtech.transformaciones.modulos.anonimizacion.dominio.fabricas import FabricaAnonimizacion
 from sqlalchemy.exc import NoResultFound
 from uuid import UUID
@@ -23,11 +23,9 @@ class RepositorioImagenesAnonimizadasDB(RepositorioImagenesAnonimizadas):
         return self._fabrica_anonimizacion 
     
     def obtener_por_id(self, id: UUID) -> ImagenAnonimizada:
-        try:
-            imagen_dto = db.session.query(ImagenAnonimizadaDTO).filter_by(id=str(id)).one()
-            return MapeadorImagenAnonimizada().dto_a_entidad(imagen_dto)
-        except NoResultFound:
-            return None
+        imagen_dto = db.session.query(ImagenAnonimizadaDTO).filter_by(id=str(id)).one()
+        return self.fabrica_anonimizacion.crear_objeto(imagen_dto, MapeadorRespuestaImagenAnonimizada())
+
 
     def obtener_todos(self) -> list[ImagenAnonimizada]:
         imagenes_dto = db.session.query(ImagenAnonimizadaDTO).all()
@@ -35,10 +33,10 @@ class RepositorioImagenesAnonimizadasDB(RepositorioImagenesAnonimizadas):
         return [mapeador.dto_a_entidad(imagen_dto) for imagen_dto in imagenes_dto]
 
     def agregar(self, imagen: ImagenAnonimizada):
-        #imagen_dto = MapeadorImagenAnonimizada().entidad_a_dto(imagen)
         imagen_dto = self.fabrica_anonimizacion.crear_objeto(imagen, MapeadorImagenAnonimizada())
         db.session.add(imagen_dto)
         db.session.commit()
+        print("Imagen anonimizada guardada ID: " + str(imagen_dto.id))
 
     def actualizar(self, imagen: ImagenAnonimizada):
         try:

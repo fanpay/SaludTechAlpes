@@ -5,10 +5,12 @@ encargados de la transformación entre formatos de dominio y DTOs
 
 """
 
+from saludtech.transformaciones.seedwork.dominio.objetos_valor import Resolucion
 from saludtech.transformaciones.seedwork.dominio.repositorios import Mapeador
 from saludtech.transformaciones.modulos.anonimizacion.dominio.entidades import ImagenAnonimizada
 from saludtech.transformaciones.modulos.anonimizacion.dominio.objetos_valor import AlgoritmoAnonimizacion, EstadoProceso, FormatoSalida, MetadatosImagen, ConfiguracionAnonimizacion, ModalidadImagen, RegionAnatomica, ResultadoProcesamiento, ReferenciaAlmacenamiento
 from saludtech.transformaciones.modulos.anonimizacion.infraestructura.dto import ImagenAnonimizadaDTO, MetadatosImagenDTO, ConfiguracionAnonimizacionDTO, ReferenciaAlmacenamientoDTO
+import json
 
 class MapeadorImagenAnonimizada(Mapeador):
     def obtener_tipo(self) -> type:
@@ -17,16 +19,38 @@ class MapeadorImagenAnonimizada(Mapeador):
     def entidad_a_dto(self, entidad: ImagenAnonimizada) -> ImagenAnonimizadaDTO:
         return ImagenAnonimizadaDTO(
             id=str(entidad.id),
-            estado=entidad.estado.value
+            estado=entidad.estado.value,
             #resultado=entidad.resultado.checksum if entidad.resultado else None,
-            #fecha_solicitud=entidad.fecha_solicitud,
-            #metadatos_id=str(entidad.metadatos.id),
-            #configuracion_id=str(entidad.configuracion.id),
-            #referencia_entrada_id=str(entidad.referencia_entrada.id),
+            fecha_solicitud=entidad.fecha_solicitud,
+            metadatos=MetadatosImagenDTO(
+                modalidad=entidad.metadatos.modalidad,
+                region=entidad.metadatos.region,
+                resolucion=json.dumps({
+                    'ancho': entidad.metadatos.resolucion.ancho,
+                    'alto': entidad.metadatos.resolucion.alto,
+                    'dpi': entidad.metadatos.resolucion.dpi
+                }),
+                fecha_adquisicion=entidad.metadatos.fecha_adquisicion
+            ),
+            configuracion=ConfiguracionAnonimizacionDTO(
+                nivel_anonimizacion=entidad.configuracion.nivel_anonimizacion,
+                formato_salida=entidad.configuracion.formato_salida,
+                ajustes_contraste=json.dumps({
+                    'brillo': entidad.configuracion.ajustes_contraste.brillo,
+                    'contraste': entidad.configuracion.ajustes_contraste.contraste
+                }),
+                algoritmo=entidad.configuracion.algoritmo
+            ),
+            referencia_entrada=ReferenciaAlmacenamientoDTO(
+                nombre_bucket = entidad.referencia_entrada.nombre_bucket,
+                llave_objeto = entidad.referencia_entrada.llave_objeto,
+                proveedor_almacenamiento = entidad.referencia_entrada.proveedor_almacenamiento
+            )
             #referencia_salida_id=str(entidad.referencia_salida.id) if entidad.referencia_salida else None
         )
 
     def dto_a_entidad(self, dto: ImagenAnonimizadaDTO) -> ImagenAnonimizada:
+        resolucion_data = json.loads(dto.metadatos.resolucion)
         return ImagenAnonimizada(
             id=dto.id,
             estado=EstadoProceso(dto.estado),
@@ -40,7 +64,11 @@ class MapeadorImagenAnonimizada(Mapeador):
                 #id=dto.metadatos_id,
                 modalidad=ModalidadImagen(dto.modalidad),
                 region=RegionAnatomica(dto.region),
-                resolucion=dto.resolucion,
+                resolucion=Resolucion(
+                    ancho=dto.metadatos.resolucion['ancho'],
+                    alto=resolucion_data['alto'],
+                    dpi=resolucion_data['dpi']
+                ),
                 fecha_adquisicion=dto.fecha_adquisicion
             ),
             configuracion=ConfiguracionAnonimizacion(
@@ -62,4 +90,23 @@ class MapeadorImagenAnonimizada(Mapeador):
                 llave_objeto=dto.llave_objeto,
                 proveedor_almacenamiento=dto.proveedor_almacenamiento
             ) if dto.referencia_salida_id else None
+        )
+        
+class MapeadorRespuestaImagenAnonimizada(Mapeador):
+    def obtener_tipo(self) -> type:
+        return ImagenAnonimizada.__class__
+    
+    def entidad_a_dto(self, entidad: ImagenAnonimizada) -> ImagenAnonimizadaDTO:
+        return ImagenAnonimizadaDTO(
+            id=str(entidad.id),
+            estado=entidad.estado.value
+        )
+
+    def dto_a_entidad(self, dto: ImagenAnonimizadaDTO) -> ImagenAnonimizada:
+        return ImagenAnonimizada(
+            id=dto.id,
+            estado=EstadoProceso(dto.estado),
+            metadatos=dto.metadatos,
+            configuracion=dto.configuracion,
+            referencia_entrada=dto.referencia_entrada
         )

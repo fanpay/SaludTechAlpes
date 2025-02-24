@@ -59,6 +59,7 @@ class ProcesarImagenDTO(DTO):
 class EstadoProcesoDTO(DTO):
     id: str
     estado: EstadoProceso
+    metadatos: MetadatosImagenDTO
     referencia_entrada: ReferenciaAlmacenamientoDTO
     referencia_salida: Optional[ReferenciaAlmacenamientoDTO]
     resultado: Optional[ResultadoProcesamientoDTO]

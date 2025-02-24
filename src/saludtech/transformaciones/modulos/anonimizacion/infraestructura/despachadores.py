@@ -67,7 +67,7 @@ def _(comando: IniciarAnonimizacion, topico):
                 alto = comando.metadatos.resolucion.alto,
                 dpi = comando.metadatos.resolucion.dpi
             ),
-            fecha_adquisicion=datetime.datetime.now()
+            fecha_adquisicion=comando.metadatos.fecha_adquisicion
         ),
         configuracion=ConfiguracionAnonimizacionPayload(
             id=str(comando.id),
