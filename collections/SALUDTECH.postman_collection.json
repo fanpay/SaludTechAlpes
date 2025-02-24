@@ -14,7 +14,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"id\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"metadatos\": {\n    \"modalidad\": \"RayosX\",\n    \"region\": \"CabezaYCuello\",\n    \"resolucion\": {\n      \"alto\": 50,\n      \"ancho\": 70,\n      \"dpi\": 100\n    },\n    \"fecha_adquisicion\": \"2025-02-22T10:00:00Z\"\n  },\n  \"configuracion\": {\n    \"nivel_anonimizacion\": \"1\",\n    \"formato_salida\": \"DICOM\",\n    \"ajustes_contraste\": {\n      \"brillo\": 50,\n      \"contraste\": 70\n    },\n    \"algoritmo\": \"DICOM_DEID\"\n  },\n  \"referencia_entrada\": {\n    \"nombre_bucket\": \"bucket-entrada\",\n    \"llave_objeto\": \"imagen_entrada.dcm\",\n    \"proveedor_almacenamiento\": \"AWS\"\n  },\n  \"referencia_salida\": {\n    \"nombre_bucket\": \"bucket-salida\",\n    \"llave_objeto\": \"imagen_salida.dcm\",\n    \"proveedor_almacenamiento\": \"AWS\"\n  },\n  \"estado\": \"procesado\",\n  \"resultado\": {\n    \"checksum\": \"abc123\",\n    \"tamano_archivo\": 2048,\n    \"timestamp\": \"2025-02-22T10:30:00Z\"\n  },\n  \"fecha_solicitud\": \"2025-02-22T09:00:00Z\"\n}",
+					"raw": "{\n  \"id\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"metadatos\": {\n    \"modalidad\": \"RayosX\",\n    \"region\": \"CabezaYCuello\",\n    \"resolucion\": {\n      \"alto\": 50,\n      \"ancho\": 70,\n      \"dpi\": 100\n    },\n    \"fecha_adquisicion\": \"2025-02-22T10:00:00Z\"\n  },\n  \"configuracion\": {\n    \"nivel_anonimizacion\": 1,\n    \"formato_salida\": \"DICOM\",\n    \"ajustes_contraste\": {\n      \"brillo\": 50,\n      \"contraste\": 70\n    },\n    \"algoritmo\": \"DICOM_DEID\"\n  },\n  \"referencia_entrada\": {\n    \"nombre_bucket\": \"bucket-entrada\",\n    \"llave_objeto\": \"imagen_entrada.dcm\",\n    \"proveedor_almacenamiento\": \"AWS\"\n  },\n  \"referencia_salida\": {\n    \"nombre_bucket\": \"bucket-salida\",\n    \"llave_objeto\": \"imagen_salida.dcm\",\n    \"proveedor_almacenamiento\": \"AWS\"\n  },\n  \"estado\": \"procesado\",\n  \"resultado\": {\n    \"checksum\": \"abc123\",\n    \"tamano_archivo\": 2048,\n    \"timestamp\": \"2025-02-22T10:30:00Z\"\n  },\n  \"fecha_solicitud\": \"2025-02-22T09:00:00Z\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -22,13 +22,32 @@
 					}
 				},
 				"url": {
-					"raw": "{{HOST}}/anonimizacion/iniciar-comando",
+					"raw": "{{HOST}}/anonimizacion/anonimizacion-comando",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
 						"anonimizacion",
-						"iniciar-comando"
+						"anonimizacion-comando"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar estado imagen anonimizada - ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HOST}}/anonimizacion/estado-query/19ac8375-ff46-4206-a7c9-cf4789a4330a",
+					"host": [
+						"{{HOST}}"
+					],
+					"path": [
+						"anonimizacion",
+						"estado-query",
+						"19ac8375-ff46-4206-a7c9-cf4789a4330a"
 					]
 				}
 			},
