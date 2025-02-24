@@ -7,8 +7,6 @@ En este archivo usted encontrará reglas de negocio del dominio de cliente
 from saludtech.transformaciones.seedwork.dominio.reglas import ReglaNegocio
 from .objetos_valor import ConfiguracionAnonimizacion, EstadoProceso, FormatoSalida, MetadatosImagen, ReferenciaAlmacenamiento
 from .entidades import ImagenAnonimizada
-from saludtech.transformaciones.modulos.anonimizacion.dominio.eventos import ProcesoAnonimizacionIniciado, ProcesoAnonimizacionFinalizado, ProcesoAnonimizacionFallido
-
 
 
 class ImagenDebeTenerReferencia(ReglaNegocio):

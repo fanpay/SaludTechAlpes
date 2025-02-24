@@ -26,17 +26,16 @@ class IniciarAnonimizacion(Comando):
 class IniciarAnonimizacionHandler(IniciarAnonimizacionBaseHandler):
     
     def handle(self, comando: IniciarAnonimizacion):
-        procesar_dto = ProcesarImagenDTO(
+        procesar_imagen_dto = ProcesarImagenDTO(
             metadatos=comando.metadatos,
             configuracion=comando.configuracion,
             referencia_entrada=comando.referencia_entrada
         )
         
         # Convertir el DTO en una entidad de dominio
-        imagen: ImagenAnonimizada = MapeadorImagenAnonimizada().dto_a_entidad(procesar_dto)
-
+        imagen: ImagenAnonimizada = self.fabrica_anonimizacion.crear_objeto(procesar_imagen_dto, MapeadorImagenAnonimizada())
         # Ejecutar la lógica de anonimización en la entidad
-        imagen.iniciar_procesamiento()
+        imagen.iniciar_procesamiento(imagen)
 
         # Obtener el repositorio de imágenes
         repositorio = self.fabrica_repositorio.crear_objeto(RepositorioImagenesAnonimizadas.__class__)

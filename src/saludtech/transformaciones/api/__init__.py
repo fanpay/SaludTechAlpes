@@ -12,7 +12,7 @@ def registrar_handlers():
 def importar_modelos_alchemy():
     import saludtech.transformaciones.modulos.anonimizacion.infraestructura.dto
 
-def comenzar_consumidor():
+def comenzar_consumidor(app):
     """
     Este es un código de ejemplo. Aunque esto sea funcional puede ser un poco peligroso tener 
     threads corriendo por si solos. Mi sugerencia es en estos casos usar un verdadero manejador
@@ -22,11 +22,18 @@ def comenzar_consumidor():
     import threading
     import saludtech.transformaciones.modulos.anonimizacion.infraestructura.consumidores as anonimizacion
 
+    def suscribirse_a_eventos_con_contexto():
+        with app.app_context():
+            anonimizacion.suscribirse_a_eventos()
+
+    def suscribirse_a_comandos_con_contexto():
+        with app.app_context():
+            anonimizacion.suscribirse_a_comandos()
     # Suscripción a eventos
-    threading.Thread(target=anonimizacion.suscribirse_a_eventos).start()
+    threading.Thread(target=suscribirse_a_eventos_con_contexto).start()
 
     # Suscripción a comandos
-    threading.Thread(target=anonimizacion.suscribirse_a_comandos).start()
+    threading.Thread(target=suscribirse_a_comandos_con_contexto).start()
 
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
@@ -39,7 +46,7 @@ def create_app(configuracion={}):
     app.config['SESSION_TYPE'] = 'filesystem'
     app.config['TESTING'] = configuracion.get('TESTING')
 
-     # Inicializa la DB
+    # Inicializa la DB
     from saludtech.transformaciones.config.db import init_db
     init_db(app)
 
@@ -51,9 +58,9 @@ def create_app(configuracion={}):
     with app.app_context():
         db.create_all()
         if not app.config.get('TESTING'):
-            comenzar_consumidor()
+            comenzar_consumidor(app)
 
-     # Importa Blueprints
+    # Importa Blueprints
     from . import anonimizacion
 
     # Registro de Blueprints

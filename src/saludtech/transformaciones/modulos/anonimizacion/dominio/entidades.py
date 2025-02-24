@@ -21,10 +21,16 @@ class ImagenAnonimizada(AgregacionRaiz):
     estado: EstadoProceso = field(default=EstadoProceso.PENDIENTE)   # PENDING, PROCESSING, COMPLETED, FAILED
     #resultado: ResultadoProcesamiento = field(default_factory=ResultadoProcesamiento)
 
-    def iniciar_procesamiento(self):
+    def iniciar_procesamiento(self, imagen: ImagenAnonimizada):
         self.estado = EstadoProceso.PROCESANDO
+        #self.id = imagen.id
+        self.metadatos = imagen.metadatos
+        self.referencia_entrada = imagen.referencia_entrada
+        self.configuracion = imagen.configuracion
+        
+        
         self.agregar_evento(ProcesoAnonimizacionIniciado(
-            proceso_id=self.id,
+            #proceso_id=self.id,
             metadatos=self.metadatos,
             referencia_entrada=self.referencia_entrada,
             configuracion=self.configuracion

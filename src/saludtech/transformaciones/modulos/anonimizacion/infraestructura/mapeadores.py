@@ -37,27 +37,27 @@ class MapeadorImagenAnonimizada(Mapeador):
             ) if dto.resultado else None,
             fecha_solicitud=dto.fecha_solicitud,
             metadatos=MetadatosImagen(
-                id=dto.metadatos_id,
+                #id=dto.metadatos_id,
                 modalidad=ModalidadImagen(dto.modalidad),
                 region=RegionAnatomica(dto.region),
                 resolucion=dto.resolucion,
                 fecha_adquisicion=dto.fecha_adquisicion
             ),
             configuracion=ConfiguracionAnonimizacion(
-                id=dto.configuracion_id,
+                #id=dto.configuracion_id,
                 nivel_anonimizacion=dto.nivel_anonimizacion,
                 formato_salida=FormatoSalida(dto.formato_salida),
                 ajustes_contraste=dto.ajustes_contraste,
                 algoritmo=AlgoritmoAnonimizacion(dto.algoritmo)
             ),
             referencia_entrada=ReferenciaAlmacenamiento(
-                id=dto.referencia_entrada_id,
+                #id=dto.referencia_entrada_id,
                 nombre_bucket=dto.nombre_bucket,
                 llave_objeto=dto.llave_objeto,
                 proveedor_almacenamiento=dto.proveedor_almacenamiento
             ),
             referencia_salida=ReferenciaAlmacenamiento(
-                id=dto.referencia_salida_id,
+                #id=dto.referencia_salida_id,
                 nombre_bucket=dto.nombre_bucket,
                 llave_objeto=dto.llave_objeto,
                 proveedor_almacenamiento=dto.proveedor_almacenamiento

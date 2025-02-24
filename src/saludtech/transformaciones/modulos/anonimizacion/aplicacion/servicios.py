@@ -26,15 +26,15 @@ class ServicioAnonimizacion(Servicio):
     
     def iniciar_anonimizacion(self, imagen_dto: ProcesarImagenDTO) -> ProcesarImagenDTO:
         imagen: ImagenAnonimizada = self.fabrica_anonimizacion.crear_objeto(imagen_dto, MapeadorImagenAnonimizada())
-        imagen.iniciar_procesamiento()
+        imagen.iniciar_procesamiento(imagen)
 
 
         repositorio = self.fabrica_repositorio.crear_objeto(RepositorioImagenesAnonimizadas.__class__)
 
         repositorio.agregar(imagen)
-        #UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, imagen)
-        #UnidadTrabajoPuerto.savepoint()
-        #UnidadTrabajoPuerto.commit()
+        UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, imagen)
+        UnidadTrabajoPuerto.savepoint()
+        UnidadTrabajoPuerto.commit()
 
         return self.fabrica_anonimizacion.crear_objeto(imagen, MapeadorImagenAnonimizada())
 

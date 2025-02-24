@@ -22,9 +22,9 @@ class ImagenAnonimizadaDTO(db.Model):
     fecha_solicitud = Column(DateTime, default=datetime.utcnow, nullable=False)
 
     # Relaciones con otras tablas
-    metadatos_id = Column(String, ForeignKey("metadatos_imagenes.id"), nullable=False)
-    configuracion_id = Column(String, ForeignKey("configuraciones_anonimizacion.id"), nullable=False)
-    referencia_entrada_id = Column(String, ForeignKey("referencias_almacenamiento.id"), nullable=False)
+    metadatos_id = Column(String, ForeignKey("metadatos_imagenes.id"), nullable=True)
+    configuracion_id = Column(String, ForeignKey("configuraciones_anonimizacion.id"), nullable=True)
+    referencia_entrada_id = Column(String, ForeignKey("referencias_almacenamiento.id"), nullable=True)
     referencia_salida_id = Column(String, ForeignKey("referencias_almacenamiento.id"), nullable=True)
 
     metadatos = relationship("MetadatosImagenDTO", backref="imagen_anonimizada")
@@ -37,26 +37,26 @@ class MetadatosImagenDTO(db.Model):
     __tablename__ = "metadatos_imagenes"
     
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
-    modalidad = Column(String, nullable=False)
-    region = Column(String, nullable=False)
-    resolucion = Column(String, nullable=False)
-    fecha_adquisicion = Column(DateTime, nullable=False)
+    modalidad = Column(String, nullable=True)
+    region = Column(String, nullable=True)
+    resolucion = Column(String, nullable=True)
+    fecha_adquisicion = Column(DateTime, nullable=True)
 
 class ConfiguracionAnonimizacionDTO(db.Model):
     """Modelo de tabla para almacenar configuraciones de anonimización."""
     __tablename__ = "configuraciones_anonimizacion"
     
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
-    nivel_anonimizacion = Column(Integer, nullable=False)
-    formato_salida = Column(String, nullable=False)
+    nivel_anonimizacion = Column(Integer, nullable=True)
+    formato_salida = Column(String, nullable=True)
     ajustes_contraste = Column(String, nullable=True)  # Se almacena como JSON o string serializado
-    algoritmo = Column(String, nullable=False)
+    algoritmo = Column(String, nullable=True)
 
 class ReferenciaAlmacenamientoDTO(db.Model):
     """Modelo de tabla para almacenar referencias a objetos en almacenamiento."""
     __tablename__ = "referencias_almacenamiento"
     
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
-    nombre_bucket = Column(String, nullable=False)
-    llave_objeto = Column(String, nullable=False)
-    proveedor_almacenamiento = Column(String, nullable=False)
+    nombre_bucket = Column(String, nullable=True)
+    llave_objeto = Column(String, nullable=True)
+    proveedor_almacenamiento = Column(String, nullable=True)

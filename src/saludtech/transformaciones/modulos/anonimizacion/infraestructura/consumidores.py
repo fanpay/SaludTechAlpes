@@ -4,15 +4,17 @@ import uuid
 import time
 import logging
 import traceback
+import datetime
 
 from saludtech.transformaciones.modulos.anonimizacion.aplicacion.dto import ProcesarImagenDTO
 from saludtech.transformaciones.modulos.anonimizacion.aplicacion.servicios import ServicioAnonimizacion
 from saludtech.transformaciones.seedwork.infraestructura import utils
-from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.eventos import EventoAnonimizacionIniciada
+from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.eventos import EventoAnonimizacionIniciada, EventoAnonimizacionFinalizada
 from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.comandos import ComandoIniciarAnonimizacion
 from saludtech.transformaciones.modulos.anonimizacion.aplicacion.comandos.iniciar_anonimizacion import IniciarAnonimizacion
 from saludtech.transformaciones.modulos.anonimizacion.infraestructura.despachadores import Despachador
 from saludtech.transformaciones.seedwork.aplicacion.comandos import ejecutar_commando
+from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.eventos import ReferenciaAlmacenamientoPayload
 
 def suscribirse_a_eventos():
     cliente = None
@@ -46,10 +48,6 @@ def suscribirse_a_comandos():
         while True:
             mensaje = consumidor.receive()
             comando_integracion = mensaje.value().data
-            print(f'Comando recibido v3: {comando_integracion}')
-            
-            
-            consumidor.acknowledge(mensaje)
             
             # Transformar el comando de integración en un comando de aplicación
             comando = IniciarAnonimizacion(
@@ -59,24 +57,19 @@ def suscribirse_a_comandos():
                 referencia_entrada=comando_integracion.referencia_entrada
             )
             
-            procesar_imagen_dto = ProcesarImagenDTO(
-                metadatos=comando_integracion.metadatos,
-                configuracion=comando_integracion.configuracion,
-                referencia_entrada=comando_integracion.referencia_entrada
-            )
             
             ejecutar_commando(comando)
             
-            #servicio = ServicioAnonimizacion()
-            #servicio.iniciar_anonimizacion(procesar_imagen_dto)
+            evento_finalizado = EventoAnonimizacionFinalizada(
+                id = comando_integracion.id,
+                referencia_salida = ReferenciaAlmacenamientoPayload(),
+                timestamp = int(datetime.datetime.now().timestamp())
+            )
             
-            print(f'Comando aplicacion v4: {comando}')
+            despachador = Despachador()
+            despachador.publicar_evento(evento_finalizado, 'eventos-enriquecer')
 
-            # Usar el despachador para manejar el comando
-            #despachador = Despachador()
-            #despachador.publicar_comando(comando, 'comandos-anonimizacion3')
-
-            #consumidor.acknowledge(mensaje)
+            consumidor.acknowledge(mensaje)
             
         cliente.close()
     except:

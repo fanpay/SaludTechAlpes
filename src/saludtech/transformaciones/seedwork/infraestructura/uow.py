@@ -80,30 +80,53 @@ def is_flask():
 
 def registrar_unidad_de_trabajo(serialized_obj):
     from saludtech.transformaciones.config.uow import UnidadTrabajoSQLAlchemy
-    from flask import session
-    
-
-    session['uow'] = serialized_obj
+    try:
+        from flask import session
+        session['uow'] = serialized_obj
+    except RuntimeError:
+        # Manejar el caso en el que no hay un contexto de solicitud HTTP activo
+        global _uow
+        _uow = serialized_obj
 
 def flask_uow():
     from flask import session
     from saludtech.transformaciones.config.uow import UnidadTrabajoSQLAlchemy
-    if session.get('uow'):
-        return session['uow']
-    else:
-        uow_serialized = pickle.dumps(UnidadTrabajoSQLAlchemy())
-        registrar_unidad_de_trabajo(uow_serialized)
-        return uow_serialized
+    try:
+        if session.get('uow'):
+            return session['uow']
+        else:
+            uow_serialized = pickle.dumps(UnidadTrabajoSQLAlchemy())
+            registrar_unidad_de_trabajo(uow_serialized)
+            return uow_serialized
+    except RuntimeError:
+        # Manejar el caso en el que no hay un contexto de solicitud HTTP activo
+        global _uow
+        if '_uow' in globals():
+            return _uow
+        else:
+            uow_serialized = pickle.dumps(UnidadTrabajoSQLAlchemy())
+            registrar_unidad_de_trabajo(uow_serialized)
+            return uow_serialized
 
 def unidad_de_trabajo() -> UnidadTrabajo:
+    from saludtech.transformaciones.config.uow import UnidadTrabajoSQLAlchemy
     if is_flask():
-        return pickle.loads(flask_uow())
+        try:
+            return pickle.loads(flask_uow())
+        except RuntimeError:
+            # Manejar el caso en el que no hay un contexto de solicitud HTTP activo
+            return UnidadTrabajoSQLAlchemy()
     else:
         raise Exception('No hay unidad de trabajo')
 
 def guardar_unidad_trabajo(uow: UnidadTrabajo):
     if is_flask():
-        registrar_unidad_de_trabajo(pickle.dumps(uow))
+        try:
+            registrar_unidad_de_trabajo(pickle.dumps(uow))
+        except RuntimeError:
+            # Manejar el caso en el que no hay un contexto de solicitud HTTP activo
+            global _uow
+            _uow = pickle.dumps(uow)
     else:
         raise Exception('No hay unidad de trabajo')
 

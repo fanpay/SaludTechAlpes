@@ -17,7 +17,7 @@ def unix_time_millis(dt):
 class Despachador(DespachadorBase):
     def _publicar_mensaje(self, mensaje, topico, schema):
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        publicador = cliente.create_producer(topico, schema=AvroSchema(ComandoIniciarAnonimizacion))
+        publicador = cliente.create_producer(topico, schema=schema)
         publicador.send(mensaje)
         cliente.close()
 
@@ -35,8 +35,8 @@ class Despachador(DespachadorBase):
         elif isinstance(evento, EventoAnonimizacionFinalizada):
             payload = EventoAnonimizacionFinalizadaPayload(
                 id=str(evento.id),
-                referencia_salida=evento.referencia_salida,
-                timestamp=int(unix_time_millis(evento.timestamp))
+                referencia_salida=evento.data.referencia_salida,
+                timestamp=int(datetime.datetime.now().timestamp())
             )
             evento_integracion = EventoAnonimizacionFinalizada(data=payload)
             self._publicar_mensaje(evento_integracion, topico, AvroSchema(EventoAnonimizacionFinalizada))
