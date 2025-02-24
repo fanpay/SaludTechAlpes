@@ -19,6 +19,7 @@ Este repositorio contiene el código y la documentación del proyecto SaludTech 
 ├── .gitpod.Dockerfile
 ```
 
+# Entrega 1
 Los diagramas AS-IS y TO-BE se encuentran en la carpeta `src-gen`.  Estos diagramas fueron generados utilizando Context Mapper a partir de los archivos `.cml` ubicados en `docs/entrega1/`.
 
 1. **Abra los archivos `.cml` (saludtechdemo-entrega1-as-is.cml y saludtechdemo-entrega1-to-be.cml) con Context Mapper.**
@@ -42,3 +43,6 @@ El código fuente principal se encuentra en la carpeta `src/saludtech`.
 
 **Imagen de lenguaje obicuo TO-BE**
 - `./Lenguaje-obicuo/Dominio y subdominios TO - BE.png`
+
+# Entrega 2
+TODO
