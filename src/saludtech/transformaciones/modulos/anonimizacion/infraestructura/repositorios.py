@@ -36,7 +36,10 @@ class RepositorioImagenesAnonimizadasDB(RepositorioImagenesAnonimizadas):
         imagen_dto = self.fabrica_anonimizacion.crear_objeto(imagen, MapeadorImagenAnonimizada())
         db.session.add(imagen_dto)
         db.session.commit()
-        print("Imagen anonimizada guardada ID: " + str(imagen_dto.id))
+        print("Imagen anonimizada ID: " + str(imagen_dto.id))
+        print("Metadatos anonimizados ID: " + str(imagen_dto.metadatos.id))
+        print("Configuracion anonimizada guardada ID: " + str(imagen_dto.configuracion.id))
+        print("Referencia_entrada anonimizada guardada ID: " + str(imagen_dto.referencia_entrada.id))
 
     def actualizar(self, imagen: ImagenAnonimizada):
         try:
