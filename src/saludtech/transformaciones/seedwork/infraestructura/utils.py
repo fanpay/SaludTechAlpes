@@ -12,12 +12,7 @@ def time_millis():
     return int(time.time() * 1000)
 
 def broker_host():
-    
-    pulsar_env = os.environ["PULSAR_ADDRESS"]
-    if not pulsar_env:
-        pulsar_env="localhost"
-    
-    return pulsar_env
+    return os.getenv('BROKER_HOST', default="localhost")
 
 def consultar_schema_registry(topico: str) -> dict:
     json_registry = requests.get(f'http://{broker_host()}:8080/admin/v2/schemas/{topico}/schema').json()

@@ -7,11 +7,11 @@ from flask_swagger import swagger
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 # Constantes
-DB_USER = os.environ["POSTGRES_USER"]
-DB_PASSWORD = os.environ["POSTGRES_PASSWORD"]
-DB_HOST = os.environ["POSTGRES_HOST"]
-DB_PORT = os.environ["POSTGRES_PORT"]
-DB_NAME =  os.environ["POSTGRES_DB"]
+DB_USER = os.getenv("POSTGRES_USER", default="postgres")
+DB_PASSWORD = os.getenv("POSTGRES_PASSWORD", default="postgres")
+DB_HOST = os.getenv("POSTGRES_HOST", default="localhost")
+DB_PORT = os.getenv("POSTGRES_PORT", default="5432")
+DB_NAME =  os.getenv("POSTGRES_DB", default="transformacionesdb")
 
 def registrar_handlers():
     import saludtech.transformaciones.modulos.anonimizacion.aplicacion

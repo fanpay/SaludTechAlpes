@@ -10,6 +10,7 @@ Este repositorio contiene el código y la documentación del proyecto SaludTech 
 ├── README.md
 ├── collections # Carpeta con las colecciones de Postman
 │   └── SALUDTECH.postman_collection.json
+├── data # Carpeta temporal de Pulsar. Si ya existe, borrar antes de ejecutar por primera vez la aplicación
 ├── docker-compose.yml # Archivo de configuración de Docker Compose
 ├── docs
 │   └── entrega1 # Carpeta con los archivos de la entrega 1
@@ -114,6 +115,19 @@ Siempre puede ejecutarlo en modo DEBUG:
 flask --app src/saludtech/transformaciones/api --debug run
 ```
 
+Tenga en cuenta que el sistema espera las siguientes variables de entorno:
+
+```plaintext
+POSTGRES_USER -> valor por defecto: postgres
+POSTGRES_PASSWORD -> valor por defecto: postgres
+POSTGRES_HOST -> valor por defecto: localhost
+POSTGRES_PORT -> valor por defecto: 5432
+POSTGRES_DB -> valor por defecto: transformacionesdb
+BROKER_HOST -> valor por defecto: localhost
+```
+
+Si no se le especifican los valores, este asumirá los valores por defecto.
+
 ### Ejecutar Aplicación con Docker
 
 
@@ -137,15 +151,17 @@ Si desea detener el ambiente ejecute:
 docker-compose stop
 ```
 
-### RECOMENDADO: Ejecución en máquina local (si la ejecución de los perfiles falla)
+### Ejecución en máquina local (RECOMENDADO si la ejecución de los perfiles falla)
 
 En algunas ocasiones, al tratar de conectarse los contenedores de Pulsar, se puede presentar el siguiente error:
 
 > Pulsar error: TimeOut
 
-Puede deberse a problemas con la carpeta data de Pulsar.
+Puede deberse a que Pulsar no ha iniciado correctamente debido a problemas con la carpeta `data` del mismo Pulsar que se crea en el directorio raíz del proyecto. Asegúrese de borrarla para evitar problemas.
+> Más información: https://github.com/apache/bookkeeper/blob/405e72acf42bb1104296447ea8840d805094c787/bookkeeper-server/src/main/java/org/apache/bookkeeper/bookie/Cookie.java#L57-68
 
-Por tal razón, se recomienda ejecutar la aplicación en su máquina local y puede hacerlo de la siguiente manera:
+
+Por tal razón, se recomienda ejecutar la aplicación en su máquina local (luego de borrar la carpeta `data` anteriormente mencionada) y puede hacerlo de la siguiente manera:
 
 - Ejecute el perfil de pulsar de docker-compose:
   
@@ -162,7 +178,12 @@ docker-compose --profile transformaciones up
 - Luego, Desde el directorio principal ejecute el siguiente comando para ejecutar la aplicación:
 
 ```bash
-PULSAR_ADDRESS=localhost POSTGRES_USER=postgres POSTGRES_PASSWORD=postgres POSTGRES_DB=transformacionesdb POSTGRES_HOST=localhost POSTGRES_PORT=5432 flask --app src/saludtech/transformaciones/api --debug run
+BROKER_HOST=localhost POSTGRES_USER=postgres POSTGRES_PASSWORD=postgres POSTGRES_DB=transformacionesdb POSTGRES_HOST=localhost POSTGRES_PORT=5432 flask --app src/saludtech/transformaciones/api --debug run
+```
+
+Si se realiza una ejecución manual, este dato debe cambiar en el archivo docker-compose.yml al siguiente:
+```
+- advertisedListeners=external:pulsar://127.0.0.1:6650
 ```
 
 Asegúrate de pasarle las variables de entorno correctas.
