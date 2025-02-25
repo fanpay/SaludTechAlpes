@@ -99,6 +99,71 @@ Este repositorio contiene el código y la documentación del proyecto SaludTech 
 └── transformacion.Dockerfile # Dockerfile para el microservicio de transformación
 ```
 
+## SaludTech
+### Ejecutar Aplicación
+
+Desde el directorio principal ejecute el siguiente comando.
+
+```bash
+flask --app src/saludtech/transformaciones/api run
+```
+
+Siempre puede ejecutarlo en modo DEBUG:
+
+```bash
+flask --app src/saludtech/transformaciones/api --debug run
+```
+
+### Ejecutar Aplicación con Docker
+
+
+## Docker-compose
+
+Para desplegar toda la arquitectura en un solo comando, usamos `docker-compose`. Para ello, desde el directorio principal, ejecute el siguiente comando:
+
+```bash
+docker-compose --profile transformaciones --profile saludtech-transformacion --profile pulsar up
+```
+
+En caso de querer desplegar dicha topología en el background puede usar el parametro `-d`.
+
+```bash
+docker-compose --profile transformaciones --profile saludtech-transformacion --profile pulsar up -d
+```
+
+Si desea detener el ambiente ejecute:
+
+```bash
+docker-compose stop
+```
+
+### Ejecución en máquina local (si la ejecución de los perfiles falla)
+
+Si desea ejecutar la aplicación en su máquina local, puede hacerlo de la siguiente manera:
+
+- Ejecute el perfil de pulsar de docker-compose:
+  
+```bash
+docker-compose --profile pulsar up
+```
+  
+- Luego, Desde el directorio principal ejecute el siguiente comando para ejecutar la aplicación:
+
+```bash
+flask --app src/saludtech/transformaciones/api --debug run
+```
+
+
+## Comandos útiles
+
+### Correr docker-compose usando profiles
+```bash
+docker-compose --profile <pulsar|transformaciones|saludtech-transformacion> up
+```
+
+
+
+
 # Entrega 1
 Los diagramas AS-IS y TO-BE se encuentran en la carpeta `src-gen`.  Estos diagramas fueron generados utilizando Context Mapper a partir de los archivos `.cml` ubicados en `docs/entrega1/`.
 

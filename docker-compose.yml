@@ -4,54 +4,19 @@ networks:
   transformacionesnet:
     driver: bridge
 services:
-   # Bases de datos de Transformaciones
-  transformacionesdb:
-    image: postgres:latest
-    container_name: transformacionesdb
-    ports:
-      - "5432:5432"
+  # Init cluster metadata
+  pulsar-init:
+    container_name: pulsar-init
+    hostname: pulsar-init
+    image: apachepulsar/pulsar:latest
+    profiles: ["pulsar"]
     networks:
-      - transformacionesnet
-    environment:
-      POSTGRES_DB: transformacionesdb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_HOST: localhost
-      POSTGRES_PORT: 5432
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-      interval: 2s
-      timeout: 5s
-      retries: 5
-
-
-
-  # Servicios de SaludTech
-  saludtech-transformacion:
-    container_name: saludtech
-    hostname: saludtech
-    build:
-      context: .
-      dockerfile: transformacion.Dockerfile
-    profiles: ["saludtech-transformacion"]
-    networks:
-      - transformacionesnet
       - pulsar
+    command: bin/pulsar initialize-cluster-metadata --cluster cluster-a --zookeeper zookeeper:2181 --configuration-store zookeeper:2181 --web-service-url http://broker:8080 --broker-service-url pulsar://broker:6650
+
     depends_on:
-      - transformacionesdb
-      - broker
-    environment:
-      - DB_NAME=transformacionesdb
-      - DB_HOST=transformacionesdb
-      - DB_PORT=5432
-      - DB_USER=admin
-      - DB_PASSWORD=admin
-      - PULSAR_ADDRESS=broker
-    ports:
-      - "5000:5000"
-
-
-
+      zookeeper:
+        condition: service_healthy
 
 
 # Start zookeeper
@@ -76,32 +41,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 30
-
-# Init cluster metadata
-  pulsar-init:
-    container_name: pulsar-init
-    hostname: pulsar-init
-    image: apachepulsar/pulsar:latest
-    profiles: ["pulsar"]
-    networks:
-      - pulsar
-    command:
-      - bin/pulsar
-      - initialize-cluster-metadata
-      - --cluster
-      - cluster-a
-      - --zookeeper
-      - zookeeper:2181
-      - --configuration-store
-      - zookeeper:2181
-      - --web-service-url
-      - http://broker:8080
-      - --broker-service-url
-      - pulsar://broker:6650
-
-    depends_on:
-      zookeeper:
-        condition: service_healthy
 
 # Start bookie
   bookie:
@@ -158,3 +97,56 @@ services:
       - "8080:8080"
     command: bash -c "bin/apply-config-from-env.py conf/broker.conf &&  exec bin/pulsar broker"
   
+
+
+
+     # Bases de datos de Transformaciones
+  transformacionesdb:
+    image: postgres:latest
+    container_name: transformacionesdb
+    ports:
+      - "5432:5432"
+    networks:
+      - transformacionesnet
+    environment:
+      POSTGRES_DB: transformacionesdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+    profiles: ["transformaciones"]
+
+
+
+  # Servicios de SaludTech
+  saludtech-transformacion:
+    container_name: saludtech
+    hostname: saludtech
+    build:
+      context: .
+      dockerfile: transformacion.Dockerfile
+    profiles: ["saludtech-transformacion"]
+    networks:
+      - transformacionesnet
+      - pulsar
+    depends_on:
+      - transformacionesdb
+      - broker
+    environment:
+      - PULSAR_ADDRESS=broker
+      - BROKER_HOST=broker
+      - POSTGRES_DB=transformacionesdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_HOST=transformacionesdb
+      - POSTGRES_PORT=5432
+    ports:
+      - "5000:5000"
+
+
+

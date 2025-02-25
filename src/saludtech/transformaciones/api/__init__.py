@@ -6,6 +6,13 @@ from flask_swagger import swagger
 # Identifica el directorio base
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+# Constantes
+DB_USER = os.environ["POSTGRES_USER"]
+DB_PASSWORD = os.environ["POSTGRES_PASSWORD"]
+DB_HOST = os.environ["POSTGRES_HOST"]
+DB_PORT = os.environ["POSTGRES_PORT"]
+DB_NAME =  os.environ["POSTGRES_DB"]
+
 def registrar_handlers():
     import saludtech.transformaciones.modulos.anonimizacion.aplicacion
 
@@ -39,7 +46,7 @@ def create_app(configuracion={}):
     # Init la aplicacion de Flask
     app = Flask(__name__, instance_relative_config=True)
     
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:5432/transformacionesdb'
+    app.config["SQLALCHEMY_DATABASE_URI"] = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     app.secret_key = '9d58f98f-3ae8-4149-a09f-3a8c2012e32c'
