@@ -5,18 +5,98 @@ Este repositorio contiene el código y la documentación del proyecto SaludTech 
 ## Estructura del Proyecto
 
 ``` bash
-├── README.md              # Este archivo, con las instrucciones de uso
-├── docs                   # Documentación del proyecto
-│   └── entrega1           # Artefactos de la entrega 1
-│       ├── saludtechdemo-entrega1-as-is.cml    # Modelo AS-IS en Context Mapper
-│       └── saludtechdemo-entrega1-to-be.cml    # Modelo TO-BE en Context Mapper
-├── pyproject.toml          # Archivo de configuración de Python
-├── requirements.txt        # Dependencias del proyecto
-├── src-gen                # Artefactos generados (diagramas, etc.)
-│   ├── saludtechdemo-entrega1-as-is_ContextMap.png   # Diagrama AS-IS
-│   └── saludtechdemo-entrega1-to-be_ContextMap.png   # Diagrama TO-BE
-├── .gitpod.yml # indica a Gitpod cómo preparar y compilar un proyecto
-├── .gitpod.Dockerfile
+├── LICENSE
+├── Lenguaje-obicuo # Carpeta con las imágenes del lenguaje ubicuo
+├── README.md
+├── collections # Carpeta con las colecciones de Postman
+│   └── SALUDTECH.postman_collection.json
+├── docker-compose.yml # Archivo de configuración de Docker Compose
+├── docs
+│   └── entrega1 # Carpeta con los archivos de la entrega 1
+│       ├── AS-IS
+│       ├── README.md
+│       └── TO-BE
+├── pyproject.toml # Archivo de configuración de Poetry
+├── requirements.txt # Archivo con las dependencias del proyecto
+├── src # Carpeta con el código fuente
+│   ├── README.md
+│   └── saludtech
+│       └── transformaciones # Carpeta con los archivos del microservicio de transformación
+│           ├── api # Carpeta con los archivos de la API
+│           │   └── anonimizacion.py
+│           ├── config # Carpeta con los archivos de configuración
+│           │   ├── db.py
+│           │   └── uow.py
+│           ├── modulos # Carpeta con los archivos de los módulos
+│           │   └── anonimizacion  # Carpeta con los archivos del módulo de anonimización
+│           │       ├── aplicacion # Carpeta con los archivos de la aplicación
+│           │       │   ├── comandos # Carpeta con los archivos de comandos
+│           │       │   │   ├── base.py
+│           │       │   │   ├── cancelar_anonimizacion.py
+│           │       │   │   ├── completar_anonimizacion.py
+│           │       │   │   ├── iniciar_anonimizacion.py
+│           │       │   │   └── reintentar_anonimizacion.py
+│           │       │   ├── dto.py
+│           │       │   ├── handlers.py
+│           │       │   ├── mapeadores.py
+│           │       │   ├── queries # Carpeta con los archivos de queries
+│           │       │   │   ├── base.py
+│           │       │   │   ├── consultar_estado_proceso.py
+│           │       │   │   └── obtener_errores.py
+│           │       │   └── servicios.py
+│           │       ├── dominio # Carpeta con los archivos del dominio
+│           │       │   ├── entidades.py
+│           │       │   ├── eventos.py
+│           │       │   ├── excepciones.py
+│           │       │   ├── fabricas.py
+│           │       │   ├── mixins.py
+│           │       │   ├── objetos_valor.py
+│           │       │   ├── reglas.py
+│           │       │   ├── repositorios.py
+│           │       │   └── servicios.py
+│           │       └── infraestructura # Carpeta con los archivos de infraestructura
+│           │           ├── consumidores.py
+│           │           ├── despachadores.py
+│           │           ├── dto.py
+│           │           ├── excepciones.py
+│           │           ├── fabricas.py
+│           │           ├── mapeadores.py
+│           │           ├── repositorios.py
+│           │           └── schema # Carpeta con los archivos de schema
+│           │               └── v1 # Carpeta con los archivos de la versión 1
+│           │                   ├── comandos.py
+│           │                   └── eventos.py
+│           └── seedwork # Carpeta con los archivos de seedwork
+│               ├── aplicacion # Carpeta con los archivos de la aplicación
+│               │   ├── comandos.py
+│               │   ├── dto.py
+│               │   ├── handlers.py
+│               │   ├── queries.py
+│               │   └── servicios.py
+│               ├── dominio # Carpeta con los archivos del dominio
+│               │   ├── entidades.py
+│               │   ├── eventos.py
+│               │   ├── excepciones.py
+│               │   ├── fabricas.py
+│               │   ├── mixins.py
+│               │   ├── objetos_valor.py
+│               │   ├── reglas.py
+│               │   ├── repositorios.py
+│               │   └── servicios.py
+│               ├── infraestructura # Carpeta con los archivos de infraestructura
+│               │   ├── despachadores.py
+│               │   ├── schema # Carpeta con los archivos de schema
+│               │   │   └── v1 # Carpeta con los archivos de la versión 1
+│               │   │       ├── comandos.py
+│               │   │       ├── eventos.py
+│               │   │       └── mensajes.py
+│               │   ├── uow.py
+│               │   └── utils.py
+│               └── presentacion # Carpeta con los archivos de presentación
+│                   └── api.py
+├── src-gen # Carpeta con los diagramas generados por Context Mapper
+├── tests # Carpeta con los tests
+└── transformacion.Dockerfile # Dockerfile para el microservicio de transformación
 ```
 
 # Entrega 1
@@ -26,7 +106,7 @@ Los diagramas AS-IS y TO-BE se encuentran en la carpeta `src-gen`.  Estos diagra
 
 2. **Context Mapper generará automáticamente los diagramas en formato PNG.  Estos se guardan en `src-gen`.**
 
-### Estructura del Código
+## Estructura del C&oacute;digo
 
 El código fuente principal se encuentra en la carpeta `src/saludtech`.
 
