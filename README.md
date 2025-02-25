@@ -125,4 +125,22 @@ El código fuente principal se encuentra en la carpeta `src/saludtech`.
 - `./Lenguaje-obicuo/Dominio y subdominios TO - BE.png`
 
 # Entrega 2
-TODO
+
+## Escenarios de calidad 
+
+https://uniandes-my.sharepoint.com/:p:/r/personal/f_orduz_uniandes_edu_co/_layouts/15/Doc.aspx?sourcedoc=%7B1AEF6370-BDD5-4D44-9DF2-764CEBDFDC07%7D&file=Entrega%20Semana%205.pptx&action=edit&mobileredirect=true&DefaultItemOpen=1&web=1
+
+## Escenario de calidad a validar
+
+Dado el contexto y las condiciones previas planteadas, se optó por validar el escenario de calidad #4 **Exposición de APIs externas de Salutech**, que que pertenece al atributo de  **Interoperabilidad**. La razón detrás de esta decisión radica en la necesidad crítica de comprender y gestionar de manera efectiva los estados del proceso de carga de datos a la plataforma, particularmente en lo que respecta a las fases iniciales de los procesos de transformación y enriquecimiento de datos.
+
+La interoperabilidad es un componente esencial en la infraestructura tecnológica de cualquier sistema, la exposición de APIs externas de Salutech juega un papel clave, ya que permite la integración de fuentes de datos externas al ecosistema de la plataforma, o cualquier cliente, consumidor o desarrollador que pueda llegar a hacer uso de la plataforma.
+
+## Diagrama de arquitectura de experimento
+
+Para este ejercicio, se tomo unicamente la parte de transformacion del flujo. Ademas se creo un endpoint HTTP que se encargaria de publicar la informacion neceesaria para simular el inicio del proceso de transformacion. Este componente llamado publicador se agrego unicamente con fines de experimentacion, no hace parte del flujo de datos.
+
+En este caso el servicio de transformacion recibe un comando de de inicio de proceso de transformacion, persiste la solicitud en la base de datos del servicio, expone un metodo GET que se utiliza para obtener el estado del proceso y por ultimo envia el comando al siguiente paso
+
+![image](https://github.com/user-attachments/assets/d7b10c81-84db-4b3d-b14c-e8ee33e1bcfd)
+
