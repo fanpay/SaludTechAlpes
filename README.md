@@ -143,6 +143,8 @@ En algunas ocasiones, al tratar de conectarse los contenedores de Pulsar, se pue
 
 > Pulsar error: TimeOut
 
+Puede deberse a problemas con la carpeta data de Pulsar.
+
 Por tal razón, se recomienda ejecutar la aplicación en su máquina local y puede hacerlo de la siguiente manera:
 
 - Ejecute el perfil de pulsar de docker-compose:
@@ -150,12 +152,20 @@ Por tal razón, se recomienda ejecutar la aplicación en su máquina local y pue
 ```bash
 docker-compose --profile pulsar up
 ```
+
+- Ejecute el perfil de la base de datos PostgreSQL de docker-compose:
+  
+```bash
+docker-compose --profile transformaciones up
+```
   
 - Luego, Desde el directorio principal ejecute el siguiente comando para ejecutar la aplicación:
 
 ```bash
-flask --app src/saludtech/transformaciones/api --debug run
+PULSAR_ADDRESS=localhost POSTGRES_USER=postgres POSTGRES_PASSWORD=postgres POSTGRES_DB=transformacionesdb POSTGRES_HOST=localhost POSTGRES_PORT=5432 flask --app src/saludtech/transformaciones/api --debug run
 ```
+
+Asegúrate de pasarle las variables de entorno correctas.
 
 
 ## Comandos útiles
