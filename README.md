@@ -137,9 +137,13 @@ Si desea detener el ambiente ejecute:
 docker-compose stop
 ```
 
-### Ejecución en máquina local (si la ejecución de los perfiles falla)
+### RECOMENDADO: Ejecución en máquina local (si la ejecución de los perfiles falla)
 
-Si desea ejecutar la aplicación en su máquina local, puede hacerlo de la siguiente manera:
+En algunas ocasiones, al tratar de conectarse los contenedores de Pulsar, se puede presentar el siguiente error:
+
+> Pulsar error: TimeOut
+
+Por tal razón, se recomienda ejecutar la aplicación en su máquina local y puede hacerlo de la siguiente manera:
 
 - Ejecute el perfil de pulsar de docker-compose:
   
