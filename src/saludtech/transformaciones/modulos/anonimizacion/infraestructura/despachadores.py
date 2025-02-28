@@ -34,7 +34,7 @@ class Despachador(DespachadorBase):
             self._publicar_mensaje(evento_integracion, topico, AvroSchema(EventoAnonimizacionIniciada))
         elif isinstance(evento, EventoAnonimizacionFinalizada):
             payload = EventoAnonimizacionFinalizadaPayload(
-                id=str(evento.id),
+                id=str(evento.data.id),
                 referencia_salida=evento.data.referencia_salida,
                 timestamp=int(datetime.datetime.now().timestamp())
             )

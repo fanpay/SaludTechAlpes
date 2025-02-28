@@ -48,6 +48,7 @@ class MapeadorImagenAnonimizadaDTOJson(AppMap):
 
     def externo_a_dto(self, externo: dict) -> ProcesarImagenDTO:
         return ProcesarImagenDTO(
+            id=externo.get('id'),
             metadatos=self._procesar_metadatos(externo.get('metadatos')),
             configuracion=self._procesar_configuracion(externo.get('configuracion')),
             referencia_entrada=self._procesar_referencia(externo.get('referencia_entrada'))

@@ -9,7 +9,7 @@ import datetime
 from saludtech.transformaciones.modulos.anonimizacion.aplicacion.dto import ProcesarImagenDTO
 from saludtech.transformaciones.modulos.anonimizacion.aplicacion.servicios import ServicioAnonimizacion
 from saludtech.transformaciones.seedwork.infraestructura import utils
-from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.eventos import EventoAnonimizacionIniciada, EventoAnonimizacionFinalizada
+from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.eventos import EventoAnonimizacionIniciada, EventoAnonimizacionFinalizada, EventoAnonimizacionFinalizadaPayload
 from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.comandos import ComandoIniciarAnonimizacion
 from saludtech.transformaciones.modulos.anonimizacion.aplicacion.comandos.iniciar_anonimizacion import IniciarAnonimizacion
 from saludtech.transformaciones.modulos.anonimizacion.infraestructura.despachadores import Despachador
@@ -20,12 +20,12 @@ def suscribirse_a_eventos():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('eventos-anonimizacion1', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='saludtech-sub-eventos', schema=AvroSchema(EventoAnonimizacionIniciada))
+        consumidor = cliente.subscribe('eventos-enriquecer', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='saludtech-sub-eventos', schema=AvroSchema(EventoAnonimizacionFinalizada))
 
         while True:
             mensaje = consumidor.receive()
             evento_integracion = mensaje.value().data
-            print(f'Evento recibido: {evento_integracion}')
+            print(f'------> Evento recibido: {evento_integracion}')
 
             # Procesar el evento y reaccionar a él
             # Aquí puedes agregar la lógica para manejar el evento recibido
@@ -61,11 +61,12 @@ def suscribirse_a_comandos():
             ejecutar_commando(comando)
             
             evento_finalizado = EventoAnonimizacionFinalizada(
-                id = comando_integracion.id,
-                referencia_salida = ReferenciaAlmacenamientoPayload(),
-                timestamp = int(datetime.datetime.now().timestamp())
+                data = EventoAnonimizacionFinalizadaPayload(
+                    id = comando.id,
+                    referencia_salida = ReferenciaAlmacenamientoPayload(),
+                    timestamp = int(datetime.datetime.now().timestamp())
+                )
             )
-            
             despachador = Despachador()
             despachador.publicar_evento(evento_finalizado, 'eventos-enriquecer')
 

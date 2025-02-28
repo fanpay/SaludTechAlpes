@@ -48,6 +48,7 @@ class ReferenciaAlmacenamientoDTO(DTO):
 # ====================
 @dataclass(frozen=True)
 class ProcesarImagenDTO(DTO):
+    id: str
     metadatos: MetadatosImagenDTO
     configuracion: ConfiguracionAnonimizacionDTO
     referencia_entrada: ReferenciaAlmacenamientoDTO

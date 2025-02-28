@@ -27,6 +27,7 @@ class IniciarAnonimizacionHandler(IniciarAnonimizacionBaseHandler):
     
     def handle(self, comando: IniciarAnonimizacion):
         procesar_imagen_dto = ProcesarImagenDTO(
+            id=comando.id,
             metadatos=comando.metadatos,
             configuracion=comando.configuracion,
             referencia_entrada=comando.referencia_entrada

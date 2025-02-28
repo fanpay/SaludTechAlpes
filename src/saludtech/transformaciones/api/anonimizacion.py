@@ -40,7 +40,7 @@ def iniciar_anonimizacion_asincrona():
         imagen_dto = map_imagen.externo_a_dto(imagen_dict)
 
         comando = IniciarAnonimizacion(
-            id=str(uuid.uuid4()),
+            id=imagen_dto.id,
             metadatos=imagen_dto.metadatos,
             configuracion=imagen_dto.configuracion,
             referencia_entrada=imagen_dto.referencia_entrada
