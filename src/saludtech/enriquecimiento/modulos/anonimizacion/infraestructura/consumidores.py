@@ -7,6 +7,7 @@ import traceback
 import datetime
 
 from saludtech.enriquecimiento.config.db import db
+from saludtech.enriquecimiento.modulos.anonimizacion.dominio.objetos_valor import EstadoProceso
 from saludtech.enriquecimiento.modulos.anonimizacion.infraestructura.dto import ImagenAnonimizadaDTO, MetadatosImagenDTO
 from saludtech.enriquecimiento.modulos.anonimizacion.aplicacion.dto import ProcesarImagenDTO
 from saludtech.enriquecimiento.modulos.anonimizacion.aplicacion.servicios import ServicioAnonimizacion
@@ -50,6 +51,7 @@ def suscribirse_a_eventos():
                     imagen_anonimizada.metadatos = nuevos_metadatos
 
                 # Agregar más metadatos a la entidad existente
+                imagen_anonimizada.estado = EstadoProceso.EXITOSO
                 imagen_anonimizada.metadatos.modalidad = "Modalidad actualizada"
                 imagen_anonimizada.metadatos.region = "Región actualizada"
                 imagen_anonimizada.metadatos.resolucion = "Resolución actualizada"
