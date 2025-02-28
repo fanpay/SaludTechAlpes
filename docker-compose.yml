@@ -149,6 +149,30 @@ services:
       - POSTGRES_PORT=5432
     ports:
       - "5000:5000"
+  
+  saludtech-enriquecimiento:
+    container_name: enriquecimiento
+    hostname: enriquecimiento
+    build:
+      context: .
+      dockerfile: enriquecimiento.Dockerfile
+    profiles: ["saludtech-enriquecimiento"]
+    networks:
+      - transformacionesnet
+      - pulsar
+    depends_on:
+      - transformacionesdb
+      - broker
+    environment:
+      - PULSAR_ADDRESS=broker
+      - BROKER_HOST=broker
+      - POSTGRES_DB=transformacionesdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_HOST=transformacionesdb
+      - POSTGRES_PORT=5432
+    ports:
+      - "5000:6000"
 
 
 
