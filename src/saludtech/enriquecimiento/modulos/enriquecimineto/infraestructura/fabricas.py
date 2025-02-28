@@ -8,7 +8,7 @@ objetos complejos en la capa de infraestructura del dominio de anonimizacion
 from dataclasses import dataclass
 from saludtech.enriquecimiento.seedwork.dominio.fabricas import Fabrica
 from saludtech.enriquecimiento.seedwork.dominio.repositorios import Repositorio
-from saludtech.enriquecimiento.modulos.anonimizacion.dominio.repositorios import RepositorioImagenesAnonimizadas, RepositorioProcesosAnonimizacion
+from saludtech.enriquecimiento.modulos.enriquecimineto.dominio.repositorios import RepositorioImagenesAnonimizadas, RepositorioProcesosAnonimizacion
 from .repositorios import RepositorioImagenesAnonimizadasDB, RepositorioProcesosAnonimizacionDB
 from .excepciones import ExcepcionFabrica
 

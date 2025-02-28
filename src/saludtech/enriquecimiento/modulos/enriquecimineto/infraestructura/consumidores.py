@@ -1,23 +1,22 @@
 import pulsar,_pulsar  
 from pulsar.schema import *
-import uuid
-import time
 import logging
 import traceback
 import datetime
+import random
 
 from saludtech.enriquecimiento.config.db import db
-from saludtech.enriquecimiento.modulos.anonimizacion.dominio.objetos_valor import EstadoProceso
-from saludtech.enriquecimiento.modulos.anonimizacion.infraestructura.dto import ImagenAnonimizadaDTO, MetadatosImagenDTO
-from saludtech.enriquecimiento.modulos.anonimizacion.aplicacion.dto import ProcesarImagenDTO
-from saludtech.enriquecimiento.modulos.anonimizacion.aplicacion.servicios import ServicioAnonimizacion
+from saludtech.enriquecimiento.modulos.enriquecimineto.dominio.objetos_valor import EstadoProceso, ModalidadImagen, RegionAnatomica
+from saludtech.enriquecimiento.modulos.enriquecimineto.infraestructura.dto import ImagenAnonimizadaDTO, MetadatosImagenDTO
+from saludtech.enriquecimiento.modulos.enriquecimineto.aplicacion.dto import ProcesarImagenDTO
+from saludtech.enriquecimiento.modulos.enriquecimineto.aplicacion.servicios import ServicioAnonimizacion
 from saludtech.enriquecimiento.seedwork.infraestructura import utils
-from saludtech.enriquecimiento.modulos.anonimizacion.infraestructura.schema.v1.eventos import EventoAnonimizacionIniciada, EventoAnonimizacionFinalizada
-from saludtech.enriquecimiento.modulos.anonimizacion.infraestructura.schema.v1.comandos import ComandoIniciarAnonimizacion
-from saludtech.enriquecimiento.modulos.anonimizacion.aplicacion.comandos.iniciar_anonimizacion import IniciarAnonimizacion
-from saludtech.enriquecimiento.modulos.anonimizacion.infraestructura.despachadores import Despachador
+from saludtech.enriquecimiento.modulos.enriquecimineto.infraestructura.schema.v1.eventos import EventoAnonimizacionIniciada, EventoAnonimizacionFinalizada
+from saludtech.enriquecimiento.modulos.enriquecimineto.infraestructura.schema.v1.comandos import ComandoIniciarAnonimizacion
+from saludtech.enriquecimiento.modulos.enriquecimineto.aplicacion.comandos.iniciar_anonimizacion import IniciarAnonimizacion
+from saludtech.enriquecimiento.modulos.enriquecimineto.infraestructura.despachadores import Despachador
 from saludtech.enriquecimiento.seedwork.aplicacion.comandos import ejecutar_commando
-from saludtech.enriquecimiento.modulos.anonimizacion.infraestructura.schema.v1.eventos import ReferenciaAlmacenamientoPayload
+from saludtech.enriquecimiento.modulos.enriquecimineto.infraestructura.schema.v1.eventos import ReferenciaAlmacenamientoPayload
 
 def suscribirse_a_eventos():
     cliente = None
@@ -38,9 +37,9 @@ def suscribirse_a_eventos():
             if imagen_anonimizada:
                 if not imagen_anonimizada.metadatos:
                     nuevos_metadatos = MetadatosImagenDTO(
-                        modalidad="modalidad",
-                        region="región",
-                        resolucion="resolución",
+                        modalidad= random.choice(list(ModalidadImagen)),
+                        region= random.choice(list(RegionAnatomica)),
+                        resolucion = f'{{"ancho": {random.randint(60, 80)}, "alto": {random.randint(40, 60)}, "dpi": {random.randint(90, 110)}}}',
                         fecha_adquisicion=str(datetime.datetime.now())
                     )
                     db.session.add(nuevos_metadatos)
@@ -52,9 +51,9 @@ def suscribirse_a_eventos():
 
                 # Agregar más metadatos a la entidad existente
                 imagen_anonimizada.estado = EstadoProceso.EXITOSO
-                imagen_anonimizada.metadatos.modalidad = "Modalidad actualizada"
-                imagen_anonimizada.metadatos.region = "Región actualizada"
-                imagen_anonimizada.metadatos.resolucion = "Resolución actualizada"
+                imagen_anonimizada.metadatos.modalidad = random.choice(list(ModalidadImagen))
+                imagen_anonimizada.metadatos.region = random.choice(list(RegionAnatomica))
+                imagen_anonimizada.metadatos.resolucion = f'{{"ancho": {random.randint(60, 80)}, "alto": {random.randint(40, 60)}, "dpi": {random.randint(90, 110)}}}'
                 imagen_anonimizada.metadatos.fecha_adquisicion = str(datetime.datetime.now())
 
                 db.session.commit()

@@ -1,9 +1,9 @@
 from saludtech.enriquecimiento.seedwork.aplicacion.queries import Query, QueryHandler, QueryResultado
 from saludtech.enriquecimiento.seedwork.aplicacion.queries import ejecutar_query as query
-from saludtech.enriquecimiento.modulos.anonimizacion.infraestructura.repositorios import RepositorioImagenesAnonimizadas
+from saludtech.enriquecimiento.modulos.enriquecimineto.infraestructura.repositorios import RepositorioImagenesAnonimizadas
 from dataclasses import dataclass
 from .base import AnonimizacionQueryBaseHandler
-from saludtech.enriquecimiento.modulos.anonimizacion.aplicacion.mapeadores import MapeadorRespuestaImagenAnonimizada
+from saludtech.enriquecimiento.modulos.enriquecimineto.aplicacion.mapeadores import MapeadorRespuestaImagenAnonimizada
 import uuid
 
 @dataclass

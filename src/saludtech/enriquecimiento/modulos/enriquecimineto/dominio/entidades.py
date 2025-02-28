@@ -9,8 +9,8 @@ from dataclasses import dataclass, field
 import uuid
 import datetime
 
-from saludtech.enriquecimiento.modulos.anonimizacion.dominio.objetos_valor import ConfiguracionAnonimizacion, MetadatosImagen, ResultadoProcesamiento, ReferenciaAlmacenamiento, EstadoProceso
-from saludtech.enriquecimiento.modulos.anonimizacion.dominio.eventos import ProcesoAnonimizacionIniciado, ProcesoAnonimizacionFinalizado, ProcesoAnonimizacionFallido
+from saludtech.enriquecimiento.modulos.enriquecimineto.dominio.objetos_valor import ConfiguracionAnonimizacion, MetadatosImagen, ResultadoProcesamiento, ReferenciaAlmacenamiento, EstadoProceso
+from saludtech.enriquecimiento.modulos.enriquecimineto.dominio.eventos import ProcesoAnonimizacionIniciado, ProcesoAnonimizacionFinalizado, ProcesoAnonimizacionFallido
 from saludtech.enriquecimiento.seedwork.dominio.entidades import AgregacionRaiz, Entidad
 
 @dataclass

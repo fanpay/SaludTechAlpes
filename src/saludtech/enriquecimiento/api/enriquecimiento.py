@@ -1,22 +1,22 @@
 import uuid
-from saludtech.enriquecimiento.modulos.anonimizacion.infraestructura.despachadores import Despachador
+from saludtech.enriquecimiento.modulos.enriquecimineto.infraestructura.despachadores import Despachador
 import saludtech.enriquecimiento.seedwork.presentacion.api as api
 import json
-from saludtech.enriquecimiento.modulos.anonimizacion.aplicacion.servicios import ServicioAnonimizacion
-from saludtech.enriquecimiento.modulos.anonimizacion.aplicacion.dto import *
+from saludtech.enriquecimiento.modulos.enriquecimineto.aplicacion.servicios import ServicioAnonimizacion
+from saludtech.enriquecimiento.modulos.enriquecimineto.aplicacion.dto import *
 from saludtech.enriquecimiento.seedwork.dominio.excepciones import ExcepcionDominio
 
 from flask import redirect, render_template, request, session, url_for
 from flask import Response
-from saludtech.enriquecimiento.modulos.anonimizacion.aplicacion.mapeadores import MapeadorImagenAnonimizadaDTOJson, MapeadorRespuestaImagenAnonimizadaDTOJson, MapeadorImagenAnonimizada
-from saludtech.enriquecimiento.modulos.anonimizacion.aplicacion.comandos.iniciar_anonimizacion import IniciarAnonimizacion
-from saludtech.enriquecimiento.modulos.anonimizacion.aplicacion.queries.consultar_estado_proceso import ObtenerEstadoProceso
+from saludtech.enriquecimiento.modulos.enriquecimineto.aplicacion.mapeadores import MapeadorImagenAnonimizadaDTOJson, MapeadorRespuestaImagenAnonimizadaDTOJson, MapeadorImagenAnonimizada
+from saludtech.enriquecimiento.modulos.enriquecimineto.aplicacion.comandos.iniciar_anonimizacion import IniciarAnonimizacion
+from saludtech.enriquecimiento.modulos.enriquecimineto.aplicacion.queries.consultar_estado_proceso import ObtenerEstadoProceso
 from saludtech.enriquecimiento.seedwork.aplicacion.comandos import ejecutar_commando
 from saludtech.enriquecimiento.seedwork.aplicacion.queries import ejecutar_query
 
-bp = api.crear_blueprint('anonimizacion', '/anonimizacion')
+bp = api.crear_blueprint('enriquecimiento', '/enriquecimiento')
 
-@bp.route('/anonimizacion', methods=('POST',))
+@bp.route('/enriquecimiento', methods=('POST',))
 def iniciar_anonimizacion():
     try:
         imagen_dict = request.json
@@ -31,7 +31,7 @@ def iniciar_anonimizacion():
     except ExcepcionDominio as e:
         return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
 
-@bp.route('/anonimizacion-comando', methods=('POST',))
+@bp.route('/enriquecimiento-comando', methods=('POST',))
 def iniciar_anonimizacion_asincrona():
     try:
         imagen_dict = request.json

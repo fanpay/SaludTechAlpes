@@ -6,11 +6,11 @@ persistir objetos dominio (agregaciones) en la capa de infraestructura del domin
 """
 
 from saludtech.enriquecimiento.config.db import db
-from saludtech.enriquecimiento.modulos.anonimizacion.dominio.repositorios import RepositorioImagenesAnonimizadas, RepositorioProcesosAnonimizacion
-from saludtech.enriquecimiento.modulos.anonimizacion.dominio.entidades import ImagenAnonimizada
-from saludtech.enriquecimiento.modulos.anonimizacion.infraestructura.dto import ImagenAnonimizadaDTO
-from saludtech.enriquecimiento.modulos.anonimizacion.infraestructura.mapeadores import MapeadorImagenAnonimizada, MapeadorRespuestaImagenAnonimizada
-from saludtech.enriquecimiento.modulos.anonimizacion.dominio.fabricas import FabricaAnonimizacion
+from saludtech.enriquecimiento.modulos.enriquecimineto.dominio.repositorios import RepositorioImagenesAnonimizadas, RepositorioProcesosAnonimizacion
+from saludtech.enriquecimiento.modulos.enriquecimineto.dominio.entidades import ImagenAnonimizada
+from saludtech.enriquecimiento.modulos.enriquecimineto.infraestructura.dto import ImagenAnonimizadaDTO
+from saludtech.enriquecimiento.modulos.enriquecimineto.infraestructura.mapeadores import MapeadorImagenAnonimizada, MapeadorRespuestaImagenAnonimizada
+from saludtech.enriquecimiento.modulos.enriquecimineto.dominio.fabricas import FabricaAnonimizacion
 from sqlalchemy.exc import NoResultFound
 from uuid import UUID
 

@@ -14,10 +14,10 @@ DB_PORT = os.getenv("POSTGRES_PORT", default="5432")
 DB_NAME =  os.getenv("POSTGRES_DB", default="transformacionesdb")
 
 def registrar_handlers():
-    import saludtech.enriquecimiento.modulos.anonimizacion.aplicacion
+    import saludtech.enriquecimiento.modulos.enriquecimineto.aplicacion
 
 def importar_modelos_alchemy():
-    import saludtech.enriquecimiento.modulos.anonimizacion.infraestructura.dto
+    import saludtech.enriquecimiento.modulos.enriquecimineto.infraestructura.dto
 
 def comenzar_consumidor(app):
     """
@@ -27,7 +27,7 @@ def comenzar_consumidor(app):
     """
 
     import threading
-    import saludtech.enriquecimiento.modulos.anonimizacion.infraestructura.consumidores as anonimizacion
+    import saludtech.enriquecimiento.modulos.enriquecimineto.infraestructura.consumidores as anonimizacion
 
     def suscribirse_a_eventos_con_contexto():
         with app.app_context():
@@ -68,10 +68,10 @@ def create_app(configuracion={}):
             comenzar_consumidor(app)
 
     # Importa Blueprints
-    from . import anonimizacion
+    from . import enriquecimiento
 
     # Registro de Blueprints
-    app.register_blueprint(anonimizacion.bp)
+    app.register_blueprint(enriquecimiento.bp)
 
     @app.route("/spec")
     def spec():

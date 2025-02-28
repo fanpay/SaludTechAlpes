@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from typing import Optional
-from saludtech.enriquecimiento.modulos.anonimizacion.dominio.objetos_valor import AlgoritmoAnonimizacion, EstadoProceso, FormatoSalida, ModalidadImagen, RegionAnatomica
+from saludtech.enriquecimiento.modulos.enriquecimineto.dominio.objetos_valor import AlgoritmoAnonimizacion, EstadoProceso, FormatoSalida, ModalidadImagen, RegionAnatomica
 from saludtech.enriquecimiento.seedwork.aplicacion.dto import DTO
 from datetime import datetime
 
