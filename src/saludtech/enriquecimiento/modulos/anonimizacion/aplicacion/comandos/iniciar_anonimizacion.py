@@ -1,18 +1,18 @@
 from datetime import datetime
-from saludtech.transformaciones.modulos.anonimizacion.aplicacion.dto import AjusteContrasteDTO, ConfiguracionAnonimizacionDTO, EstadoProcesoDTO, ResultadoProcesamientoDTO, MetadatosImagenDTO, ProcesarImagenDTO, ReferenciaAlmacenamientoDTO
-from saludtech.transformaciones.modulos.anonimizacion.aplicacion.mapeadores import MapeadorImagenAnonimizada
-from saludtech.transformaciones.modulos.anonimizacion.dominio.entidades import ImagenAnonimizada
-from saludtech.transformaciones.modulos.anonimizacion.dominio.objetos_valor import AlgoritmoAnonimizacion, FormatoSalida, ModalidadImagen
-from saludtech.transformaciones.seedwork.aplicacion.comandos import Comando
+from saludtech.enriquecimiento.modulos.anonimizacion.aplicacion.dto import AjusteContrasteDTO, ConfiguracionAnonimizacionDTO, EstadoProcesoDTO, ResultadoProcesamientoDTO, MetadatosImagenDTO, ProcesarImagenDTO, ReferenciaAlmacenamientoDTO
+from saludtech.enriquecimiento.modulos.anonimizacion.aplicacion.mapeadores import MapeadorImagenAnonimizada
+from saludtech.enriquecimiento.modulos.anonimizacion.dominio.entidades import ImagenAnonimizada
+from saludtech.enriquecimiento.modulos.anonimizacion.dominio.objetos_valor import AlgoritmoAnonimizacion, FormatoSalida, ModalidadImagen
+from saludtech.enriquecimiento.seedwork.aplicacion.comandos import Comando
 
 from .base import IniciarAnonimizacionBaseHandler
 from dataclasses import dataclass, field
-from saludtech.transformaciones.seedwork.aplicacion.comandos import ejecutar_commando as comando
+from saludtech.enriquecimiento.seedwork.aplicacion.comandos import ejecutar_commando as comando
 
-from saludtech.transformaciones.modulos.anonimizacion.dominio.entidades import ImagenAnonimizada
-from saludtech.transformaciones.seedwork.infraestructura.uow import UnidadTrabajoPuerto
-from saludtech.transformaciones.modulos.anonimizacion.aplicacion.mapeadores import MapeadorImagenAnonimizada
-from saludtech.transformaciones.modulos.anonimizacion.infraestructura.repositorios import RepositorioImagenesAnonimizadas
+from saludtech.enriquecimiento.modulos.anonimizacion.dominio.entidades import ImagenAnonimizada
+from saludtech.enriquecimiento.seedwork.infraestructura.uow import UnidadTrabajoPuerto
+from saludtech.enriquecimiento.modulos.anonimizacion.aplicacion.mapeadores import MapeadorImagenAnonimizada
+from saludtech.enriquecimiento.modulos.anonimizacion.infraestructura.repositorios import RepositorioImagenesAnonimizadas
 
 @dataclass
 class IniciarAnonimizacion(Comando):
@@ -27,7 +27,6 @@ class IniciarAnonimizacionHandler(IniciarAnonimizacionBaseHandler):
     
     def handle(self, comando: IniciarAnonimizacion):
         procesar_imagen_dto = ProcesarImagenDTO(
-            id=comando.id,
             metadatos=comando.metadatos,
             configuracion=comando.configuracion,
             referencia_entrada=comando.referencia_entrada

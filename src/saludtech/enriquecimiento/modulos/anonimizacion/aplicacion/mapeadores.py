@@ -1,10 +1,10 @@
 import uuid
-from saludtech.transformaciones.modulos.anonimizacion.infraestructura.dto import ImagenAnonimizadaDTO
-from saludtech.transformaciones.seedwork.aplicacion.dto import Mapeador as AppMap
-from saludtech.transformaciones.seedwork.dominio.objetos_valor import Resolucion
-from saludtech.transformaciones.seedwork.dominio.repositorios import Mapeador as RepMap
-from saludtech.transformaciones.modulos.anonimizacion.dominio.entidades import ImagenAnonimizada
-from saludtech.transformaciones.modulos.anonimizacion.dominio.objetos_valor import AlgoritmoAnonimizacion, EstadoProceso, FormatoSalida, MetadatosImagen, ConfiguracionAnonimizacion, ModalidadImagen, RegionAnatomica, ResultadoProcesamiento, ReferenciaAlmacenamiento
+from saludtech.enriquecimiento.modulos.anonimizacion.infraestructura.dto import ImagenAnonimizadaDTO
+from saludtech.enriquecimiento.seedwork.aplicacion.dto import Mapeador as AppMap
+from saludtech.enriquecimiento.seedwork.dominio.objetos_valor import Resolucion
+from saludtech.enriquecimiento.seedwork.dominio.repositorios import Mapeador as RepMap
+from saludtech.enriquecimiento.modulos.anonimizacion.dominio.entidades import ImagenAnonimizada
+from saludtech.enriquecimiento.modulos.anonimizacion.dominio.objetos_valor import AlgoritmoAnonimizacion, EstadoProceso, FormatoSalida, MetadatosImagen, ConfiguracionAnonimizacion, ModalidadImagen, RegionAnatomica, ResultadoProcesamiento, ReferenciaAlmacenamiento
 from .dto import AjusteContrasteDTO, EstadoProcesoDTO, MetadatosImagenDTO, ConfiguracionAnonimizacionDTO, ProcesarImagenDTO, ResolucionDTO, ResultadoProcesamientoDTO, ReferenciaAlmacenamientoDTO
 
 class MapeadorImagenAnonimizadaDTOJson(AppMap):
@@ -48,7 +48,6 @@ class MapeadorImagenAnonimizadaDTOJson(AppMap):
 
     def externo_a_dto(self, externo: dict) -> ProcesarImagenDTO:
         return ProcesarImagenDTO(
-            id=externo.get('id'),
             metadatos=self._procesar_metadatos(externo.get('metadatos')),
             configuracion=self._procesar_configuracion(externo.get('configuracion')),
             referencia_entrada=self._procesar_referencia(externo.get('referencia_entrada'))

@@ -1,18 +1,18 @@
 import uuid
-from saludtech.transformaciones.modulos.anonimizacion.infraestructura.despachadores import Despachador
-import saludtech.transformaciones.seedwork.presentacion.api as api
+from saludtech.enriquecimiento.modulos.anonimizacion.infraestructura.despachadores import Despachador
+import saludtech.enriquecimiento.seedwork.presentacion.api as api
 import json
-from saludtech.transformaciones.modulos.anonimizacion.aplicacion.servicios import ServicioAnonimizacion
-from saludtech.transformaciones.modulos.anonimizacion.aplicacion.dto import *
-from saludtech.transformaciones.seedwork.dominio.excepciones import ExcepcionDominio
+from saludtech.enriquecimiento.modulos.anonimizacion.aplicacion.servicios import ServicioAnonimizacion
+from saludtech.enriquecimiento.modulos.anonimizacion.aplicacion.dto import *
+from saludtech.enriquecimiento.seedwork.dominio.excepciones import ExcepcionDominio
 
 from flask import redirect, render_template, request, session, url_for
 from flask import Response
-from saludtech.transformaciones.modulos.anonimizacion.aplicacion.mapeadores import MapeadorImagenAnonimizadaDTOJson, MapeadorRespuestaImagenAnonimizadaDTOJson, MapeadorImagenAnonimizada
-from saludtech.transformaciones.modulos.anonimizacion.aplicacion.comandos.iniciar_anonimizacion import IniciarAnonimizacion
-from saludtech.transformaciones.modulos.anonimizacion.aplicacion.queries.consultar_estado_proceso import ObtenerEstadoProceso
-from saludtech.transformaciones.seedwork.aplicacion.comandos import ejecutar_commando
-from saludtech.transformaciones.seedwork.aplicacion.queries import ejecutar_query
+from saludtech.enriquecimiento.modulos.anonimizacion.aplicacion.mapeadores import MapeadorImagenAnonimizadaDTOJson, MapeadorRespuestaImagenAnonimizadaDTOJson, MapeadorImagenAnonimizada
+from saludtech.enriquecimiento.modulos.anonimizacion.aplicacion.comandos.iniciar_anonimizacion import IniciarAnonimizacion
+from saludtech.enriquecimiento.modulos.anonimizacion.aplicacion.queries.consultar_estado_proceso import ObtenerEstadoProceso
+from saludtech.enriquecimiento.seedwork.aplicacion.comandos import ejecutar_commando
+from saludtech.enriquecimiento.seedwork.aplicacion.queries import ejecutar_query
 
 bp = api.crear_blueprint('anonimizacion', '/anonimizacion')
 
@@ -40,7 +40,7 @@ def iniciar_anonimizacion_asincrona():
         imagen_dto = map_imagen.externo_a_dto(imagen_dict)
 
         comando = IniciarAnonimizacion(
-            id=imagen_dto.id,
+            id=str(uuid.uuid4()),
             metadatos=imagen_dto.metadatos,
             configuracion=imagen_dto.configuracion,
             referencia_entrada=imagen_dto.referencia_entrada

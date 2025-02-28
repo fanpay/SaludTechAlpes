@@ -1,10 +1,10 @@
 from dataclasses import dataclass, field
 from typing import Optional
-from saludtech.transformaciones.modulos.anonimizacion.dominio.objetos_valor import AlgoritmoAnonimizacion, EstadoProceso, FormatoSalida, ModalidadImagen, RegionAnatomica
-from saludtech.transformaciones.seedwork.aplicacion.dto import DTO
+from saludtech.enriquecimiento.modulos.anonimizacion.dominio.objetos_valor import AlgoritmoAnonimizacion, EstadoProceso, FormatoSalida, ModalidadImagen, RegionAnatomica
+from saludtech.enriquecimiento.seedwork.aplicacion.dto import DTO
 from datetime import datetime
 
-from saludtech.transformaciones.seedwork.dominio.objetos_valor import Resolucion
+from saludtech.enriquecimiento.seedwork.dominio.objetos_valor import Resolucion
 
 @dataclass(frozen=True)
 class ResolucionDTO(DTO):
@@ -48,7 +48,6 @@ class ReferenciaAlmacenamientoDTO(DTO):
 # ====================
 @dataclass(frozen=True)
 class ProcesarImagenDTO(DTO):
-    id: str
     metadatos: MetadatosImagenDTO
     configuracion: ConfiguracionAnonimizacionDTO
     referencia_entrada: ReferenciaAlmacenamientoDTO

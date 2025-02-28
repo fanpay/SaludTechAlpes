@@ -1,11 +1,11 @@
 import pulsar
 from pulsar.schema import *
 
-from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.eventos import EventoAnonimizacionFallidaPayload, EventoAnonimizacionFinalizadaPayload, EventoAnonimizacionIniciada, EventoAnonimizacionFinalizada, EventoAnonimizacionFallida, EventoAnonimizacionIniciadaPayload
-from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.comandos import AjusteContrastePayload, ComandoIniciarAnonimizacion, ComandoIniciarAnonimizacionPayload, ConfiguracionAnonimizacionPayload, MetadatosImagenPayload, ReferenciaAlmacenamientoPayload, ResolucionPayload
-from saludtech.transformaciones.seedwork.infraestructura import utils
-from saludtech.transformaciones.seedwork.infraestructura.despachadores import DespachadorBase, publicar_mensaje
-from saludtech.transformaciones.modulos.anonimizacion.aplicacion.comandos.iniciar_anonimizacion import IniciarAnonimizacion
+from saludtech.enriquecimiento.modulos.anonimizacion.infraestructura.schema.v1.eventos import EventoAnonimizacionFallidaPayload, EventoAnonimizacionFinalizadaPayload, EventoAnonimizacionIniciada, EventoAnonimizacionFinalizada, EventoAnonimizacionFallida, EventoAnonimizacionIniciadaPayload
+from saludtech.enriquecimiento.modulos.anonimizacion.infraestructura.schema.v1.comandos import AjusteContrastePayload, ComandoIniciarAnonimizacion, ComandoIniciarAnonimizacionPayload, ConfiguracionAnonimizacionPayload, MetadatosImagenPayload, ReferenciaAlmacenamientoPayload, ResolucionPayload
+from saludtech.enriquecimiento.seedwork.infraestructura import utils
+from saludtech.enriquecimiento.seedwork.infraestructura.despachadores import DespachadorBase, publicar_mensaje
+from saludtech.enriquecimiento.modulos.anonimizacion.aplicacion.comandos.iniciar_anonimizacion import IniciarAnonimizacion
 
 import datetime
 
@@ -34,7 +34,7 @@ class Despachador(DespachadorBase):
             self._publicar_mensaje(evento_integracion, topico, AvroSchema(EventoAnonimizacionIniciada))
         elif isinstance(evento, EventoAnonimizacionFinalizada):
             payload = EventoAnonimizacionFinalizadaPayload(
-                id=str(evento.data.id),
+                id=str(evento.id),
                 referencia_salida=evento.data.referencia_salida,
                 timestamp=int(datetime.datetime.now().timestamp())
             )
