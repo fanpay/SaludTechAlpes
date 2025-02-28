@@ -1,8 +1,8 @@
 from saludtech.enriquecimiento.seedwork.aplicacion.servicios import Servicio
-from saludtech.enriquecimiento.modulos.anonimizacion.dominio.entidades import ImagenAnonimizada
-from saludtech.enriquecimiento.modulos.anonimizacion.dominio.fabricas import FabricaAnonimizacion
-from saludtech.enriquecimiento.modulos.anonimizacion.infraestructura.fabricas import FabricaRepositorio
-from saludtech.enriquecimiento.modulos.anonimizacion.infraestructura.repositorios import RepositorioImagenesAnonimizadas
+from saludtech.enriquecimiento.modulos.enriquecimineto.dominio.entidades import ImagenAnonimizada
+from saludtech.enriquecimiento.modulos.enriquecimineto.dominio.fabricas import FabricaAnonimizacion
+from saludtech.enriquecimiento.modulos.enriquecimineto.infraestructura.fabricas import FabricaRepositorio
+from saludtech.enriquecimiento.modulos.enriquecimineto.infraestructura.repositorios import RepositorioImagenesAnonimizadas
 from saludtech.enriquecimiento.seedwork.infraestructura.uow import UnidadTrabajoPuerto
 from .mapeadores import MapeadorImagenAnonimizada
 from .dto import MetadatosImagenDTO, EstadoProcesoDTO, ProcesarImagenDTO, AjusteContrasteDTO, ResultadoProcesamientoDTO, ReferenciaAlmacenamientoDTO, ConfiguracionAnonimizacionDTO

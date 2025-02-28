@@ -1,6 +1,6 @@
 from saludtech.enriquecimiento.seedwork.aplicacion.comandos import ComandoHandler
-from saludtech.enriquecimiento.modulos.anonimizacion.infraestructura.fabricas import FabricaRepositorio
-from saludtech.enriquecimiento.modulos.anonimizacion.dominio.fabricas import FabricaAnonimizacion
+from saludtech.enriquecimiento.modulos.enriquecimineto.infraestructura.fabricas import FabricaRepositorio
+from saludtech.enriquecimiento.modulos.enriquecimineto.dominio.fabricas import FabricaAnonimizacion
 
 class IniciarAnonimizacionBaseHandler(ComandoHandler):
     def __init__(self):

@@ -6,17 +6,17 @@ import datetime
 import random
 
 from saludtech.enriquecimiento.config.db import db
-from saludtech.enriquecimiento.modulos.anonimizacion.dominio.objetos_valor import EstadoProceso, ModalidadImagen, RegionAnatomica
-from saludtech.enriquecimiento.modulos.anonimizacion.infraestructura.dto import ImagenAnonimizadaDTO, MetadatosImagenDTO
-from saludtech.enriquecimiento.modulos.anonimizacion.aplicacion.dto import ProcesarImagenDTO
-from saludtech.enriquecimiento.modulos.anonimizacion.aplicacion.servicios import ServicioAnonimizacion
+from saludtech.enriquecimiento.modulos.enriquecimineto.dominio.objetos_valor import EstadoProceso, ModalidadImagen, RegionAnatomica
+from saludtech.enriquecimiento.modulos.enriquecimineto.infraestructura.dto import ImagenAnonimizadaDTO, MetadatosImagenDTO
+from saludtech.enriquecimiento.modulos.enriquecimineto.aplicacion.dto import ProcesarImagenDTO
+from saludtech.enriquecimiento.modulos.enriquecimineto.aplicacion.servicios import ServicioAnonimizacion
 from saludtech.enriquecimiento.seedwork.infraestructura import utils
-from saludtech.enriquecimiento.modulos.anonimizacion.infraestructura.schema.v1.eventos import EventoAnonimizacionIniciada, EventoAnonimizacionFinalizada
-from saludtech.enriquecimiento.modulos.anonimizacion.infraestructura.schema.v1.comandos import ComandoIniciarAnonimizacion
-from saludtech.enriquecimiento.modulos.anonimizacion.aplicacion.comandos.iniciar_anonimizacion import IniciarAnonimizacion
-from saludtech.enriquecimiento.modulos.anonimizacion.infraestructura.despachadores import Despachador
+from saludtech.enriquecimiento.modulos.enriquecimineto.infraestructura.schema.v1.eventos import EventoAnonimizacionIniciada, EventoAnonimizacionFinalizada
+from saludtech.enriquecimiento.modulos.enriquecimineto.infraestructura.schema.v1.comandos import ComandoIniciarAnonimizacion
+from saludtech.enriquecimiento.modulos.enriquecimineto.aplicacion.comandos.iniciar_anonimizacion import IniciarAnonimizacion
+from saludtech.enriquecimiento.modulos.enriquecimineto.infraestructura.despachadores import Despachador
 from saludtech.enriquecimiento.seedwork.aplicacion.comandos import ejecutar_commando
-from saludtech.enriquecimiento.modulos.anonimizacion.infraestructura.schema.v1.eventos import ReferenciaAlmacenamientoPayload
+from saludtech.enriquecimiento.modulos.enriquecimineto.infraestructura.schema.v1.eventos import ReferenciaAlmacenamientoPayload
 
 def suscribirse_a_eventos():
     cliente = None

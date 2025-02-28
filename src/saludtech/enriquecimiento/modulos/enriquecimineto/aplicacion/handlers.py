@@ -1,10 +1,10 @@
-from saludtech.enriquecimiento.modulos.anonimizacion.dominio.eventos import (
+from saludtech.enriquecimiento.modulos.enriquecimineto.dominio.eventos import (
     ProcesoAnonimizacionIniciado,
     ProcesoAnonimizacionFinalizado,
     ProcesoAnonimizacionFallido
 )
 from saludtech.enriquecimiento.seedwork.aplicacion.handlers import Handler
-from saludtech.enriquecimiento.modulos.anonimizacion.infraestructura.despachadores import Despachador
+from saludtech.enriquecimiento.modulos.enriquecimineto.infraestructura.despachadores import Despachador
 
 class HandlerAnonimizacionIntegracion(Handler):
 

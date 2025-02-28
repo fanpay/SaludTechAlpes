@@ -7,9 +7,9 @@ encargados de la transformación entre formatos de dominio y DTOs
 
 from saludtech.enriquecimiento.seedwork.dominio.objetos_valor import Resolucion
 from saludtech.enriquecimiento.seedwork.dominio.repositorios import Mapeador
-from saludtech.enriquecimiento.modulos.anonimizacion.dominio.entidades import ImagenAnonimizada
-from saludtech.enriquecimiento.modulos.anonimizacion.dominio.objetos_valor import AlgoritmoAnonimizacion, EstadoProceso, FormatoSalida, MetadatosImagen, ConfiguracionAnonimizacion, ModalidadImagen, RegionAnatomica, ResultadoProcesamiento, ReferenciaAlmacenamiento
-from saludtech.enriquecimiento.modulos.anonimizacion.infraestructura.dto import ImagenAnonimizadaDTO, MetadatosImagenDTO, ConfiguracionAnonimizacionDTO, ReferenciaAlmacenamientoDTO
+from saludtech.enriquecimiento.modulos.enriquecimineto.dominio.entidades import ImagenAnonimizada
+from saludtech.enriquecimiento.modulos.enriquecimineto.dominio.objetos_valor import AlgoritmoAnonimizacion, EstadoProceso, FormatoSalida, MetadatosImagen, ConfiguracionAnonimizacion, ModalidadImagen, RegionAnatomica, ResultadoProcesamiento, ReferenciaAlmacenamiento
+from saludtech.enriquecimiento.modulos.enriquecimineto.infraestructura.dto import ImagenAnonimizadaDTO, MetadatosImagenDTO, ConfiguracionAnonimizacionDTO, ReferenciaAlmacenamientoDTO
 import json
 
 class MapeadorImagenAnonimizada(Mapeador):
