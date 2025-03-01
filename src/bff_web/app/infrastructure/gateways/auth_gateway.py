@@ -10,3 +10,5 @@ def validate_jwt(token: str) -> bool:
         return True
     except PyJWTError:
         return False
+
+
