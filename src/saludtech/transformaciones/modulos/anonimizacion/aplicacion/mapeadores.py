@@ -161,7 +161,11 @@ class MapeadorRespuestaImagenAnonimizada(RepMap):
                 llave_objeto=entidad.referencia_entrada.llave_objeto,
                 proveedor_almacenamiento=entidad.referencia_entrada.proveedor_almacenamiento
             ),
-            referencia_salida=None,
+            referencia_salida=ReferenciaAlmacenamientoDTO(
+                nombre_bucket=entidad.referencia_salida.nombre_bucket,
+                llave_objeto=entidad.referencia_salida.llave_objeto,
+                proveedor_almacenamiento=entidad.referencia_salida.proveedor_almacenamiento
+            ),
             resultado=None,
             fecha_solicitud=entidad.fecha_solicitud,
             fecha_ultima_actualizacion=entidad.fecha_actualizacion,

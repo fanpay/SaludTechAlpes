@@ -110,5 +110,6 @@ class MapeadorRespuestaImagenAnonimizada(Mapeador):
             estado=EstadoProceso(dto.estado),
             metadatos=dto.metadatos,
             configuracion=dto.configuracion,
-            referencia_entrada=dto.referencia_entrada
+            referencia_entrada=dto.referencia_entrada,
+            referencia_salida=dto.referencia_salida
         )
