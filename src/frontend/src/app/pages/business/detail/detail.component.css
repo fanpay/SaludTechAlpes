@@ -1,0 +1,19 @@
+#container {
+    height: 100vh;
+}
+
+.card-details__head {
+    padding-top: 86px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;   
+}
+
+.card-details__head__title {
+    padding-bottom: 20px;
+}
+
+.details-content {
+    padding: 36px;
+}

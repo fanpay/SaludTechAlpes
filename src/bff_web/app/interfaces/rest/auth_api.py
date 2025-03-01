@@ -26,4 +26,4 @@ async def authenticate(api_key: str):
     user_data = API_KEYS[api_key]
     # Generar el JWT con la información del usuario
     token = create_jwt(payload={"sub": user_data["user"]}, expires_delta=timedelta(hours=1))
-    return {"token": token}
+    return {"token": token, "user": user_data["user"]}
