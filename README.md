@@ -4,6 +4,10 @@ Este repositorio contiene el código y la documentación del proyecto SaludTech 
 
 ## Estructura del Proyecto
 
+<details>
+
+<summary>Click aquí para ver más detalle</summary>
+
 ``` bash
 ├── LICENSE
 ├── Lenguaje-obicuo # Carpeta con las imágenes del lenguaje ubicuo
@@ -99,6 +103,7 @@ Este repositorio contiene el código y la documentación del proyecto SaludTech 
 ├── tests # Carpeta con los tests
 └── transformacion.Dockerfile # Dockerfile para el microservicio de transformación
 ```
+</details>
 
 ## SaludTech
 ### Ejecutar Aplicación
@@ -200,6 +205,7 @@ docker-compose --profile <pulsar|transformaciones|saludtech-transformacion> up
 
 
 # Entrega 1
+<details>
 Los diagramas AS-IS y TO-BE se encuentran en la carpeta `src-gen`.  Estos diagramas fueron generados utilizando Context Mapper a partir de los archivos `.cml` ubicados en `docs/entrega1/`.
 
 1. **Abra los archivos `.cml` (saludtechdemo-entrega1-as-is.cml y saludtechdemo-entrega1-to-be.cml) con Context Mapper.**
@@ -224,7 +230,9 @@ El código fuente principal se encuentra en la carpeta `src/saludtech`.
 **Imagen de lenguaje obicuo TO-BE**
 - `./Lenguaje-obicuo/Dominio y subdominios TO - BE.png`
 
-# Entrega 2
+</details>
+
+# Entrega 3
 
 ## Escenarios de calidad 
 
@@ -244,3 +252,6 @@ En este caso el servicio de transformacion recibe un comando de de inicio de pro
 
 ![image](https://github.com/user-attachments/assets/d7b10c81-84db-4b3d-b14c-e8ee33e1bcfd)
 
+# Entrega 4
+
+TODO: Agregar diagrama de arquitectura de la solución
