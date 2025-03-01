@@ -3,6 +3,7 @@ from saludtech.transformaciones.modulos.anonimizacion.aplicacion.dto import Ajus
 from saludtech.transformaciones.modulos.anonimizacion.aplicacion.mapeadores import MapeadorImagenAnonimizada
 from saludtech.transformaciones.modulos.anonimizacion.dominio.entidades import ImagenAnonimizada
 from saludtech.transformaciones.modulos.anonimizacion.dominio.objetos_valor import AlgoritmoAnonimizacion, FormatoSalida, ModalidadImagen
+from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.comandos import ReferenciaAlmacenamientoPayload
 from saludtech.transformaciones.seedwork.aplicacion.comandos import Comando
 
 from .base import IniciarAnonimizacionBaseHandler
@@ -30,7 +31,12 @@ class IniciarAnonimizacionHandler(IniciarAnonimizacionBaseHandler):
             id=comando.id,
             metadatos=comando.metadatos,
             configuracion=comando.configuracion,
-            referencia_entrada=comando.referencia_entrada
+            referencia_entrada=comando.referencia_entrada,
+            referencia_salida=ReferenciaAlmacenamientoPayload(
+                nombre_bucket = "bucket_salida",
+                llave_objeto =  comando.referencia_entrada.llave_objeto + "_." + comando.configuracion.formato_salida,
+                proveedor_almacenamiento = comando.referencia_entrada.proveedor_almacenamiento
+            )
         )
         
         # Convertir el DTO en una entidad de dominio

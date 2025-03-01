@@ -51,7 +51,8 @@ class MapeadorImagenAnonimizadaDTOJson(AppMap):
             id=externo.get('id'),
             metadatos=self._procesar_metadatos(externo.get('metadatos')),
             configuracion=self._procesar_configuracion(externo.get('configuracion')),
-            referencia_entrada=self._procesar_referencia(externo.get('referencia_entrada'))
+            referencia_entrada=self._procesar_referencia(externo.get('referencia_entrada')),
+            referencia_salida=None
         )
 
     def dto_a_externo(self, dto: ProcesarImagenDTO) -> dict:
@@ -118,6 +119,11 @@ class MapeadorImagenAnonimizada(RepMap):
                 nombre_bucket=dto.referencia_entrada.nombre_bucket,
                 llave_objeto=dto.referencia_entrada.llave_objeto,
                 proveedor_almacenamiento=dto.referencia_entrada.proveedor_almacenamiento
+            ),
+            referencia_salida=ReferenciaAlmacenamiento(
+                nombre_bucket=dto.referencia_salida.nombre_bucket,
+                llave_objeto=dto.referencia_salida.llave_objeto,
+                proveedor_almacenamiento=dto.referencia_salida.proveedor_almacenamiento
             )
             
         )

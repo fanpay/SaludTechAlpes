@@ -18,21 +18,19 @@ class ImagenAnonimizada(AgregacionRaiz):
     metadatos: MetadatosImagen = field(default_factory=MetadatosImagen)
     configuracion: ConfiguracionAnonimizacion = field(default_factory=ConfiguracionAnonimizacion)
     referencia_entrada: ReferenciaAlmacenamiento = field(default_factory=ReferenciaAlmacenamiento) # Ubicación de la imagen original
-    #referencia_salida: ReferenciaAlmacenamiento = field(default_factory=ReferenciaAlmacenamiento)
+    referencia_salida: ReferenciaAlmacenamiento = field(default_factory=ReferenciaAlmacenamiento)
     estado: EstadoProceso = field(default=EstadoProceso.PENDIENTE)   # PENDING, PROCESSING, COMPLETED, FAILED
     #resultado: ResultadoProcesamiento = field(default_factory=ResultadoProcesamiento)
     fecha_solicitud:  datetime.datetime = field(default_factory=datetime.datetime.now)
 
     def iniciar_procesamiento(self, imagen: ImagenAnonimizada):
         self.estado = EstadoProceso.PROCESANDO
-        #self.id = imagen.id
         self.metadatos = imagen.metadatos
         self.referencia_entrada = imagen.referencia_entrada
         self.configuracion = imagen.configuracion
         
         
         self.agregar_evento(ProcesoAnonimizacionIniciado(
-            #proceso_id=self.id,
             metadatos=self.metadatos,
             referencia_entrada=self.referencia_entrada,
             configuracion=self.configuracion

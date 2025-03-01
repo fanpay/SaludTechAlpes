@@ -23,13 +23,13 @@ class MapeadorImagenAnonimizada(Mapeador):
             #resultado=entidad.resultado.checksum if entidad.resultado else None,
             fecha_solicitud=entidad.fecha_solicitud,
             metadatos=MetadatosImagenDTO(
-                modalidad=entidad.metadatos.modalidad,
-                region=entidad.metadatos.region,
-                resolucion=json.dumps({
-                    'ancho': entidad.metadatos.resolucion.ancho,
-                    'alto': entidad.metadatos.resolucion.alto,
-                    'dpi': entidad.metadatos.resolucion.dpi
-                }),
+            #    modalidad=entidad.metadatos.modalidad,
+            #    region=entidad.metadatos.region,
+            #    resolucion=json.dumps({
+            #        'ancho': entidad.metadatos.resolucion.ancho,
+            #        'alto': entidad.metadatos.resolucion.alto,
+            #        'dpi': entidad.metadatos.resolucion.dpi
+            #    }),
                 fecha_adquisicion=entidad.metadatos.fecha_adquisicion
             ),
             configuracion=ConfiguracionAnonimizacionDTO(
@@ -45,8 +45,12 @@ class MapeadorImagenAnonimizada(Mapeador):
                 nombre_bucket = entidad.referencia_entrada.nombre_bucket,
                 llave_objeto = entidad.referencia_entrada.llave_objeto,
                 proveedor_almacenamiento = entidad.referencia_entrada.proveedor_almacenamiento
+            ),
+            referencia_salida=ReferenciaAlmacenamientoDTO(
+                nombre_bucket = entidad.referencia_salida.nombre_bucket,
+                llave_objeto = entidad.referencia_salida.llave_objeto,
+                proveedor_almacenamiento = entidad.referencia_salida.proveedor_almacenamiento
             )
-            #referencia_salida_id=str(entidad.referencia_salida.id) if entidad.referencia_salida else None
         )
 
     def dto_a_entidad(self, dto: ImagenAnonimizadaDTO) -> ImagenAnonimizada:
@@ -61,7 +65,6 @@ class MapeadorImagenAnonimizada(Mapeador):
             ) if dto.resultado else None,
             fecha_solicitud=dto.fecha_solicitud,
             metadatos=MetadatosImagen(
-                #id=dto.metadatos_id,
                 modalidad=ModalidadImagen(dto.modalidad),
                 region=RegionAnatomica(dto.region),
                 resolucion=Resolucion(
@@ -72,7 +75,6 @@ class MapeadorImagenAnonimizada(Mapeador):
                 fecha_adquisicion=dto.fecha_adquisicion
             ),
             configuracion=ConfiguracionAnonimizacion(
-                #id=dto.configuracion_id,
                 nivel_anonimizacion=dto.nivel_anonimizacion,
                 formato_salida=FormatoSalida(dto.formato_salida),
                 ajustes_contraste=dto.ajustes_contraste,

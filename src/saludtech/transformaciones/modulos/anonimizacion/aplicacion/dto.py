@@ -52,6 +52,7 @@ class ProcesarImagenDTO(DTO):
     metadatos: MetadatosImagenDTO
     configuracion: ConfiguracionAnonimizacionDTO
     referencia_entrada: ReferenciaAlmacenamientoDTO
+    referencia_salida: ReferenciaAlmacenamientoDTO
 
 # =================
 # QUERIES (Lectura)
