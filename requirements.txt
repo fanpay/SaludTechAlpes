@@ -4,7 +4,7 @@ coverage==6.5.0
 flask[async]==2.2.2
 Flask-SQLAlchemy==3.0.2
 flask-swagger==0.2.14
-greenlet==2.0.1
+greenlet==2.0.2
 iniconfig==1.1.1
 itsdangerous==2.1.2
 Jinja2==3.1.2
@@ -32,5 +32,5 @@ graphql-server-core==1.1.1
 psycopg2-binary==2.9.5
 python-dotenv
 aiohttp
-asyncio 
+asyncio
 requests
