@@ -124,6 +124,27 @@ services:
     profiles: ["transformaciones"]
 
 
+  # Bases de datos de Transformaciones
+  procesamientodb:
+    image: postgres:latest
+    container_name: procesamientodb
+    ports:
+      - "5433:5433"
+    networks:
+      - transformacionesnet
+    environment:
+      POSTGRES_DB: procesamientodb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5433
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+    profiles: ["procesamiento"]
+
 
   # Servicios de SaludTech
   saludtech-transformacion:
@@ -174,5 +195,26 @@ services:
     ports:
       - "5000:6000"
 
-
-
+  saludtech-procesamiento:
+    container_name: procesamiento
+    hostname: procesamiento
+    build:
+      context: .
+      dockerfile: procesamiento.Dockerfile
+    profiles: ["saludtech-procesamiento"]
+    networks:
+      - transformacionesnet
+      - pulsar
+    depends_on:
+      - procesamientodb
+      - broker
+    environment:
+      - PULSAR_ADDRESS=broker
+      - BROKER_HOST=broker
+      - POSTGRES_DB=procesamientodb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_HOST=procesamientodb
+      - POSTGRES_PORT=5432
+    ports:
+      - "5000:7000"
