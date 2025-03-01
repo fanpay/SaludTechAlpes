@@ -1,5 +1,6 @@
 import strawberry
 from typing import Optional
+from typing import Any
 from app.infrastructure.gateways import auth_gateway, anonimizacion_gateway
 
 @strawberry.scalar(description="Scalar para datos JSON")

@@ -1,18 +1,27 @@
 from fastapi import FastAPI
 
 from app.interfaces.rest import auth_api, anonimizacion_api, registro_api
-#from strawberry.asgi import GraphQL
-# from app.interfaces.graphql.schema import *
+from fastapi.middleware.cors import CORSMiddleware
+from strawberry.asgi import GraphQL
+from app.interfaces.graphql.schema import *
 import uvicorn
 
 app = FastAPI(title="BFF Gateway")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Permite todos los orígenes
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-# # Rutas REST (por ejemplo, versión v1)
 app.include_router(auth_api.router, prefix="/v1/rest")
 app.include_router(anonimizacion_api.router, prefix="/v1/rest")
 app.include_router(registro_api.router, prefix="/v1/rest")
 
-# # Montaje de GraphQL con Strawberry
+graphql_app = GraphQL(schema)
+app.mount("/v1/graphql", graphql_app)
+
 # graphql_app = GraphQL(schema)
 # app.mount("/v1/graphql", graphql_app)
 
