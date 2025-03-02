@@ -1,0 +1,207 @@
+<div class="card">
+  <div class="mb-4">
+    <button 
+      type="button" 
+      routerLink="/menu/list" 
+      class="flex items-center text-blue-600 hover:text-blue-800 font-bold"
+    >
+      <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+      </svg>
+      Volver al listado
+    </button>
+  </div>
+  <div class="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <h2 class="text-3xl font-bold text-gray-800 mb-6 card-title">
+      Crear Nueva Solicitud
+    </h2>
+
+    <form [formGroup]="solicitudForm" (ngSubmit)="crearSolicitud()">
+      <!-- Información Básica -->
+      <div class="bg-gray-100 p-4 rounded-lg mb-4">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">
+          Información Básica
+        </h3>
+        <div class="grid grid-cols-2 gap-4">
+          @for (field of ['usuario', 'nombre_paciente', 'cedula',
+          'descripcion']; track field) {
+          <div class="flex flex-col">
+            <label class="text-gray-700 capitalize font-medium">{{
+              field.replace("_", " ")
+            }}</label>
+            <input
+              type="text"
+              formControlName="{{ field }}"
+              placeholder="{{ field }}"
+              class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          }
+        </div>
+      </div>
+
+      <!-- Metadatos -->
+      <div formGroupName="metadatos" class="bg-gray-100 p-4 rounded-lg mb-4">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Metadatos</h3>
+
+        <div class="grid grid-cols-3 gap-4">
+          <div class="flex flex-col">
+            <label class="text-gray-700 font-medium">Modalidad</label>
+            <input
+              type="text"
+              formControlName="modalidad"
+              placeholder="Modalidad"
+              class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div class="flex flex-col">
+            <label class="text-gray-700 font-medium">Región</label>
+            <input
+              type="text"
+              formControlName="region"
+              placeholder="Región"
+              class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div class="flex flex-col">
+            <label class="text-gray-700 font-medium"
+              >Fecha de adquisición</label
+            >
+            <input
+              type="date"
+              formControlName="fecha_adquisicion"
+              placeholder="Fecha de adquisición"
+              class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        </div>
+
+        <!-- Resolución -->
+        <div formGroupName="resolucion" class="mt-4 bg-gray-50 p-4 rounded-lg">
+          <h4 class="text-md font-semibold text-gray-800 mb-2">Resolución</h4>
+          <div class="grid grid-cols-3 gap-4">
+            @for (field of ['alto', 'ancho', 'dpi']; track field) {
+            <div class="flex flex-col">
+              <label class="text-gray-700 capitalize font-medium">{{
+                field.replace("_", " ")
+              }}</label>
+              <input
+                type="number"
+                formControlName="{{ field }}"
+                placeholder="{{ field }}"
+                class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Configuración -->
+      <div
+        formGroupName="configuracion"
+        class="bg-gray-100 p-4 rounded-lg mb-4"
+      >
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Configuración</h3>
+
+        <div class="grid grid-cols-3 gap-4">
+          <div class="flex flex-col">
+            <label class="text-gray-700 font-medium">Nivel anonimización</label>
+            <input
+              type="number"
+              formControlName="nivel_anonimizacion"
+              placeholder="Nivel anonimización"
+              class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div class="flex flex-col">
+            <label class="text-gray-700 font-medium">Formato de salida</label>
+            <input
+              type="text"
+              formControlName="formato_salida"
+              placeholder="Formato de salida"
+              class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div class="flex flex-col">
+            <label class="text-gray-700 font-medium">Algoritmo</label>
+            <input
+              type="text"
+              formControlName="algoritmo"
+              placeholder="Algoritmo"
+              class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        </div>
+
+        <!-- Ajustes de Contraste -->
+        <div
+          formGroupName="ajustes_contraste"
+          class="mt-4 bg-gray-50 p-4 rounded-lg"
+        >
+          <h4 class="text-md font-semibold text-gray-800 mb-2">
+            Ajustes de Contraste
+          </h4>
+          <div class="grid grid-cols-2 gap-4">
+            @for (field of ['brillo', 'contraste']; track field) {
+            <div class="flex flex-col">
+              <label class="text-gray-700 capitalize font-medium">{{
+                field.replace("_", " ")
+              }}</label>
+              <input
+                type="number"
+                formControlName="{{ field }}"
+                placeholder="{{ field }}"
+                class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Referencia de Entrada -->
+      <div
+        formGroupName="referencia_entrada"
+        class="bg-gray-100 p-4 rounded-lg mb-4"
+      >
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">
+          Referencia de Entrada
+        </h3>
+        <div class="grid grid-cols-3 gap-4">
+          @for (field of ['nombre_bucket', 'llave_objeto',
+          'proveedor_almacenamiento']; track field) {
+          <div class="flex flex-col">
+            <label class="text-gray-700 capitalize font-medium">{{
+              field.replace("_", " ")
+            }}</label>
+            <input
+              type="text"
+              formControlName="{{ field }}"
+              placeholder="{{ field }}"
+              class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          }
+        </div>
+      </div>
+
+      <!-- Botones -->
+      <div class="mt-6 grid grid-cols-2 gap-4">
+        <button
+          type="submit"
+          class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-lg"
+        >
+          Enviar
+        </button>
+        <button
+          type="button"
+          routerLink="/menu/list"
+          class="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 rounded-lg"
+        >
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

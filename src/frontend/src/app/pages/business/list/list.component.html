@@ -1,10 +1,33 @@
 <div class="container mx-auto px-4" id="container">
-  <h2
-    class="text-lg font-bold text-gray-800 dark:text-black align-middle"
-    id="list-title"
-  >
-    LISTADO DE SOLICITUDES
-  </h2>
+  <div class="flex justify-between items-center mb-4">
+    <h2
+      class="text-lg font-bold text-gray-800 dark:text-black align-middle"
+      id="list-title"
+    >
+      LISTADO DE SOLICITUDES
+    </h2>
+
+    <button
+      [routerLink]="['/menu/create']"
+      class="bg-blue-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded flex items-center gap-2"
+    >
+      <svg
+        class="w-5 h-5 text-white"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 4v16m8-8H4"
+        />
+      </svg>
+      Crear solicitud
+    </button>
+  </div>
   <div class="flex flex-col">
     <div class="-m-1.5 overflow-x-auto">
       <div class="p-1.5 min-w-full inline-block align-middle">

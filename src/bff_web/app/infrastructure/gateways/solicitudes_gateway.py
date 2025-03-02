@@ -3,7 +3,7 @@ import logging
 
 BASE_URL = "http://127.0.0.1:5001/anonimizacion/solicitudes"
 
-def create_solicitud(username: str) -> dict:
+def get_all_solicitudes(username: str) -> dict:
     url = f"{BASE_URL}/{username}"
     try:
         response = httpx.get(url)

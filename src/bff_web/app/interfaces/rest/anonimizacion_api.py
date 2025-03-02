@@ -15,9 +15,9 @@ async def get_anonimizacion_state(id: str, token: str = Depends(verify_token)):
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 @router.get("/solicitudes/{username}")
-async def get_anonimizacion_state(username: str, token: str = Depends(verify_token)):
+async def get_anonimizacion_list(username: str, token: str = Depends(verify_token)):
     try:
-        state = solicitudes_gateway.get_solicitud_state(username)
+        state = solicitudes_gateway.get_all_solicitudes(username)
         return {"state": state}
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))

@@ -34,10 +34,10 @@ export class DetailComponent {
         error: (error) => {
           Swal.fire({
             title: 'Oops...',
-            text: `Ocurrió un error. No se pudo obtener los detalles de ${this.id}`,
+            text: `Ocurrió un error, no se logró obtener los detalles de ${this.id}`,
             icon: 'error',
             confirmButtonText: 'Continuar',
-            timer: 6000,
+            timer: 4000,
           }).then(() => {
             this.router.navigate(['/menu/list']);
           });
