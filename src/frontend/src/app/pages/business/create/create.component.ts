@@ -27,7 +27,7 @@ export class CreateComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.solicitudForm = this._fb.group({
       usuario: ['', Validators.required],
-      nombre_paciente: ['', Validators.required],
+      "nombre-paciente": ['', Validators.required],
       cedula: ['', Validators.required],
       descripcion: ['', Validators.required],
       metadatos: this._fb.group({

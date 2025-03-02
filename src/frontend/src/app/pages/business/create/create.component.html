@@ -1,8 +1,8 @@
 <div class="card">
   <div class="mb-4">
-    <button 
-      type="button" 
-      routerLink="/menu/list" 
+    <button
+      type="button"
+      routerLink="/menu/list"
       class="flex items-center text-blue-600 hover:text-blue-800 font-bold"
     >
       <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -23,7 +23,7 @@
           Información Básica
         </h3>
         <div class="grid grid-cols-2 gap-4">
-          @for (field of ['usuario', 'nombre_paciente', 'cedula',
+          @for (field of ['usuario', 'nombre-paciente', 'cedula',
           'descripcion']; track field) {
           <div class="flex flex-col">
             <label class="text-gray-700 capitalize font-medium">{{

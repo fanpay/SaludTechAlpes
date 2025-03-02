@@ -1,6 +1,6 @@
 export interface Solicitud {
   usuario: string;
-  nombre_paciente: string;
+  "nombre-paciente": string;
   cedula: string;
   descripcion: string;
   metadatos: Metadatos;
