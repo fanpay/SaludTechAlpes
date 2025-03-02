@@ -24,11 +24,13 @@ class Despachador(DespachadorBase):
     def publicar_evento(self, evento, topico):
         if isinstance(evento, EventoAnonimizacionIniciada):
             payload = EventoAnonimizacionIniciadaPayload(
-                id=str(evento.id),
-                metadatos=evento.metadatos,
-                configuracion=evento.configuracion,
-                referencia_entrada=evento.referencia_entrada,
-                timestamp=int(unix_time_millis(evento.timestamp))
+                id=str(evento.data.id),
+                nombre_paciente = evento.data.nombre_paciente,
+                cedula = evento.data.cedula,
+                referencia_entrada=evento.data.referencia_entrada,
+                configuracion=evento.data.configuracion,
+                metadatos=evento.data.metadatos,
+                timestamp=int(datetime.datetime.now().timestamp())
             )
             evento_integracion = EventoAnonimizacionIniciada(data=payload)
             self._publicar_mensaje(evento_integracion, topico, AvroSchema(EventoAnonimizacionIniciada))

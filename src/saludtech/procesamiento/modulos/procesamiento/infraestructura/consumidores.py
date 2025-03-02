@@ -9,7 +9,7 @@ import datetime
 from saludtech.procesamiento.modulos.procesamiento.aplicacion.dto import ProcesarImagenDTO
 from saludtech.procesamiento.modulos.procesamiento.aplicacion.servicios import ServicioAnonimizacion
 from saludtech.procesamiento.seedwork.infraestructura import utils
-from saludtech.procesamiento.modulos.procesamiento.infraestructura.schema.v1.eventos import ConfiguracionAnonimizacionPayload, EventoAnonimizacion, EventoAnonimizacionPayload, MetadatosImagenPayload, AjusteContrastePayload, ResolucionPayload
+from saludtech.procesamiento.modulos.procesamiento.infraestructura.schema.v1.eventos import ConfiguracionAnonimizacionPayload, EventoAnonimizacionIniciada, EventoAnonimizacionIniciadaPayload, MetadatosImagenPayload, AjusteContrastePayload, ResolucionPayload
 from saludtech.procesamiento.modulos.procesamiento.infraestructura.schema.v1.comandos import ComandoIniciarAnonimizacion
 from saludtech.procesamiento.modulos.procesamiento.aplicacion.comandos.iniciar_anonimizacion import IniciarAnonimizacion
 from saludtech.procesamiento.modulos.procesamiento.infraestructura.despachadores import Despachador
@@ -20,7 +20,7 @@ def suscribirse_a_eventos():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('eventos-procesar6', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='saludtech-sub-eventos', schema=AvroSchema(EventoAnonimizacion))
+        consumidor = cliente.subscribe('eventos-procesar1', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='saludtech-sub-eventos', schema=AvroSchema(EventoAnonimizacionIniciada))
 
         while True:
             mensaje = consumidor.receive()
@@ -43,7 +43,7 @@ def suscribirse_a_comandos():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('comandos-procesamiento5', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='saludtech-sub-comandos', schema=AvroSchema(ComandoIniciarAnonimizacion))
+        consumidor = cliente.subscribe('comandos-procesamiento7', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='saludtech-sub-comandos', schema=AvroSchema(ComandoIniciarAnonimizacion))
 
         while True:
             
@@ -64,8 +64,8 @@ def suscribirse_a_comandos():
             
             ejecutar_commando(comando)
             
-            evento = EventoAnonimizacion(
-                data = EventoAnonimizacionPayload(
+            evento = EventoAnonimizacionIniciada(
+                data = EventoAnonimizacionIniciadaPayload(
                     id = comando.id_solicitud,
                     nombre_paciente = comando.nombre,
                     cedula = comando.cedula,
@@ -73,21 +73,14 @@ def suscribirse_a_comandos():
                         id = comando.configuracion.id,
                         nivel_anonimizacion = comando.configuracion.nivel_anonimizacion,
                         formato_salida = comando.configuracion.formato_salida,
-                        ajustes_contraste = AjusteContrastePayload(
-                            brillo = comando.configuracion.ajustes_contraste.brillo,
-                            contraste = comando.configuracion.ajustes_contraste.contraste
-                        ),
+                        ajustes_contraste = str(comando.configuracion.ajustes_contraste),
                         algoritmo = comando.configuracion.algoritmo
                         ),
                     metadatos = MetadatosImagenPayload(
                         id = comando.metadatos.id,
                         modalidad = comando.metadatos.modalidad,
                         region = comando.metadatos.region,
-                        resolucion = ResolucionPayload(
-                            alto=comando.metadatos.resolucion.alto,
-                            ancho=comando.metadatos.resolucion.ancho,
-                            dpi=comando.metadatos.resolucion.dpi
-                            ),
+                        resolucion = str(comando.metadatos.resolucion),
                         fecha_adquisicion = comando.metadatos.fecha_adquisicion,
                         ),
                     referencia_entrada = ReferenciaAlmacenamientoPayload(
@@ -100,7 +93,7 @@ def suscribirse_a_comandos():
                 )
             )
             despachador = Despachador()
-            despachador.publicar_evento(evento, 'eventos-transformar7')
+            despachador.publicar_evento(evento, 'eventos-transformar12')
 
             consumidor.acknowledge(mensaje)
             

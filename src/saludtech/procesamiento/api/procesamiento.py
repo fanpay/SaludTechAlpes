@@ -36,7 +36,7 @@ def iniciar_anonimizacion_asincrona():
         )
         
         despachador = Despachador()
-        despachador.publicar_comando(comando, 'comandos-procesamiento5')
+        despachador.publicar_comando(comando, 'comandos-procesamiento7')
 
         
         return Response(imagen_dto.id_solicitud, status=202, mimetype='application/json')
