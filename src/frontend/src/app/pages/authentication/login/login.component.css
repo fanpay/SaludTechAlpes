@@ -1,0 +1,18 @@
+#login-card {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    min-width: 26rem;
+    min-height: 24rem;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    gap: 3rem;
+}
+
+label {
+    padding: 0px 0px 10px 0px;
+}
+
+.login-btn-container {
+    padding-top: 30px;
+}
