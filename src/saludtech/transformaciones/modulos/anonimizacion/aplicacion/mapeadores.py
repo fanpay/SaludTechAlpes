@@ -102,7 +102,7 @@ class MapeadorImagenAnonimizada(RepMap):
         resolucion = ast.literal_eval(dto.metadatos.resolucion)
         ajustecontraste = ast.literal_eval(dto.configuracion.ajustes_contraste)
         return ImagenAnonimizada(
-            id=str(uuid.uuid4()),
+            id=dto.id,
             metadatos=MetadatosImagen(
                 modalidad=ModalidadImagen(dto.metadatos.modalidad),
                 region=RegionAnatomica(dto.metadatos.region),
