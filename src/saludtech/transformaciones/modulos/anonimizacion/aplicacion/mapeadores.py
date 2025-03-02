@@ -1,4 +1,6 @@
 import uuid
+import ast
+from saludtech.enriquecimiento.seedwork.dominio.objetos_valor import AjusteContraste
 from saludtech.transformaciones.modulos.anonimizacion.infraestructura.dto import ImagenAnonimizadaDTO
 from saludtech.transformaciones.seedwork.aplicacion.dto import Mapeador as AppMap
 from saludtech.transformaciones.seedwork.dominio.objetos_valor import Resolucion
@@ -97,22 +99,27 @@ class MapeadorImagenAnonimizada(RepMap):
         )
 
     def dto_a_entidad(self, dto: ImagenAnonimizadaDTO) -> ImagenAnonimizada:
+        resolucion = ast.literal_eval(dto.metadatos.resolucion)
+        ajustecontraste = ast.literal_eval(dto.configuracion.ajustes_contraste)
         return ImagenAnonimizada(
             id=str(uuid.uuid4()),
             metadatos=MetadatosImagen(
                 modalidad=ModalidadImagen(dto.metadatos.modalidad),
                 region=RegionAnatomica(dto.metadatos.region),
                 resolucion=Resolucion(
-                    alto = dto.metadatos.resolucion.alto,
-                    ancho = dto.metadatos.resolucion.ancho,
-                    dpi = dto.metadatos.resolucion.dpi
+                    alto = resolucion['alto'],
+                    ancho = resolucion['ancho'],
+                    dpi = resolucion['dpi']
                 ),
                 fecha_adquisicion=dto.metadatos.fecha_adquisicion
             ),
             configuracion=ConfiguracionAnonimizacion(
                 nivel_anonimizacion=dto.configuracion.nivel_anonimizacion,
                 formato_salida=FormatoSalida(dto.configuracion.formato_salida),
-                ajustes_contraste=dto.configuracion.ajustes_contraste,
+                ajustes_contraste= AjusteContraste(
+                    brillo=ajustecontraste['brillo'],
+                    contraste=ajustecontraste['contraste']
+                    ) ,
                 algoritmo=AlgoritmoAnonimizacion(dto.configuracion.algoritmo)
             ),
             referencia_entrada=ReferenciaAlmacenamiento(

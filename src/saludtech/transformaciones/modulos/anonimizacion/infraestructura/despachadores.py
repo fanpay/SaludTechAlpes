@@ -62,22 +62,15 @@ def _(comando: IniciarAnonimizacion, topico):
             id=str(comando.id),
             modalidad=comando.metadatos.modalidad,
             region=comando.metadatos.region,
-            resolucion=ResolucionPayload(
-                ancho = comando.metadatos.resolucion.ancho,
-                alto = comando.metadatos.resolucion.alto,
-                dpi = comando.metadatos.resolucion.dpi
-            ),
+            resolucion=str(comando.metadatos.resolucion),
             fecha_adquisicion=comando.metadatos.fecha_adquisicion
         ),
         configuracion=ConfiguracionAnonimizacionPayload(
             id=str(comando.id),
             nivel_anonimizacion = comando.configuracion.nivel_anonimizacion,
             formato_salida = comando.configuracion.formato_salida,
-            ajustes_contraste = AjusteContrastePayload(
-                brillo = comando.configuracion.ajustes_contraste.brillo,
-                contraste = comando.configuracion.ajustes_contraste.contraste
-            ),
-            algoritmo = comando.configuracion.algoritmo_usado,
+            ajustes_contraste = str(comando.configuracion.ajustes_contraste),
+            algoritmo = comando.configuracion.algoritmo,
         ),
         referencia_entrada=ReferenciaAlmacenamientoPayload(
             id=str(comando.id),
