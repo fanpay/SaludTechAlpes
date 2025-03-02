@@ -10,7 +10,7 @@ class MetadatosImagenPayload(Record):
     id = String()
     modalidad = String()
     region = String()
-    resolucion = ResolucionPayload()
+    resolucion = String()
     fecha_adquisicion = String()
 
 class AjusteContrastePayload(Record):
@@ -22,7 +22,7 @@ class ConfiguracionAnonimizacionPayload(Record):
     id = String()
     nivel_anonimizacion = Integer()
     formato_salida = String()
-    ajustes_contraste = AjusteContrastePayload()
+    ajustes_contraste = String()
     algoritmo = String()
 
 class ReferenciaAlmacenamientoPayload(Record):
@@ -33,8 +33,10 @@ class ReferenciaAlmacenamientoPayload(Record):
 
 class EventoAnonimizacionIniciadaPayload(Record):
     id = String()
-    metadatos = MetadatosImagenPayload()
+    nombre_paciente = String()
+    cedula = Integer()
     configuracion = ConfiguracionAnonimizacionPayload()
+    metadatos = MetadatosImagenPayload()
     referencia_entrada = ReferenciaAlmacenamientoPayload()
     timestamp = Long()
 

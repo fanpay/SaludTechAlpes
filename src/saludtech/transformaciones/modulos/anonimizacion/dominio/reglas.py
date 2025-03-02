@@ -32,7 +32,7 @@ class ImagenDebeSerProcesable(ReglaNegocio):
         self.imagen = imagen
 
     def es_valido(self) -> bool:
-        return self.imagen.estado in {EstadoProceso.PENDIENTE, EstadoProceso.PROCESANDO}
+        return self.imagen.estado in {EstadoProceso.PENDIENTE, EstadoProceso.PROCESANDO, EstadoProceso.EXITOSO}
     
 
 class NivelAnonimizacionValido(ReglaNegocio):

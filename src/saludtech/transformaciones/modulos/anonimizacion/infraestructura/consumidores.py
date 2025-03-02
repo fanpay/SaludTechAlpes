@@ -20,16 +20,22 @@ def suscribirse_a_eventos():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('eventos-enriquecer', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='saludtech-sub-eventos', schema=AvroSchema(EventoAnonimizacionFinalizada))
+        consumidor = cliente.subscribe('eventos-transformar12', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='saludtech-sub-eventos', schema=AvroSchema(EventoAnonimizacionIniciada))
 
         while True:
             mensaje = consumidor.receive()
             evento_integracion = mensaje.value().data
             print(f'------> Evento recibido: {evento_integracion}')
 
-            # Procesar el evento y reaccionar a él
-            # Aquí puedes agregar la lógica para manejar el evento recibido
+            comando = IniciarAnonimizacion(
+                id=evento_integracion.id,
+                metadatos=evento_integracion.metadatos,
+                configuracion=evento_integracion.configuracion,
+                referencia_entrada=evento_integracion.referencia_entrada
+            )
 
+            despachador = Despachador()
+            despachador.publicar_comando(comando, 'comandos-anonimizacion10')
             consumidor.acknowledge(mensaje)
 
         cliente.close()
@@ -43,7 +49,7 @@ def suscribirse_a_comandos():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('comandos-anonimizacion9', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='saludtech-sub-comandos', schema=AvroSchema(ComandoIniciarAnonimizacion))
+        consumidor = cliente.subscribe('comandos-anonimizacion10', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='saludtech-sub-comandos', schema=AvroSchema(ComandoIniciarAnonimizacion))
 
         while True:
             mensaje = consumidor.receive()

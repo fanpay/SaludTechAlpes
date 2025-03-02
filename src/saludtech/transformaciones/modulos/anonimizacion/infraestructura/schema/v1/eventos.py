@@ -23,8 +23,10 @@ class ReferenciaAlmacenamientoPayload(Record):
 
 class EventoAnonimizacionIniciadaPayload(Record):
     id = String()
-    metadatos = MetadatosImagenPayload()
+    nombre_paciente = String()
+    cedula = Integer()
     configuracion = ConfiguracionAnonimizacionPayload()
+    metadatos = MetadatosImagenPayload()
     referencia_entrada = ReferenciaAlmacenamientoPayload()
     timestamp = Long()
 
