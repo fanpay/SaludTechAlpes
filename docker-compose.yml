@@ -98,7 +98,7 @@ services:
       - "6650:6650"
       - "8080:8080"
     command: bash -c "bin/apply-config-from-env.py conf/broker.conf &&  exec bin/pulsar broker"
-  
+
 
 
 
@@ -125,25 +125,25 @@ services:
 
 
   # Bases de datos de Transformaciones
-  procesamientodb:
-    image: postgres:latest
-    container_name: procesamientodb
-    ports:
-      - "5433:5433"
-    networks:
-      - transformacionesnet
-    environment:
-      POSTGRES_DB: procesamientodb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_HOST: localhost
-      POSTGRES_PORT: 5433
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-      interval: 2s
-      timeout: 5s
-      retries: 5
-    profiles: ["procesamiento"]
+  # procesamientodb:
+  #   image: postgres:latest
+  #   container_name: procesamientodb
+  #   ports:
+  #     - "5433:5433"
+  #   networks:
+  #     - transformacionesnet
+  #   environment:
+  #     POSTGRES_DB: procesamientodb
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #     POSTGRES_HOST: localhost
+  #     POSTGRES_PORT: 5433
+  #   healthcheck:
+  #     test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+  #     interval: 2s
+  #     timeout: 5s
+  #     retries: 5
+  #   profiles: ["procesamiento"]
 
 
   # Servicios de SaludTech
@@ -170,7 +170,7 @@ services:
       - POSTGRES_PORT=5432
     ports:
       - "5000:5000"
-  
+
   saludtech-enriquecimiento:
     container_name: enriquecimiento
     hostname: enriquecimiento
@@ -193,7 +193,7 @@ services:
       - POSTGRES_HOST=transformacionesdb
       - POSTGRES_PORT=5432
     ports:
-      - "5000:6000"
+      - "6000:5000"
 
   saludtech-procesamiento:
     container_name: procesamiento
@@ -206,7 +206,7 @@ services:
       - transformacionesnet
       - pulsar
     depends_on:
-      - procesamientodb
+      # - procesamientodb
       - broker
     environment:
       - PULSAR_ADDRESS=broker
@@ -214,7 +214,7 @@ services:
       - POSTGRES_DB=procesamientodb
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_HOST=procesamientodb
+      - POSTGRES_HOST=transformacionesdb
       - POSTGRES_PORT=5432
     ports:
-      - "5000:7000"
+      - "7000:5000"
