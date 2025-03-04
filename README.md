@@ -263,6 +263,9 @@ En este caso el servicio de transformacion recibe un comando de de inicio de pro
 
 # Entrega 4
 
+Esto es un resumen de la entrega. El detalle asociado a los diferentes items, se justifican a lo largo del video de la entrega:
+
+
 **Escenarios de calidad a validar:**
 
 **Escenario 1:**
@@ -308,9 +311,9 @@ En este caso el servicio de transformacion recibe un comando de de inicio de pro
   - Menso esfuerzo en la administración de base de datos
 - Desventajas:
   - Incremento en el acoplamiento de los microservicios
-  - La dificultad en la governanza de los datos
+  - La dificultad en la gobernanza de los datos
     
-*Cabe aclarar que en este caso, estamos haciendo es una agregación de los datos (aumentando la información en transformación). Esto no es un bloqueante sobre la base de datos así que el MS de transformación sería el que lleva la gobernanza sobre la base de datos y enriquecimiento únicamente va a complementar la información que hace transformación.*
+*Cabe aclarar que, en este caso; estamos haciendo es una agregación de los datos (aumentando la información en transformación). Esto no es un bloqueante sobre la base de datos así que el MS de transformación sería el que lleva la gobernanza sobre la base de datos y enriquecimiento únicamente va a complementar la información que hace transformación.*
 
 **Plataforma de despliegue:**
 - GCP
