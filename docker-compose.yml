@@ -45,6 +45,7 @@ services:
 
 # Start bookie
   bookie:
+    user: root
     image: apachepulsar/pulsar:latest
     profiles: ["pulsar"]
     container_name: bookie
