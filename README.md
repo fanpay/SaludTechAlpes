@@ -206,6 +206,9 @@ docker-compose --profile <pulsar|transformaciones|saludtech-transformacion> up
 
 # Entrega 1
 <details>
+
+<summary>Click aquí para ver más detalle</summary>
+
 Los diagramas AS-IS y TO-BE se encuentran en la carpeta `src-gen`.  Estos diagramas fueron generados utilizando Context Mapper a partir de los archivos `.cml` ubicados en `docs/entrega1/`.
 
 1. **Abra los archivos `.cml` (saludtechdemo-entrega1-as-is.cml y saludtechdemo-entrega1-to-be.cml) con Context Mapper.**
@@ -234,6 +237,10 @@ El código fuente principal se encuentra en la carpeta `src/saludtech`.
 
 # Entrega 3
 
+<details>
+
+<summary>Click aquí para ver más detalle</summary>
+
 ## Escenarios de calidad 
 
 https://uniandes-my.sharepoint.com/:p:/r/personal/f_orduz_uniandes_edu_co/_layouts/15/Doc.aspx?sourcedoc=%7B1AEF6370-BDD5-4D44-9DF2-764CEBDFDC07%7D&file=Entrega%20Semana%205.pptx&action=edit&mobileredirect=true&DefaultItemOpen=1&web=1
@@ -252,6 +259,37 @@ En este caso el servicio de transformacion recibe un comando de de inicio de pro
 
 ![image](https://github.com/user-attachments/assets/d7b10c81-84db-4b3d-b14c-e8ee33e1bcfd)
 
+</details>
+
 # Entrega 4
 
-TODO: Agregar diagrama de arquitectura de la solución
+Escenarios de calidad a validar:
+
+Escenario 1:
+
+Escenario 2:
+
+Escenario 3:
+
+
+Diagrama general de la arquitectura a validar:
+
+
+Microservicios implementados (4 de acuerdo a las instrucciones del profesor):
+
+- BFF
+- MS procesamiento
+- MS transformacion
+- MS enriquecimiento
+
+Autenticación y autorización utilizada:
+- JWT + API Key
+
+Plataforma de despliegue:
+- GCP
+
+URL de la aplicación:
+- http://34.71.215.107/login (atentos a instrucción del tutor para proveer el API Key)
+
+Video de la demostración:
+- https://drive.google.com/file/d/1IJuo8gYrqa_2waTIK6WnuAeU55IN6VQT/view?usp=sharing
