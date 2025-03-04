@@ -263,33 +263,71 @@ En este caso el servicio de transformacion recibe un comando de de inicio de pro
 
 # Entrega 4
 
-Escenarios de calidad a validar:
+**Escenarios de calidad a validar:**
 
-Escenario 1:
+**Escenario 1:**
+![Screenshot 2025-03-03 at 22 49 34](https://github.com/user-attachments/assets/01b5f2b1-f7d1-404d-b913-0d4df95acf4d)
 
-Escenario 2:
+**Escenario 2:**
+![Screenshot 2025-03-03 at 22 49 42](https://github.com/user-attachments/assets/bf6a7e6d-302c-4bf8-9dfe-23e6d163af8f)
 
-Escenario 3:
+**Escenario 3:**
+![Screenshot 2025-03-03 at 22 49 59](https://github.com/user-attachments/assets/2a2f1cd8-bc7d-4d6f-b069-6ce0fef1bcd2)
 
 
-Diagrama general de la arquitectura a validar:
+**Diagrama general de la arquitectura a validar (incluye detalle de mensajes para mayor claridad):**
+
+![Arquitectura-entrega-4 drawio](https://github.com/user-attachments/assets/be43128f-3970-4b23-b80f-623fc6d685f9)
 
 
-Microservicios implementados (4 de acuerdo a las instrucciones del profesor):
+**Microservicios implementados (4 mínimo requeridos de acuerdo a las instrucciones del profesor + FrontEnd):**
 
-- BFF
-- MS procesamiento
-- MS transformacion
-- MS enriquecimiento
+- [BFF](https://github.com/fanpay/SaludTechAlpes/tree/main/src/bff_web)
+- [Frontend](https://github.com/fanpay/SaludTechAlpes/tree/main/src/frontend)
+- [MS Procesamiento](https://github.com/fanpay/SaludTechAlpes/tree/main/src/saludtech/procesamiento)
+- [MS Transformaciones](https://github.com/fanpay/SaludTechAlpes/tree/main/src/saludtech/transformaciones)
+- [MS Enriquecimiento](https://github.com/fanpay/SaludTechAlpes/tree/main/src/saludtech/enriquecimiento)
 
-Autenticación y autorización utilizada:
+**Autenticación y autorización utilizada:**
 - JWT + API Key
 
-Plataforma de despliegue:
+**Comunicación entre microservicios:**
+- Asíncrona para eventos
+- Síncrona para queries por medio de HTTP
+
+**Modelo capa de datos utilizado:**
+- CRUD
+
+**Justificación bases de datos:**
+- Modalidad usada: Híbrida:
+- Ventajas en nuestro sistema:
+  - Menos duplicidad de datos
+  - Consultas eficientes
+  - Simplicidad en la consistencia y transaccionalidad garantizando ACID
+  - Menor cantidad de consultas cruzadas
+  - Menso esfuerzo en la administración de base de datos
+- Desventajas:
+  - Incremento en el acoplamiento de los microservicios
+  - La dificultad en la governanza de los datos
+    
+*Cabe aclarar que en este caso, estamos haciendo es una agregación de los datos (aumentando la información en transformación). Esto no es un bloqueante sobre la base de datos así que el MS de transformación sería el que lleva la gobernanza sobre la base de datos y enriquecimiento únicamente va a complementar la información que hace transformación.*
+
+**Plataforma de despliegue:**
 - GCP
 
-URL de la aplicación:
+**URL de la aplicación:**
 - http://34.71.215.107/login (atentos a instrucción del tutor para proveer el API Key)
 
-Video de la demostración:
+**Video de la demostración:**
 - https://drive.google.com/file/d/1IJuo8gYrqa_2waTIK6WnuAeU55IN6VQT/view?usp=sharing
+
+**Tabla de distribución de responsabilidades:**
+
+| **Responsable**          | **Microservicio**                          | **Actividad**                                                                                             |  
+|--------------------------|--------------------------------------------|------------------------------------------------------------------------------------------------------------|  
+| **Félix Orduz**          | **BFF + FrontEnd**                         | Integrar autenticación API Key/JWT en el frontend y validar tokens en el BFF (Backend for Frontend).     |  
+| **Leonardo Bustamante**  | **Procesamiento**                          | Implementar pipelines de anonimización (enmascaramiento, tokenización) y garantizar trazabilidad.         |  
+| **Esneider Velandia**    | **Enriquecimiento**                        | Añadir metadatos no sensibles a los datos anonimizados. |  
+| **Fabián Payan**         | **Transformaciones**                       | Aplicar reglas de transformación de datos (ej. normalización, cifrado).   |  
+| **Félix Orduz**          | **Despliegue GCP**                         | Configurar infraestructura en GCP para almacenamiento seguro de datos anonimizados. |  
+| **Todos**                | **Ajustes, despliegue e integración**      | Realizar pruebas E2E de integración entre microservicios, ajustar políticas de acceso y desplegar en GCP. |  
