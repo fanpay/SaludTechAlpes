@@ -21,6 +21,7 @@ services:
 
 # Start zookeeper
   zookeeper:
+    user: root
     image: apachepulsar/pulsar:latest
     profiles: ["pulsar"]
     container_name: zookeeper
