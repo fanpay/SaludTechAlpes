@@ -308,7 +308,7 @@ Esto es un resumen de la entrega. El detalle asociado a los diferentes items, se
   - Consultas eficientes
   - Simplicidad en la consistencia y transaccionalidad garantizando ACID
   - Menor cantidad de consultas cruzadas
-  - Menso esfuerzo en la administración de base de datos
+  - Menos esfuerzo en la administración de base de datos
 - Desventajas:
   - Incremento en el acoplamiento de los microservicios
   - La dificultad en la gobernanza de los datos
