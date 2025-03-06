@@ -11,12 +11,14 @@ from saludtech.enriquecimiento.modulos.enriquecimineto.infraestructura.dto impor
 from saludtech.enriquecimiento.modulos.enriquecimineto.aplicacion.dto import ProcesarImagenDTO
 from saludtech.enriquecimiento.modulos.enriquecimineto.aplicacion.servicios import ServicioAnonimizacion
 from saludtech.enriquecimiento.seedwork.infraestructura import utils
-from saludtech.enriquecimiento.modulos.enriquecimineto.infraestructura.schema.v1.eventos import EventoAnonimizacionIniciada, EventoAnonimizacionFinalizada
+from saludtech.enriquecimiento.modulos.enriquecimineto.infraestructura.schema.v1.eventos import EventoAnonimizacionIniciada, EventoAnonimizacionFinalizada, EventoAnonimizacionFallida
 from saludtech.enriquecimiento.modulos.enriquecimineto.infraestructura.schema.v1.comandos import ComandoIniciarAnonimizacion
 from saludtech.enriquecimiento.modulos.enriquecimineto.aplicacion.comandos.iniciar_anonimizacion import IniciarAnonimizacion
 from saludtech.enriquecimiento.modulos.enriquecimineto.infraestructura.despachadores import Despachador
 from saludtech.enriquecimiento.seedwork.aplicacion.comandos import ejecutar_commando
 from saludtech.enriquecimiento.modulos.enriquecimineto.infraestructura.schema.v1.eventos import ReferenciaAlmacenamientoPayload
+
+MS_NO_PROCESADO = "no procesado"
 
 def suscribirse_a_eventos():
     cliente = None
@@ -66,6 +68,44 @@ def suscribirse_a_eventos():
         cliente.close()
     except:
         logging.error('ERROR: Suscribiendose al tópico de eventos!')
+        traceback.print_exc()
+        if cliente:
+            cliente.close()
+
+def suscribirse_a_eventos_saga():
+    cliente = None
+    topic_name = 'eventos-desenriquecer'
+    try:
+        cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
+        consumidor = cliente.subscribe(topic_name, 'desenriquecimiento-sub-eventos', consumer_type=_pulsar.ConsumerType.Shared, schema=AvroSchema(EventoAnonimizacionFallida))
+
+        while True:
+            mensaje = consumidor.receive()
+            evento_saga = mensaje.value().data
+            print(f'---> Evento Saga recibido : {evento_saga}')
+
+            id = evento_saga.id
+            imagen_anonimizada = db.session.query(ImagenAnonimizadaDTO).filter_by(id=id).first()
+
+            print(f'---> Buscando entidad con ID: {str(id)} o la siguiente {id}')
+
+            if imagen_anonimizada:
+                # Actualizar la entidad y los metadatos
+                imagen_anonimizada.estado = EstadoProceso.FALLIDO
+                imagen_anonimizada.metadatos.modalidad = MS_NO_PROCESADO
+                imagen_anonimizada.metadatos.region = MS_NO_PROCESADO
+                imagen_anonimizada.metadatos.resolucion = MS_NO_PROCESADO
+
+                db.session.commit()
+                print(f'---> Entidad actualizada por Saga con ID: {id}')
+            else:
+                print(f'---> No se encontró la entidad con ID: {id}')
+
+            consumidor.acknowledge(mensaje)
+
+        cliente.close()
+    except:
+        logging.error(f'ERROR: Suscribiendose al tópico {topic_name} de eventos!')
         traceback.print_exc()
         if cliente:
             cliente.close()
