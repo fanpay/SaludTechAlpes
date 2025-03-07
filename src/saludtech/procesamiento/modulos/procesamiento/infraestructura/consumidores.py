@@ -6,29 +6,47 @@ import logging
 import traceback
 import datetime
 
+from saludtech.procesamiento.config import db
 from saludtech.procesamiento.modulos.procesamiento.aplicacion.dto import ProcesarImagenDTO
 from saludtech.procesamiento.modulos.procesamiento.aplicacion.servicios import ServicioAnonimizacion
+from saludtech.procesamiento.modulos.procesamiento.dominio.objetos_valor import EstadoProceso
+from saludtech.procesamiento.modulos.procesamiento.infraestructura.dto import ImagenDTO
 from saludtech.procesamiento.seedwork.infraestructura import utils
-from saludtech.procesamiento.modulos.procesamiento.infraestructura.schema.v1.eventos import ConfiguracionAnonimizacionPayload, EventoAnonimizacionIniciada, EventoAnonimizacionIniciadaPayload, MetadatosImagenPayload, AjusteContrastePayload, ResolucionPayload
+from saludtech.procesamiento.modulos.procesamiento.infraestructura.schema.v1.eventos import ConfiguracionAnonimizacionPayload, EventoAnonimizacionFallida, EventoAnonimizacionIniciada, EventoAnonimizacionIniciadaPayload, MetadatosImagenPayload, AjusteContrastePayload, ResolucionPayload
 from saludtech.procesamiento.modulos.procesamiento.infraestructura.schema.v1.comandos import ComandoIniciarAnonimizacion
 from saludtech.procesamiento.modulos.procesamiento.aplicacion.comandos.iniciar_anonimizacion import IniciarAnonimizacion
 from saludtech.procesamiento.modulos.procesamiento.infraestructura.despachadores import Despachador
 from saludtech.procesamiento.seedwork.aplicacion.comandos import ejecutar_commando
 from saludtech.procesamiento.modulos.procesamiento.infraestructura.schema.v1.eventos import ReferenciaAlmacenamientoPayload
 
+MS_NO_PROCESADO = "no procesado"
+
 def suscribirse_a_eventos():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('eventos-procesar1', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='saludtech-sub-eventos', schema=AvroSchema(EventoAnonimizacionIniciada))
+        consumidor = cliente.subscribe('eventos-anonimizacion-fallida', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='saludtech-sub-eventos', schema=AvroSchema(EventoAnonimizacionFallida))
 
         while True:
             mensaje = consumidor.receive()
             evento_integracion = mensaje.value().data
             print(f'------> Evento recibido: {evento_integracion}')
+            id = evento_integracion.id
+            imagen_anonimizada = db.session.query(ImagenDTO).filter_by(id_solicitud=id).first()
 
-            # Procesar el evento y reaccionar a él
-            # Aquí puedes agregar la lógica para manejar el evento recibido
+            print(f'---> Buscando entidad con ID: {str(id)} o la siguiente {id}')
+
+            if imagen_anonimizada:
+                # Actualizar la entidad y los metadatos
+                imagen_anonimizada.estado = EstadoProceso.FALLIDO
+                imagen_anonimizada.metadatos.modalidad = MS_NO_PROCESADO
+                imagen_anonimizada.metadatos.region = MS_NO_PROCESADO
+                imagen_anonimizada.metadatos.resolucion = MS_NO_PROCESADO
+
+                db.session.commit()
+                print(f'---> Entidad actualizada por Saga con ID: {id}')
+            else:
+                print(f'---> No se encontró la entidad con ID: {id}')
 
             consumidor.acknowledge(mensaje)
 
