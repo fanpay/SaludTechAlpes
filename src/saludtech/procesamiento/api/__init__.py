@@ -10,7 +10,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 DB_USER = os.getenv("POSTGRES_USER", default="postgres")
 DB_PASSWORD = os.getenv("POSTGRES_PASSWORD", default="postgres")
 DB_HOST = os.getenv("POSTGRES_HOST", default="localhost")
-DB_PORT = os.getenv("POSTGRES_PORT", default="5432")
+DB_PORT = os.getenv("POSTGRES_PORT", default="5532")
 DB_NAME =  os.getenv("POSTGRES_DB", default="procesamientodb")
 
 def registrar_handlers():

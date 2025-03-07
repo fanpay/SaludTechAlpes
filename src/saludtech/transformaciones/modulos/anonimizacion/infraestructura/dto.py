@@ -6,7 +6,8 @@ en la capa de persistencia para almacenar y recuperar entidades en la base de da
 
 from saludtech.transformaciones.config.db import db
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, ForeignKey, String, Integer, DateTime
+from sqlalchemy import Column, ForeignKey, String, Integer, DateTime, JSON
+from sqlalchemy.dialects.postgresql import UUID
 import uuid
 from datetime import datetime
 
@@ -60,3 +61,13 @@ class ReferenciaAlmacenamientoDTO(db.Model):
     nombre_bucket = Column(String, nullable=True)
     llave_objeto = Column(String, nullable=True)
     proveedor_almacenamiento = Column(String, nullable=True)
+
+
+class Saga_Log(db.Model):
+    __tablename__ = "saga_log"
+    id = db.Column(UUID(as_uuid=True), primary_key=True)
+    evento = db.Column(db.String, nullable=False)
+    estado = Column(String)                         # Estado del Saga (ej: "EN_PROGRESO")
+    datos = Column(JSON)                             # Payload completo del evento
+    fecha_evento = Column(DateTime, default=datetime.utcnow)  # Timestamp
+

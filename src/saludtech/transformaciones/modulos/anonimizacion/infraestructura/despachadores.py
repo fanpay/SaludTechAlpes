@@ -1,7 +1,9 @@
+import ast
 import pulsar
 from pulsar.schema import *
 
-from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.eventos import EventoAnonimizacionFallidaPayload, EventoAnonimizacionFinalizadaPayload, EventoAnonimizacionIniciada, EventoAnonimizacionFinalizada, EventoAnonimizacionFallida, EventoAnonimizacionIniciadaPayload
+from saludtech.transformaciones.modulos.anonimizacion.dominio.eventos import ProcesoAnonimizacionIniciado
+from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.eventos import EventoAnonimizacionFallidaPayload, EventoAnonimizacionFinalizadaPayload, EventoAnonimizacionIniciada, EventoAnonimizacionFinalizada, EventoAnonimizacionFallida, EventoAnonimizacionIniciadaPayload,  MetadatosImagenPayload as EventoMetadatosImagenPayload, ReferenciaAlmacenamientoPayload as EventoReferenciaAlmacenamientoPayload, ConfiguracionAnonimizacionPayload as EventoConfiguracionAnonimizacionPayload
 from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.comandos import AjusteContrastePayload, ComandoIniciarAnonimizacion, ComandoIniciarAnonimizacionPayload, ConfiguracionAnonimizacionPayload, MetadatosImagenPayload, ReferenciaAlmacenamientoPayload, ResolucionPayload
 from saludtech.transformaciones.seedwork.infraestructura import utils
 from saludtech.transformaciones.seedwork.infraestructura.despachadores import DespachadorBase, publicar_mensaje
@@ -22,6 +24,29 @@ class Despachador(DespachadorBase):
         cliente.close()
 
     def publicar_evento(self, evento, topico):
+        if isinstance(evento, ProcesoAnonimizacionIniciado):
+            payload = EventoAnonimizacionIniciadaPayload(
+                id=str(evento.id),
+                metadatos=EventoMetadatosImagenPayload(
+                    modalidad=evento.metadatos.modalidad.value,
+                    region=evento.metadatos.region.value,
+                    resolucion=str(evento.metadatos.resolucion),
+                    fecha_adquisicion=evento.metadatos.fecha_adquisicion
+                ),
+                configuracion=EventoConfiguracionAnonimizacionPayload(
+                    nivel_anonimizacion=evento.configuracion.nivel_anonimizacion,
+                    formato_salida=evento.configuracion.formato_salida.value,
+                    ajustes_contraste=str(evento.configuracion.ajustes_contraste),
+                    algoritmo=evento.configuracion.algoritmo.value
+                ),
+                referencia_entrada=EventoReferenciaAlmacenamientoPayload(
+                    nombre_bucket=evento.referencia_entrada.nombre_bucket,
+                    llave_objeto=evento.referencia_entrada.llave_objeto,
+                    proveedor_almacenamiento=evento.referencia_entrada.proveedor_almacenamiento
+                )
+            )
+            evento_integracion = EventoAnonimizacionIniciada(data=payload)
+            self._publicar_mensaje(evento_integracion, topico, AvroSchema(EventoAnonimizacionIniciada))
         if isinstance(evento, EventoAnonimizacionIniciada):
             payload = EventoAnonimizacionIniciadaPayload(
                 id=str(evento.id),
@@ -56,20 +81,29 @@ class Despachador(DespachadorBase):
 @publicar_mensaje.register
 def _(comando: IniciarAnonimizacion, topico):
     
+    resolucion_data = ast.literal_eval(comando.metadatos.resolucion)
+    ajustes_contraste_data = ast.literal_eval(comando.configuracion.ajustes_contraste)
     payload = ComandoIniciarAnonimizacionPayload(
         id=str(comando.id),
         metadatos=MetadatosImagenPayload(
             id=str(comando.id),
             modalidad=comando.metadatos.modalidad,
             region=comando.metadatos.region,
-            resolucion=str(comando.metadatos.resolucion),
+            resolucion=ResolucionPayload(
+                        ancho=int(resolucion_data['ancho']),
+                        alto=int(resolucion_data['alto']),
+                        dpi=int(resolucion_data['dpi'])
+                    ),
             fecha_adquisicion=comando.metadatos.fecha_adquisicion
         ),
         configuracion=ConfiguracionAnonimizacionPayload(
             id=str(comando.id),
             nivel_anonimizacion = comando.configuracion.nivel_anonimizacion,
             formato_salida = comando.configuracion.formato_salida,
-            ajustes_contraste = str(comando.configuracion.ajustes_contraste),
+            ajustes_contraste=AjusteContrastePayload(
+                        brillo=int(ajustes_contraste_data['brillo']),
+                        contraste=int(ajustes_contraste_data['contraste'])
+                    ),
             algoritmo = comando.configuracion.algoritmo,
         ),
         referencia_entrada=ReferenciaAlmacenamientoPayload(

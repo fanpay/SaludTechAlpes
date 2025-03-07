@@ -3,6 +3,10 @@ networks:
     driver: bridge
   transformacionesnet:
     driver: bridge
+  procesamientonet:
+    driver: bridge
+  saganet:
+    driver: bridge
 services:
   # Init cluster metadata
   pulsar-init:
@@ -88,8 +92,8 @@ services:
       - managedLedgerDefaultAckQuorum=1
       - advertisedAddress=broker
       #Si se realiza una ejecución manual, este dato debe cambiar al siguiente:
-      # - advertisedListeners=external:pulsar://127.0.0.1:6650
-      - advertisedListeners=external:pulsar://broker:6650
+      - advertisedListeners=external:pulsar://127.0.0.1:6650
+      # - advertisedListeners=external:pulsar://broker:6650
       - PULSAR_MEM=-Xms512m -Xmx512m -XX:MaxDirectMemorySize=256m
     depends_on:
       zookeeper:
@@ -101,7 +105,18 @@ services:
       - "8080:8080"
     command: bash -c "bin/apply-config-from-env.py conf/broker.conf &&  exec bin/pulsar broker"
 
-
+#Using standalone version for simplicity
+  # pulsar:
+  #   image: apachepulsar/pulsar:3.2.0
+  #   profiles: ["pulsar"]
+  #   container_name: pulsar
+  #   restart: on-failure
+  #   ports:
+  #     - "6650:6650"
+  #     - "8080:8080"
+  #   command: ["bin/pulsar", "standalone"]
+  #   networks:
+  #     - pulsar
 
 
      # Bases de datos de Transformaciones
@@ -127,25 +142,25 @@ services:
 
 
   # Bases de datos de Transformaciones
-  # procesamientodb:
-  #   image: postgres:latest
-  #   container_name: procesamientodb
-  #   ports:
-  #     - "5433:5433"
-  #   networks:
-  #     - transformacionesnet
-  #   environment:
-  #     POSTGRES_DB: procesamientodb
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: postgres
-  #     POSTGRES_HOST: localhost
-  #     POSTGRES_PORT: 5433
-  #   healthcheck:
-  #     test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-  #     interval: 2s
-  #     timeout: 5s
-  #     retries: 5
-  #   profiles: ["procesamiento"]
+  procesamientodb:
+    image: postgres:latest
+    container_name: procesamientodb
+    ports:
+      - "5532:5432"
+    networks:
+      - procesamientonet
+    environment:
+      POSTGRES_DB: procesamientodb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+    profiles: ["procesamiento"]
 
 
   # Servicios de SaludTech
@@ -206,6 +221,7 @@ services:
     profiles: ["saludtech-procesamiento"]
     networks:
       - transformacionesnet
+      - procesamientonet
       - pulsar
     depends_on:
       # - procesamientodb
@@ -216,7 +232,28 @@ services:
       - POSTGRES_DB=procesamientodb
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_HOST=transformacionesdb
+      - POSTGRES_HOST=procesamientodb
       - POSTGRES_PORT=5432
     ports:
       - "7000:5000"
+
+
+  # Bases de datos de la saga
+  sagadb:
+    image: postgres:latest
+    container_name: sagadb
+    ports:
+      - "5431:5432"
+    networks:
+      - transformacionesnet
+    environment:
+      POSTGRES_DB: sagadb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 2s
+      timeout: 5s
+      retries: 5
