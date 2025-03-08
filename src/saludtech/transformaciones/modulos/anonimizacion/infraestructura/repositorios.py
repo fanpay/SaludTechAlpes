@@ -77,7 +77,7 @@ class RepositorioProcesosAnonimizacionDB(RepositorioProcesosAnonimizacion):
     
 class RepositorioSagaLogPostgresSQL():         
 
-    def agregar(self, id_correlacion: str, evento: str, estado: str, datos: dict):
+    def agregar(self, id_correlacion: str, evento: str, datos: dict):
         # Serializar el payload si es necesario
         #datos_serializados = json.dumps(datos) if isinstance(datos, dict) else datos
         datos_serializados = json.dumps(datos, default=str)
@@ -86,7 +86,6 @@ class RepositorioSagaLogPostgresSQL():
             id=uuid.uuid4().hex,
             id_correlacion=id_correlacion,
             evento=evento,
-            estado=estado,
             datos=datos_serializados
         )
         

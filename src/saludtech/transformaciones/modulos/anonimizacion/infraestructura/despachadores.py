@@ -2,7 +2,7 @@ import ast
 import pulsar
 from pulsar.schema import *
 
-from saludtech.transformaciones.modulos.anonimizacion.dominio.eventos import ProcesoAnonimizacionIniciado
+from saludtech.transformaciones.modulos.anonimizacion.dominio.eventos import ProcesoAnonimizacionFallido, ProcesoAnonimizacionIniciado
 from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.eventos import EventoAnonimizacionFallidaPayload, EventoAnonimizacionFinalizadaPayload, EventoAnonimizacionIniciada, EventoAnonimizacionFinalizada, EventoAnonimizacionFallida, EventoAnonimizacionIniciadaPayload,  MetadatosImagenPayload as EventoMetadatosImagenPayload, ReferenciaAlmacenamientoPayload as EventoReferenciaAlmacenamientoPayload, ConfiguracionAnonimizacionPayload as EventoConfiguracionAnonimizacionPayload
 from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.comandos import AjusteContrastePayload, ComandoIniciarAnonimizacion, ComandoIniciarAnonimizacionPayload, ConfiguracionAnonimizacionPayload, MetadatosImagenPayload, ReferenciaAlmacenamientoPayload, ResolucionPayload
 from saludtech.transformaciones.seedwork.infraestructura import utils
@@ -66,11 +66,7 @@ class Despachador(DespachadorBase):
             evento_integracion = EventoAnonimizacionFinalizada(data=payload)
             self._publicar_mensaje(evento_integracion, topico, AvroSchema(EventoAnonimizacionFinalizada))
         elif isinstance(evento, EventoAnonimizacionFallida):
-            payload = EventoAnonimizacionFallidaPayload(
-                id=str(evento.id)
-            )
-            evento_integracion = EventoAnonimizacionFallida(data=payload)
-            self._publicar_mensaje(evento_integracion, topico, AvroSchema(EventoAnonimizacionFallida))
+            self._publicar_mensaje(evento, topico, AvroSchema(EventoAnonimizacionFallida))
 
     
     def publicar_comando(self, comando, topico):

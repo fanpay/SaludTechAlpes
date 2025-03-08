@@ -2,7 +2,7 @@ import uuid
 
 from saludtech.transformaciones.modulos.anonimizacion.infraestructura.despachadores import Despachador
 from saludtech.transformaciones.modulos.anonimizacion.infraestructura.repositorios import RepositorioSagaLogPostgresSQL
-from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.eventos import EventoAnonimizacionFinalizada
+from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.eventos import EventoAnonimizacionFallida, EventoAnonimizacionFinalizada
 from saludtech.transformaciones.seedwork.aplicacion.comandos import Comando
 from saludtech.transformaciones.seedwork.aplicacion.sagas import CoordinadorOrquestacion, Paso, Transaccion, Inicio, Fin
 from saludtech.transformaciones.seedwork.dominio.eventos import EventoDominio
@@ -55,14 +55,18 @@ class CoordinadorSagaAnonimizacion(CoordinadorOrquestacion):
                 "evento": "MensajeDict",
                 "mensaje": mensaje
             }
+            
+            self.repositorio_saga_log.agregar(self.id_correlacion, mensaje['tipo_evento'], datos)
         else:
             datos = {
                 "id_correlacion": self.id_correlacion,
                 "evento": type(mensaje).__name__,
                 "mensaje": mensaje.__dict__
             }
-        
-        self.repositorio_saga_log.agregar(self.id_correlacion, type(mensaje).__name__, "EN_PROCESO", datos)
+            
+            self.repositorio_saga_log.agregar(self.id_correlacion, type(mensaje).__name__, datos)
+            
+    
         
          # Opcional: Registrar en logger de aplicación
         print(f"Saga {self.id_correlacion} persistido | Evento: {type(mensaje).__name__} | Mensaje: {mensaje}")
@@ -76,19 +80,23 @@ class CoordinadorSagaAnonimizacion(CoordinadorOrquestacion):
         if isinstance(evento, paso.error):
             if index > 0 and self.pasos[index].compensacion:
                 self.publicar_comando(evento, self.pasos[index].compensacion)
+                self.id_correlacion = evento.id
                 self.persistir_en_saga_log(evento)
         
         elif isinstance(evento, paso.evento):
             if index < len(self.pasos) - 1:
                 #siguiente_paso = self.pasos[index + 1]
                 self.publicar_comando(evento, paso.comando)
+                self.id_correlacion = evento.proceso_id
                 self.persistir_en_saga_log(evento)
 
-    def iniciar(self):
-        self.persistir_en_saga_log({"mensaje": f"Se inicia SAGA: {self.id_correlacion}"})
+    def iniciar(self, id_proceso_anonimizacion):
+        self.id_correlacion = id_proceso_anonimizacion
+        self.persistir_en_saga_log({"tipo_evento":"Inicio","mensaje": f"Se inicia SAGA: {id_proceso_anonimizacion}"})
         
-    def terminar(self):
-        self.persistir_en_saga_log({"mensaje": f"Se finaliza SAGA: {self.id_correlacion}"})
+    def terminar(self, id_proceso_anonimizacion):
+        self.id_correlacion = id_proceso_anonimizacion
+        self.persistir_en_saga_log({"tipo_evento":"Fin", "mensaje": f"Se finaliza SAGA: {id_proceso_anonimizacion}"})
         
         
 def oir_mensaje(mensaje):

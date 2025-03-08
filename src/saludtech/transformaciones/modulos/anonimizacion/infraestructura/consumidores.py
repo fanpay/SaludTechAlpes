@@ -11,7 +11,7 @@ from saludtech.transformaciones.modulos.anonimizacion.dominio.eventos import Pro
 from saludtech.transformaciones.modulos.anonimizacion.dominio.objetos_valor import EstadoProceso
 from saludtech.transformaciones.modulos.anonimizacion.infraestructura.repositorios import RepositorioSagaLogPostgresSQL
 from saludtech.transformaciones.seedwork.infraestructura import utils
-from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.eventos import ConfiguracionAnonimizacionPayload, EventoAnonimizacionIniciada, EventoAnonimizacionFinalizada, EventoAnonimizacionFinalizadaPayload, EventoAnonimizacionFallida, EventoAnonimizacionIniciadaPayload, MetadatosImagenPayload
+from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.eventos import ConfiguracionAnonimizacionPayload, EventoAnonimizacionFallidaPayload, EventoAnonimizacionIniciada, EventoAnonimizacionFinalizada, EventoAnonimizacionFinalizadaPayload, EventoAnonimizacionFallida, EventoAnonimizacionIniciadaPayload, MetadatosImagenPayload
 from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.comandos import ComandoIniciarAnonimizacion
 from saludtech.transformaciones.modulos.anonimizacion.aplicacion.comandos.iniciar_anonimizacion import IniciarAnonimizacion
 from saludtech.transformaciones.modulos.anonimizacion.infraestructura.despachadores import Despachador
@@ -104,7 +104,7 @@ def suscribirse_a_comandos():
             
             # 1. Iniciar Saga
             saga = CoordinadorSagaAnonimizacion()
-            saga.iniciar()
+            saga.iniciar(comando_integracion.id)
 
             
             try:
@@ -139,18 +139,25 @@ def suscribirse_a_comandos():
                 # 6. Manejo de errores y compensación
                 if saga:
                     evento_fallo = ProcesoAnonimizacionFallido(
-                        id=saga.id_correlacion,
-                        proceso_id=saga.id_correlacion,
+                        id=comando_integracion.id,
+                        proceso_id=comando_integracion.id,
                         motivo_fallo=str(e)
                     )
+                    
+                    # payload = EventoAnonimizacionFallidaPayload(
+                    #     id=str(comando_integracion.id)
+                    # )
+                    # evento_fallo = EventoAnonimizacionFallida(data=payload)
+            
+            
                     saga.procesar_evento(evento_fallo)
                     
-                    #publicar_evento_integracion(evento_fallo, 'eventos-desenriquecer')
+                    publicar_evento_integracion(evento_fallo, 'eventos-desenriquecer')
                     publicar_evento_integracion(evento_fallo, 'eventos-desprocesamiento')
                 
                 print(f"Error procesando comando: {str(e)}")
             finally:
-                saga.terminar()
+                saga.terminar(comando_integracion.id)
                 consumidor.acknowledge(mensaje)
             
         cliente.close()
