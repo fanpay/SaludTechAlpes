@@ -44,7 +44,7 @@ pluggy==1.0.0
 promise==2.3
 propcache==0.3.0
 psycopg2-binary==2.9.5
-pulsar-client==3.6.0
+pulsar-client==3.6.1
 py==1.11.0
 pydantic==2.10.6
 pydantic_core==2.27.2
