@@ -40,14 +40,67 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{HOST}}/anonimizacion/estado-query/19ac8375-ff46-4206-a7c9-cf4789a4330a",
+					"raw": "{{HOST_TRANSFORMACION}}anonimizacion/estado-query/8162c867-c8f1-41ee-9286-f282462a6afc",
+					"host": [
+						"{{HOST_TRANSFORMACION}}anonimizacion"
+					],
+					"path": [
+						"estado-query",
+						"8162c867-c8f1-41ee-9286-f282462a6afc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Iniciar transformacion evento procesamiento",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"usuario\": \"fpayan01\",\n  \"nombre-paciente\": \"fabian payan\",\n  \"cedula\": \"987654\",\n  \"descripcion\": \"asd\",\n  \"metadatos\": {\n    \"modalidad\": \"RayosX\",\n    \"region\": \"CabezaYCuello\",\n    \"resolucion\": {\n      \"alto\": 50,\n      \"ancho\": 70,\n      \"dpi\": 100\n    },\n    \"fecha_adquisicion\": \"2025-02-22T10:00:00Z\"\n  },\n  \"configuracion\": {\n    \"nivel_anonimizacion\": 1,\n    \"formato_salida\": \"DICOM\",\n    \"ajustes_contraste\": {\n      \"brillo\": 50,\n      \"contraste\": 70\n    },\n    \"algoritmo\": \"DICOM_DEID\"\n  },\n  \"referencia_entrada\": {\n    \"nombre_bucket\": \"bucket-entrada\",\n    \"llave_objeto\": \"imagen_entrada.dcm\",\n    \"proveedor_almacenamiento\": \"AWS\"\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST}}/anonimizacion/crear-solicitud",
 					"host": [
 						"{{HOST}}"
 					],
 					"path": [
 						"anonimizacion",
-						"estado-query",
-						"19ac8375-ff46-4206-a7c9-cf4789a4330a"
+						"crear-solicitud"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Rollback anonimizacion",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"6b99d6cd-4819-4b2a-a6de-66e0d3a6468c\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{HOST_TRANSFORMACION}}/anonimizacion/anonimizacion-rollback",
+					"host": [
+						"{{HOST_TRANSFORMACION}}"
+					],
+					"path": [
+						"anonimizacion",
+						"anonimizacion-rollback"
 					]
 				}
 			},
@@ -79,6 +132,11 @@
 	"variable": [
 		{
 			"key": "HOST",
+			"value": "http://127.0.0.1:5000/",
+			"type": "string"
+		},
+		{
+			"key": "HOST_TRANSFORMACION",
 			"value": "http://127.0.0.1:5000/",
 			"type": "string"
 		}
