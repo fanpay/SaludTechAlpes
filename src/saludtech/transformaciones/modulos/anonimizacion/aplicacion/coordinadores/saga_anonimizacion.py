@@ -80,7 +80,7 @@ class CoordinadorSagaAnonimizacion(CoordinadorOrquestacion):
         if isinstance(evento, paso.error):
             if index > 0 and self.pasos[index].compensacion:
                 self.publicar_comando(evento, self.pasos[index].compensacion)
-                self.id_correlacion = evento.id
+                self.id_correlacion = evento.proceso_id
                 self.persistir_en_saga_log(evento)
         
         elif isinstance(evento, paso.evento):
@@ -108,6 +108,5 @@ def oir_mensaje(mensaje):
 
 
 def publicar_evento_integracion(mensaje, topico):
-    if isinstance(mensaje, EventoIntegracion):
-        despachador = Despachador()
-        despachador.publicar_evento(mensaje, topico)
+    despachador = Despachador()
+    despachador.publicar_evento(mensaje, topico)

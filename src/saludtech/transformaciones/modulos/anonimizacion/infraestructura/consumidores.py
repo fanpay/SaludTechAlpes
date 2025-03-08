@@ -1,3 +1,4 @@
+import random
 import pulsar,_pulsar  
 from pulsar.schema import *
 import uuid
@@ -133,6 +134,8 @@ def suscribirse_a_comandos():
                 # 5. Actualizar estado (no completar aún, esperar confirmación)
                 saga.persistir_en_saga_log(evento_finalizado)
                 
+                if random.random() < 0.99:
+                    raise Exception("Excepción lanzada intencionalmente con una probabilidad del 10%")
                 
 
             except Exception as e:
@@ -144,12 +147,6 @@ def suscribirse_a_comandos():
                         motivo_fallo=str(e)
                     )
                     
-                    # payload = EventoAnonimizacionFallidaPayload(
-                    #     id=str(comando_integracion.id)
-                    # )
-                    # evento_fallo = EventoAnonimizacionFallida(data=payload)
-            
-            
                     saga.procesar_evento(evento_fallo)
                     
                     publicar_evento_integracion(evento_fallo, 'eventos-desenriquecer')
