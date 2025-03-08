@@ -118,6 +118,9 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_HOST: localhost
       POSTGRES_PORT: 5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init-procesamientodb.sh:/docker-entrypoint-initdb.d/init-procesamientodb.sh
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 2s
@@ -220,3 +223,5 @@ services:
       - POSTGRES_PORT=5432
     ports:
       - "7000:5000"
+volumes:
+  postgres-data:
