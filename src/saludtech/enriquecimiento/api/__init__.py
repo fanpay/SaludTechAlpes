@@ -32,12 +32,19 @@ def comenzar_consumidor(app):
     def suscribirse_a_eventos_con_contexto():
         with app.app_context():
             anonimizacion.suscribirse_a_eventos()
+            
+    def suscribirse_a_eventos_saga_con_contexto():
+        with app.app_context():
+            anonimizacion.suscribirse_a_eventos_saga()
 
     def suscribirse_a_comandos_con_contexto():
         with app.app_context():
             anonimizacion.suscribirse_a_comandos()
     # Suscripción a eventos
     threading.Thread(target=suscribirse_a_eventos_con_contexto).start()
+    
+    # Suscripción a eventos saga
+    threading.Thread(target=suscribirse_a_eventos_saga_con_contexto).start()
 
     # Suscripción a comandos
     threading.Thread(target=suscribirse_a_comandos_con_contexto).start()

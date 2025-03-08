@@ -99,17 +99,17 @@ class MapeadorImagenAnonimizada(RepMap):
         )
 
     def dto_a_entidad(self, dto: ImagenAnonimizadaDTO) -> ImagenAnonimizada:
-        resolucion = ast.literal_eval(dto.metadatos.resolucion)
-        ajustecontraste = ast.literal_eval(dto.configuracion.ajustes_contraste)
+        #resolucion = ast.literal_eval(dto.metadatos.resolucion)
+        #ajustecontraste = ast.literal_eval(dto.configuracion.ajustes_contraste)
         return ImagenAnonimizada(
             id=dto.id,
             metadatos=MetadatosImagen(
                 modalidad=ModalidadImagen(dto.metadatos.modalidad),
                 region=RegionAnatomica(dto.metadatos.region),
                 resolucion=Resolucion(
-                    alto = resolucion['alto'],
-                    ancho = resolucion['ancho'],
-                    dpi = resolucion['dpi']
+                    alto = dto.metadatos.resolucion.alto,
+                    ancho = dto.metadatos.resolucion.ancho,
+                    dpi = dto.metadatos.resolucion.dpi
                 ),
                 fecha_adquisicion=dto.metadatos.fecha_adquisicion
             ),
@@ -117,8 +117,8 @@ class MapeadorImagenAnonimizada(RepMap):
                 nivel_anonimizacion=dto.configuracion.nivel_anonimizacion,
                 formato_salida=FormatoSalida(dto.configuracion.formato_salida),
                 ajustes_contraste= AjusteContraste(
-                    brillo=ajustecontraste['brillo'],
-                    contraste=ajustecontraste['contraste']
+                    brillo=dto.configuracion.ajustes_contraste.brillo,
+                    contraste=dto.configuracion.ajustes_contraste.contraste
                     ) ,
                 algoritmo=AlgoritmoAnonimizacion(dto.configuracion.algoritmo)
             ),

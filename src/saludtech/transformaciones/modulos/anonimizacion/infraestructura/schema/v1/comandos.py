@@ -15,14 +15,14 @@ class MetadatosImagenPayload(Record):
     id = String()
     modalidad = String()
     region = String()
-    resolucion = String()
+    resolucion = ResolucionPayload()
     fecha_adquisicion = String()
 
 class ConfiguracionAnonimizacionPayload(Record):
     id = String()
     nivel_anonimizacion = Integer()
     formato_salida = String()
-    ajustes_contraste = String()
+    ajustes_contraste = AjusteContrastePayload()
     algoritmo = String()
 
 class ReferenciaAlmacenamientoPayload(Record):

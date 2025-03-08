@@ -5,6 +5,8 @@ persistir objetos dominio (agregaciones) en la capa de infraestructura del domin
 
 """
 
+import json
+import uuid
 from saludtech.transformaciones.config.db import db
 from saludtech.transformaciones.modulos.anonimizacion.dominio.repositorios import RepositorioImagenesAnonimizadas, RepositorioProcesosAnonimizacion
 from saludtech.transformaciones.modulos.anonimizacion.dominio.entidades import ImagenAnonimizada
@@ -13,6 +15,8 @@ from saludtech.transformaciones.modulos.anonimizacion.infraestructura.mapeadores
 from saludtech.transformaciones.modulos.anonimizacion.dominio.fabricas import FabricaAnonimizacion
 from sqlalchemy.exc import NoResultFound
 from uuid import UUID
+from .dto import Saga_Log
+
 
 class RepositorioImagenesAnonimizadasDB(RepositorioImagenesAnonimizadas):
     def __init__(self):
@@ -69,3 +73,27 @@ class RepositorioImagenesAnonimizadasDB(RepositorioImagenesAnonimizadas):
 class RepositorioProcesosAnonimizacionDB(RepositorioProcesosAnonimizacion):
     # Implementación similar a RepositorioImagenesAnonimizadasDB
     ...
+    
+    
+class RepositorioSagaLogPostgresSQL():         
+
+    def agregar(self, id_correlacion: str, evento: str, datos: dict):
+        # Serializar el payload si es necesario
+        #datos_serializados = json.dumps(datos) if isinstance(datos, dict) else datos
+        datos_serializados = json.dumps(datos, default=str)
+        
+        entrada_log = Saga_Log(
+            id=uuid.uuid4().hex,
+            id_correlacion=id_correlacion,
+            evento=evento,
+            datos=datos_serializados
+        )
+        
+        db.session.add(entrada_log)
+        db.session.commit()
+
+    def obtener_por_correlacion(self, id_correlacion: str) -> list[Saga_Log]:
+        return db.session.query(Saga_Log)\
+            .filter(Saga_Log.id_correlacion == id_correlacion)\
+            .order_by(Saga_Log.fecha_evento.asc())\
+            .all()

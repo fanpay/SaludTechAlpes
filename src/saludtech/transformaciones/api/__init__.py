@@ -66,6 +66,9 @@ def create_app(configuracion={}):
         db.create_all()
         if not app.config.get('TESTING'):
             comenzar_consumidor(app)
+            
+        from saludtech.transformaciones.modulos.anonimizacion.aplicacion.coordinadores.saga_anonimizacion import CoordinadorSagaAnonimizacion
+        CoordinadorSagaAnonimizacion()
 
     # Importa Blueprints
     from . import anonimizacion

@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 @dataclass
 class ProcesoAnonimizacionIniciado(EventoDominio):
     """Evento que indica que el proceso de anonimización ha iniciado."""
-    #proceso_id: uuid.UUID = field(default_factory=uuid.uuid4)
+    proceso_id: uuid.UUID = None
     metadatos: MetadatosImagen = None
     referencia_entrada: ReferenciaAlmacenamiento = None
     configuracion: ConfiguracionAnonimizacion = None

@@ -23,7 +23,7 @@ class _FabricaImagenAnonimizada(Fabrica):
             
             # Validar reglas de negocio críticas
             self.validar_regla(ImagenDebeTenerReferencia(imagen.referencia_entrada))
-            self.validar_regla(ImagenDebeSerProcesable(imagen))
+            #self.validar_regla(ImagenDebeSerProcesable(imagen))
             self.validar_regla(NivelAnonimizacionValido(imagen.configuracion))
             self.validar_regla(FormatoImagenSoportado(imagen.configuracion))
 

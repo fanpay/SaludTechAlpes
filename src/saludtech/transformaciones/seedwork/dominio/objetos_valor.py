@@ -29,6 +29,6 @@ class Resolucion(ObjetoValor):
 
 @dataclass(frozen=True)
 class AjusteContraste(ObjetoValor):
-    brillo: float
-    contraste: float
+    brillo: int
+    contraste: int
     

@@ -1,3 +1,4 @@
+import random
 import pulsar,_pulsar  
 from pulsar.schema import *
 import uuid
@@ -6,10 +7,12 @@ import logging
 import traceback
 import datetime
 
-from saludtech.transformaciones.modulos.anonimizacion.aplicacion.dto import ProcesarImagenDTO
-from saludtech.transformaciones.modulos.anonimizacion.aplicacion.servicios import ServicioAnonimizacion
+from saludtech.transformaciones.modulos.anonimizacion.aplicacion.coordinadores.saga_anonimizacion import CoordinadorSagaAnonimizacion, oir_mensaje, publicar_evento_integracion
+from saludtech.transformaciones.modulos.anonimizacion.dominio.eventos import ProcesoAnonimizacionFallido, ProcesoAnonimizacionIniciado
+from saludtech.transformaciones.modulos.anonimizacion.dominio.objetos_valor import EstadoProceso
+from saludtech.transformaciones.modulos.anonimizacion.infraestructura.repositorios import RepositorioSagaLogPostgresSQL
 from saludtech.transformaciones.seedwork.infraestructura import utils
-from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.eventos import EventoAnonimizacionIniciada, EventoAnonimizacionFinalizada, EventoAnonimizacionFinalizadaPayload
+from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.eventos import ConfiguracionAnonimizacionPayload, EventoAnonimizacionFallidaPayload, EventoAnonimizacionIniciada, EventoAnonimizacionFinalizada, EventoAnonimizacionFinalizadaPayload, EventoAnonimizacionFallida, EventoAnonimizacionIniciadaPayload, MetadatosImagenPayload
 from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.comandos import ComandoIniciarAnonimizacion
 from saludtech.transformaciones.modulos.anonimizacion.aplicacion.comandos.iniciar_anonimizacion import IniciarAnonimizacion
 from saludtech.transformaciones.modulos.anonimizacion.infraestructura.despachadores import Despachador
@@ -35,7 +38,7 @@ def suscribirse_a_eventos():
             )
 
             despachador = Despachador()
-            despachador.publicar_comando(comando, 'comandos-anonimizacion10')
+            despachador.publicar_comando(comando, 'comandos-anonimizacion11')
             consumidor.acknowledge(mensaje)
 
         cliente.close()
@@ -45,11 +48,11 @@ def suscribirse_a_eventos():
         if cliente:
             cliente.close()
 
-def suscribirse_a_comandos():
+def suscribirse_a_comandos_old():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('comandos-anonimizacion10', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='saludtech-sub-comandos', schema=AvroSchema(ComandoIniciarAnonimizacion))
+        consumidor = cliente.subscribe('comandos-anonimizacion-old', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='saludtech-sub-comandos', schema=AvroSchema(ComandoIniciarAnonimizacion))
 
         while True:
             mensaje = consumidor.receive()
@@ -81,6 +84,82 @@ def suscribirse_a_comandos():
         cliente.close()
     except:
         logging.error('ERROR: Suscribiendose al tópico de comandos!')
+        traceback.print_exc()
+        if cliente:
+            cliente.close()
+            
+            
+def suscribirse_a_comandos():
+    cliente = None
+    try:
+        cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
+        consumidor = cliente.subscribe('comandos-anonimizacion11', consumer_type=_pulsar.ConsumerType.Shared, 
+                                     subscription_name='saludtech-sub-comandos', schema=AvroSchema(ComandoIniciarAnonimizacion))
+        
+    
+        #repositorio_saga = RepositorioSagaLogPostgresSQL()
+
+        while True:
+            mensaje = consumidor.receive()
+            comando_integracion = mensaje.value().data
+            
+            # 1. Iniciar Saga
+            saga = CoordinadorSagaAnonimizacion()
+            saga.iniciar(comando_integracion.id)
+
+            
+            try:
+                # 2. Crear evento de dominio
+                evento_dominio_iniciado = ProcesoAnonimizacionIniciado(
+                    proceso_id=comando_integracion.id,
+                    metadatos=comando_integracion.metadatos,
+                    configuracion=comando_integracion.configuracion,
+                    referencia_entrada=comando_integracion.referencia_entrada
+                )
+                
+                # 3. Procesar evento de dominio
+                oir_mensaje(evento_dominio_iniciado)
+                
+                # 4. Publicar evento para Enriquecimiento
+                evento_finalizado = EventoAnonimizacionFinalizada(
+                    data = EventoAnonimizacionFinalizadaPayload(
+                        id = comando_integracion.id,
+                        referencia_salida = ReferenciaAlmacenamientoPayload(),
+                        timestamp = int(datetime.datetime.now().timestamp())
+                    )
+                )
+                
+                publicar_evento_integracion(evento_finalizado, 'eventos-enriquecer')
+                
+                # 5. Actualizar estado (no completar aún, esperar confirmación)
+                saga.persistir_en_saga_log(evento_finalizado)
+                
+                if random.random() < 0.99:
+                    raise Exception("Excepción lanzada intencionalmente con una probabilidad del 10%")
+                
+
+            except Exception as e:
+                # 6. Manejo de errores y compensación
+                if saga:
+                    evento_fallo = ProcesoAnonimizacionFallido(
+                        id=comando_integracion.id,
+                        proceso_id=comando_integracion.id,
+                        motivo_fallo=str(e)
+                    )
+                    
+                    saga.procesar_evento(evento_fallo)
+                    
+                    publicar_evento_integracion(evento_fallo, 'eventos-desenriquecer')
+                    publicar_evento_integracion(evento_fallo, 'eventos-desprocesamiento')
+                
+                print(f"Error procesando comando: {str(e)}")
+            finally:
+                saga.terminar(comando_integracion.id)
+                consumidor.acknowledge(mensaje)
+            
+        cliente.close()
+    except:
+        logging.error('ERROR: Procesando comandos del saga!')
         traceback.print_exc()
         if cliente:
             cliente.close()

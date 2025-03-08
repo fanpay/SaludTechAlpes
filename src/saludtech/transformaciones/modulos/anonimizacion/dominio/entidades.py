@@ -31,6 +31,7 @@ class ImagenAnonimizada(AgregacionRaiz):
         
         
         self.agregar_evento(ProcesoAnonimizacionIniciado(
+            proceso_id=self.id,
             metadatos=self.metadatos,
             referencia_entrada=self.referencia_entrada,
             configuracion=self.configuracion
