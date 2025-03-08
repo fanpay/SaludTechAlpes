@@ -324,6 +324,18 @@ Esto es un resumen de la entrega. El detalle asociado a los diferentes items, se
 **Video de la demostración:**
 - https://drive.google.com/file/d/1IJuo8gYrqa_2waTIK6WnuAeU55IN6VQT/view?usp=sharing
 
+**Screenshots aplicación:**
+
+- Login
+  ![Screenshot 2025-03-03 at 23 37 27](https://github.com/user-attachments/assets/90693b7b-e23f-42f7-b163-a8b1ecdf6acd)
+
+- Listado consulta
+  ![Screenshot 2025-03-03 at 23 37 04](https://github.com/user-attachments/assets/afd7f656-7523-44cd-ac0a-083f61070a61)
+
+- Crear solicitud
+  ![Screenshot 2025-03-03 at 23 37 15](https://github.com/user-attachments/assets/a094dac2-d6a8-49e9-bbe6-41d30e78ede6)
+
+
 **Tabla de distribución de responsabilidades:**
 
 | **Responsable**          | **Microservicio**                          | **Actividad**                                                                                             |  
