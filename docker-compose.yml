@@ -76,6 +76,7 @@ services:
 
 # Start broker
   broker:
+    user: root
     image: apachepulsar/pulsar:latest
     profiles: ["pulsar"]
     container_name: broker
