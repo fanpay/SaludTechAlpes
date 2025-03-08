@@ -131,7 +131,8 @@ def suscribirse_a_comandos():
                 publicar_evento_integracion(evento_finalizado, 'eventos-enriquecer')
                 
                 # 5. Actualizar estado (no completar aún, esperar confirmación)
-                #repositorio_saga.actualizar_estado(id_correlacion, "EN_ENRIQUECIMIENTO")
+                saga.persistir_en_saga_log(evento_finalizado)
+                
                 
 
             except Exception as e:
@@ -144,11 +145,12 @@ def suscribirse_a_comandos():
                     )
                     saga.procesar_evento(evento_fallo)
                     
-                    publicar_evento_integracion(evento_fallo, 'eventos-desenriquecer')
+                    #publicar_evento_integracion(evento_fallo, 'eventos-desenriquecer')
                     publicar_evento_integracion(evento_fallo, 'eventos-desprocesamiento')
                 
                 print(f"Error procesando comando: {str(e)}")
             finally:
+                saga.terminar()
                 consumidor.acknowledge(mensaje)
             
         cliente.close()

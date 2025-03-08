@@ -79,7 +79,8 @@ class RepositorioSagaLogPostgresSQL():
 
     def agregar(self, id_correlacion: str, evento: str, estado: str, datos: dict):
         # Serializar el payload si es necesario
-        datos_serializados = json.dumps(datos) if isinstance(datos, dict) else datos
+        #datos_serializados = json.dumps(datos) if isinstance(datos, dict) else datos
+        datos_serializados = json.dumps(datos, default=str)
         
         entrada_log = Saga_Log(
             id=uuid.uuid4().hex,

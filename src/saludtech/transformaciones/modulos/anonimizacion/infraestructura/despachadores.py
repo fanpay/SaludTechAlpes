@@ -67,9 +67,7 @@ class Despachador(DespachadorBase):
             self._publicar_mensaje(evento_integracion, topico, AvroSchema(EventoAnonimizacionFinalizada))
         elif isinstance(evento, EventoAnonimizacionFallida):
             payload = EventoAnonimizacionFallidaPayload(
-                id=str(evento.id),
-                motivo_fallo=evento.motivo_fallo,
-                timestamp=int(unix_time_millis(evento.timestamp))
+                id=str(evento.id)
             )
             evento_integracion = EventoAnonimizacionFallida(data=payload)
             self._publicar_mensaje(evento_integracion, topico, AvroSchema(EventoAnonimizacionFallida))

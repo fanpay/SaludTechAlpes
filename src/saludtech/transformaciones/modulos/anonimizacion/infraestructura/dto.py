@@ -66,6 +66,7 @@ class ReferenciaAlmacenamientoDTO(db.Model):
 class Saga_Log(db.Model):
     __tablename__ = "saga_log"
     id = db.Column(UUID(as_uuid=True), primary_key=True)
+    id_correlacion=db.Column(db.String, nullable=False)
     evento = db.Column(db.String, nullable=False)
     estado = Column(String)                         # Estado del Saga (ej: "EN_PROGRESO")
     datos = Column(JSON)                             # Payload completo del evento
