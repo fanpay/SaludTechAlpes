@@ -1,5 +1,7 @@
 import uuid
+from saludtech.transformaciones.modulos.anonimizacion.dominio.eventos import ProcesoAnonimizacionFallido
 from saludtech.transformaciones.modulos.anonimizacion.infraestructura.despachadores import Despachador
+from saludtech.transformaciones.modulos.anonimizacion.infraestructura.schema.v1.eventos import EventoAnonimizacionFallida, EventoAnonimizacionFallidaPayload
 import saludtech.transformaciones.seedwork.presentacion.api as api
 import json
 from saludtech.transformaciones.modulos.anonimizacion.aplicacion.servicios import ServicioAnonimizacion
@@ -54,6 +56,28 @@ def iniciar_anonimizacion_asincrona():
     except ExcepcionDominio as e:
         return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
 
+
+@bp.route('/anonimizacion-rollback', methods=('POST',))
+def iniciar_anonimizacion_rollback_asincrona():
+    try:
+        request_json = request.json
+
+        evento_fallo = EventoAnonimizacionFallida(
+            data = EventoAnonimizacionFallidaPayload(
+                id=request_json['id']
+            )
+        )
+        
+        despachador = Despachador()
+        despachador.publicar_evento(evento_fallo, 'eventos-desenriquecer')
+        despachador.publicar_evento(evento_fallo, 'eventos-desprocesar')
+
+        
+        return Response('{}', status=202, mimetype='application/json')
+    except ExcepcionDominio as e:
+        return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
+    
+    
 
 @bp.route('/estado-query/<id>', methods=('GET',))
 def dar_reserva_usando_query(id=None):

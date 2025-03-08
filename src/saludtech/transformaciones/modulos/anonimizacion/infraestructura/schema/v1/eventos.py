@@ -43,8 +43,8 @@ class EventoAnonimizacionFinalizada(EventoIntegracion):
 
 class EventoAnonimizacionFallidaPayload(Record):
     id = String()
-    motivo_fallo = String()
-    timestamp = Long()
+    #motivo_fallo = String()
+    #timestamp = Long()
 
 class EventoAnonimizacionFallida(EventoIntegracion):
     data = EventoAnonimizacionFallidaPayload()
