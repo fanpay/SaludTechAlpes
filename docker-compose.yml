@@ -234,7 +234,7 @@ services:
     hostname: saludtech-bff
     build:
       context: .
-      dockerfile: frontend.Dockerfile
+      dockerfile: bff.Dockerfile
     profiles: ["saludtech-frontend"]
     networks:
       # - transformacionesnet
