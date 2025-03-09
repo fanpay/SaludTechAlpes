@@ -1,7 +1,7 @@
 import httpx
 import logging
 
-BASE_URL = "http://127.0.0.1:7000/anonimizacion/crear-solicitud"
+BASE_URL = "http://saludtech-procesamiento:5000/anonimizacion/crear-solicitud"
 
 def create_registro(data: dict) -> dict:
     try:

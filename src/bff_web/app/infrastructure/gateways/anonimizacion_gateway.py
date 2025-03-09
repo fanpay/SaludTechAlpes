@@ -1,7 +1,7 @@
 import httpx
 import logging
 
-BASE_URL = "http://127.0.0.1:5000/anonimizacion/estado-query"
+BASE_URL = "http://saludtech-transformacion:5000/anonimizacion/estado-query"
 
 def get_anonimizacion_state(id: str) -> dict:
     url = f"{BASE_URL}/{id}"

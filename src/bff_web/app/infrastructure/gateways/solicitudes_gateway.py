@@ -1,7 +1,7 @@
 import httpx
 import logging
 
-BASE_URL = "http://127.0.0.1:7000/anonimizacion/solicitudes"
+BASE_URL = "http://saludtech-procesamiento:5000/anonimizacion/solicitudes"
 
 def get_all_solicitudes(username: str) -> dict:
     url = f"{BASE_URL}/{username}"
