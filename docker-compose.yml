@@ -230,7 +230,6 @@ services:
       - "traefik.http.routers.frontend.rule=Host(`saludtechalpes.felixorduz.dev`)"
       - "traefik.http.routers.frontend.entrypoints=web"
       - "traefik.http.services.frontend.loadbalancer.server.port=4200"
-    # Se elimina el mapeo de puertos ya que Traefik se encargará de exponer el servicio
     # ports:
     #   - "80:4200"
 
