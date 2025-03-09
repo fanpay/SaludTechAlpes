@@ -108,9 +108,9 @@ services:
         condition: service_healthy
       bookie:
         condition: service_started
-    # ports:
-    #   - "6650:6650"
-    #   - "8080:8080"
+    ports:
+      - "6650:6650"
+      - "8080:8080"
     command: bash -c "bin/apply-config-from-env.py conf/broker.conf &&  exec bin/pulsar broker"
 
   transformacionesdb:
