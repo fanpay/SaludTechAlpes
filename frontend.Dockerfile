@@ -5,4 +5,4 @@ EXPOSE 4200/
 COPY ./src/frontend/ .
 RUN npm install -g @angular/cli
 RUN npm install
-CMD [ "ng", "serve", "--host=0.0.0.0","--disable-host-check", "--public-host=saludtechalpes.felixorduz.dev" ]
+CMD [ "ng", "serve", "--host=0.0.0.0","--disable-host-check" ]
