@@ -225,8 +225,6 @@ services:
       - pulsar
     depends_on:
       - broker
-    environment:
-      # Variables de entorno necesarias para el frontend (si aplica)
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.rule=Host(`tudominio.com`)"
