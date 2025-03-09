@@ -11,7 +11,7 @@ networks:
 services:
   # Servicio Traefik para enrutar el tráfico del dominio
   traefik:
-    image: traefik:v3.3.4
+    image: traefik:v2.11.21
     container_name: traefik
     restart: unless-stopped
     ports:
