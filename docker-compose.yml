@@ -219,13 +219,6 @@ services:
     networks:
       # - transformacionesnet
       - pulsar
-    depends_on:
-      - broker
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`saludtechalpes.felixorduz.dev`)"
-      - "traefik.http.routers.frontend.entrypoints=web"
-      - "traefik.http.services.frontend.loadbalancer.server.port=4200"
 
   saludtech-bff:
     container_name: bff
