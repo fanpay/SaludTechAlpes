@@ -16,7 +16,6 @@ services:
     restart: unless-stopped
     ports:
       - "80:80"
-      - "443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
     networks:
@@ -109,9 +108,9 @@ services:
         condition: service_healthy
       bookie:
         condition: service_started
-    ports:
-      - "6650:6650"
-      - "8080:8080"
+    # ports:
+    #   - "6650:6650"
+    #   - "8080:8080"
     command: bash -c "bin/apply-config-from-env.py conf/broker.conf &&  exec bin/pulsar broker"
 
   transformacionesdb:
@@ -159,8 +158,8 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_HOST=transformacionesdb
       - POSTGRES_PORT=5432
-    ports:
-      - "5000:5000"
+    # ports:
+    #   - "5000:5000"
 
   saludtech-enriquecimiento:
     container_name: enriquecimiento
@@ -206,8 +205,8 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_HOST=transformacionesdb
       - POSTGRES_PORT=5432
-    ports:
-      - "7000:5000"
+    # ports:
+    #   - "7000:5000"
 
   saludtech-frontend:
     container_name: frontend
@@ -234,8 +233,8 @@ services:
       - saludtech-procesamiento
       - saludtech-enriquecimiento
       - saludtech-transformacion
-    ports:
-      - "8000:8000"
+    # ports:
+    #   - "8000:8000"
 
 volumes:
   postgres-data:
