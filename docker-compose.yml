@@ -5,9 +5,29 @@ networks:
     driver: bridge
 
   # ATENCION: Descomentar si se va a utilizar y probar en un ambiente local
-  # procesamientonet:
+  # procesamientonet:
   #  driver: bridge
+
 services:
+  # Servicio Traefik para enrutar el tráfico del dominio
+  traefik:
+    image: traefik:v3.3.4
+    container_name: traefik
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    command:
+      - "--providers.docker"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--api.dashboard=true"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - transformacionesnet
+
   # Init cluster metadata
   pulsar-init:
     container_name: pulsar-init
@@ -17,13 +37,11 @@ services:
     networks:
       - pulsar
     command: bin/pulsar initialize-cluster-metadata --cluster cluster-a --zookeeper zookeeper:2181 --configuration-store zookeeper:2181 --web-service-url http://broker:8080 --broker-service-url pulsar://broker:6650
-
     depends_on:
       zookeeper:
         condition: service_healthy
 
-
-# Start zookeeper
+  # Start zookeeper
   zookeeper:
     user: root
     image: apachepulsar/pulsar:latest
@@ -47,7 +65,7 @@ services:
       timeout: 5s
       retries: 30
 
-# Start bookie
+  # Start bookie
   bookie:
     user: root
     image: apachepulsar/pulsar:latest
@@ -60,8 +78,6 @@ services:
       - clusterName=cluster-a
       - zkServers=zookeeper:2181
       - metadataServiceUri=metadata-store:zk:zookeeper:2181
-      # otherwise every time we run docker compose uo or down we fail to start due to Cookie
-      # See: https://github.com/apache/bookkeeper/blob/405e72acf42bb1104296447ea8840d805094c787/bookkeeper-server/src/main/java/org/apache/bookkeeper/bookie/Cookie.java#L57-68
       - advertisedAddress=bookie
       - BOOKIE_MEM=-Xms512m -Xmx512m -XX:MaxDirectMemorySize=256m
     depends_on:
@@ -69,12 +85,11 @@ services:
         condition: service_healthy
       pulsar-init:
         condition: service_completed_successfully
-    # Map the local directory to the container to avoid bookie startup failure due to insufficient container disks.
     volumes:
       - ./data/bookkeeper:/pulsar/data/bookkeeper
     command: bash -c "bin/apply-config-from-env.py conf/bookkeeper.conf && exec bin/pulsar bookie"
 
-# Start broker
+  # Start broker
   broker:
     user: root
     image: apachepulsar/pulsar:latest
@@ -92,8 +107,6 @@ services:
       - managedLedgerDefaultWriteQuorum=1
       - managedLedgerDefaultAckQuorum=1
       - advertisedAddress=broker
-      #Si se realiza una ejecución manual, este dato debe cambiar al siguiente:
-      #- advertisedListeners=external:pulsar://127.0.0.1:6650
       - advertisedListeners=external:pulsar://broker:6650
       - PULSAR_MEM=-Xms512m -Xmx512m -XX:MaxDirectMemorySize=256m
     depends_on:
@@ -106,21 +119,6 @@ services:
       - "8080:8080"
     command: bash -c "bin/apply-config-from-env.py conf/broker.conf &&  exec bin/pulsar broker"
 
-#Using standalone version for simplicity
-  # pulsar:
-  #   image: apachepulsar/pulsar:3.2.0
-  #   profiles: ["pulsar"]
-  #   container_name: pulsar
-  #   restart: on-failure
-  #   ports:
-  #     - "6650:6650"
-  #     - "8080:8080"
-  #   command: ["bin/pulsar", "standalone"]
-  #   networks:
-  #     - pulsar
-
-
-     # Bases de datos de Transformaciones
   transformacionesdb:
     image: postgres:latest
     container_name: transformacionesdb
@@ -144,31 +142,6 @@ services:
       retries: 5
     profiles: ["transformaciones"]
 
-
-  # Bases de datos de Transformaciones
-  # ATENCION: Descomentar si se va a utilizar y probar en un ambiente local
-  # procesamientodb:
-  #   image: postgres:latest
-  #   container_name: procesamientodb
-  #   ports:
-  #     - "5532:5432"
-  #   networks:
-  #     - procesamientonet
-  #   environment:
-  #     POSTGRES_DB: procesamientodb
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: postgres
-  #     POSTGRES_HOST: localhost
-  #     POSTGRES_PORT: 5432
-  #   healthcheck:
-  #     test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-  #     interval: 2s
-  #     timeout: 5s
-  #     retries: 5
-  #   profiles: ["procesamiento"]
-
-
-  # Servicios de SaludTech
   saludtech-transformacion:
     container_name: saludtech
     hostname: saludtech
@@ -226,11 +199,8 @@ services:
     profiles: ["saludtech-procesamiento"]
     networks:
       - transformacionesnet
-      # ATENCION: Descomentar si se va a utilizar y probar en un ambiente local
-      #- procesamientonet
       - pulsar
     depends_on:
-      # - procesamientodb
       - broker
     environment:
       - PULSAR_ADDRESS=broker
@@ -238,12 +208,11 @@ services:
       - POSTGRES_DB=procesamientodb
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      # ATENCION: Descomentar si se va a utilizar y probar en un ambiente local
-      #- POSTGRES_HOST=procesamientodb
       - POSTGRES_HOST=transformacionesdb
       - POSTGRES_PORT=5432
     ports:
       - "7000:5000"
+
   saludtech-frontend:
     container_name: frontend
     hostname: procesamiento
@@ -253,10 +222,19 @@ services:
     profiles: ["saludtech-frontend"]
     networks:
       - transformacionesnet
-      # ATENCION: Descomentar si se va a utilizar y probar en un ambiente local
-      #- procesamientonet
       - pulsar
-    ports:
-      - "80:4200"
+    depends_on:
+      - broker
+    environment:
+      # Variables de entorno necesarias para el frontend (si aplica)
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`tudominio.com`)"
+      - "traefik.http.routers.frontend.entrypoints=web"
+      - "traefik.http.services.frontend.loadbalancer.server.port=4200"
+    # Se elimina el mapeo de puertos ya que Traefik se encargará de exponer el servicio
+    # ports:
+    #   - "80:4200"
+
 volumes:
   postgres-data:
