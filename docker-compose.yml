@@ -225,7 +225,7 @@ services:
       - "traefik.http.routers.frontend.entrypoints=web"
       - "traefik.http.services.frontend.loadbalancer.server.port=4200"
     ports:
-      - "8090:4200"
+      - "4200:4200"
 
 volumes:
   postgres-data:
