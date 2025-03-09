@@ -140,7 +140,7 @@ services:
 
   saludtech-transformacion:
     container_name: saludtech
-    hostname: saludtech
+    hostname: saludtech-transformacion
     build:
       context: .
       dockerfile: transformacion.Dockerfile
@@ -164,7 +164,7 @@ services:
 
   saludtech-enriquecimiento:
     container_name: enriquecimiento
-    hostname: enriquecimiento
+    hostname: saludtech-enriquecimiento
     build:
       context: .
       dockerfile: enriquecimiento.Dockerfile
@@ -188,7 +188,7 @@ services:
 
   saludtech-procesamiento:
     container_name: procesamiento
-    hostname: procesamiento
+    hostname: saludtech-procesamiento
     build:
       context: .
       dockerfile: procesamiento.Dockerfile
@@ -211,7 +211,27 @@ services:
 
   saludtech-frontend:
     container_name: frontend
-    hostname: procesamiento
+    hostname: saludtech-frontend
+    build:
+      context: .
+      dockerfile: frontend.Dockerfile
+    profiles: ["saludtech-frontend"]
+    networks:
+      # - transformacionesnet
+      - pulsar
+    depends_on:
+      - broker
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`saludtechalpes.felixorduz.dev`)"
+      - "traefik.http.routers.frontend.entrypoints=web"
+      - "traefik.http.services.frontend.loadbalancer.server.port=4200"
+    ports:
+      - "4200:4200"
+
+  saludtech-bff:
+    container_name: bff
+    hostname: saludtech-bff
     build:
       context: .
       dockerfile: frontend.Dockerfile
