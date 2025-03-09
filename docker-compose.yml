@@ -244,5 +244,19 @@ services:
       - POSTGRES_PORT=5432
     ports:
       - "7000:5000"
+  saludtech-frontend:
+    container_name: frontend
+    hostname: procesamiento
+    build:
+      context: .
+      dockerfile: frontend.Dockerfile
+    profiles: ["saludtech-frontend"]
+    networks:
+      - transformacionesnet
+      # ATENCION: Descomentar si se va a utilizar y probar en un ambiente local
+      #- procesamientonet
+      - pulsar
+    ports:
+      - "80:4200"
 volumes:
   postgres-data:
