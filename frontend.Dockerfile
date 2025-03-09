@@ -23,7 +23,7 @@ RUN npm install
 # COPY src src
 
 RUN npm run build:prod
-
+EXPOSE 80
 FROM nginxinc/nginx-unprivileged:1.26.2-alpine3.20-perl
 COPY --from=BUILD /build/dist/output/browser /usr/share/nginx/html
 COPY --from=BUILD /build/nginx.conf /etc/nginx/nginx.conf
