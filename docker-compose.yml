@@ -158,8 +158,8 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_HOST=transformacionesdb
       - POSTGRES_PORT=5432
-    # ports:
-    #   - "5000:5000"
+    ports:
+      - "5000:5000"
 
   saludtech-enriquecimiento:
     container_name: enriquecimiento
@@ -205,8 +205,8 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_HOST=transformacionesdb
       - POSTGRES_PORT=5432
-    # ports:
-    #   - "7000:5000"
+    ports:
+      - "7000:5000"
 
   saludtech-frontend:
     container_name: frontend
