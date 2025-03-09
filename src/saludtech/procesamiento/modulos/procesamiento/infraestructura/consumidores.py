@@ -25,7 +25,33 @@ def suscribirse_a_eventos():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('eventos-anonimizacion-fallida', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='saludtech-sub-eventos', schema=AvroSchema(EventoAnonimizacionFallida))
+        consumidor = cliente.subscribe('eventos-procesar1', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='saludtech-sub-eventos', schema=AvroSchema(EventoAnonimizacionIniciada))
+
+        while True:
+            mensaje = consumidor.receive()
+            evento_integracion = mensaje.value().data
+            print(f'------> Evento recibido: {evento_integracion}')
+
+            # Procesar el evento y reaccionar a él
+            # Aquí puedes agregar la lógica para manejar el evento recibido
+
+            consumidor.acknowledge(mensaje)
+
+        cliente.close()
+    except:
+        logging.error('ERROR: Suscribiendose al tópico de eventos!')
+        traceback.print_exc()
+        if cliente:
+            cliente.close()
+            
+
+
+def suscribirse_a_eventos_saga():
+    cliente = None
+    topic_name = 'eventos-desenriquecer'
+    try:
+        cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
+        consumidor = cliente.subscribe(topic_name, consumer_type=_pulsar.ConsumerType.Shared,subscription_name='saludtech-sub-eventos', schema=AvroSchema(EventoAnonimizacionFallida))
 
         while True:
             mensaje = consumidor.receive()
